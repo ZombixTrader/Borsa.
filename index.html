@@ -1266,6 +1266,255 @@
             color: #000;
             text-shadow: none;
         }
+    
+/* ===== BORDO EXP TABLOSU ===== */
+.bordo-exp-mini-btn {
+    background: transparent;
+    border: 2px solid var(--neon-gold);
+    color: var(--neon-gold);
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
+    width: auto;
+    margin: 0;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.bordo-exp-mini-btn:hover {
+    background: var(--neon-gold);
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+.bordo-exp-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 50000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: bordoExpFadeIn 0.3s ease;
+}
+
+@keyframes bordoExpFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.bordo-exp-modal {
+    background: rgba(10, 10, 15, 0.97);
+    border: 2px solid var(--neon-gold);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.25), 0 20px 60px rgba(0,0,0,0.8);
+    animation: bordoExpSlideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+@keyframes bordoExpSlideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.bordo-exp-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 28px;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+    background: rgba(255, 215, 0, 0.05);
+    flex-shrink: 0;
+}
+
+.bordo-exp-modal-title {
+    color: var(--neon-gold);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+    margin: 0;
+}
+
+.bordo-exp-modal-close {
+    background: transparent;
+    border: 2px solid var(--neon-red);
+    color: var(--neon-red);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 800;
+    transition: all 0.3s;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.bordo-exp-modal-close:hover {
+    background: var(--neon-red);
+    color: #000;
+    box-shadow: 0 0 20px var(--neon-red);
+    transform: rotate(90deg);
+}
+
+.bordo-exp-modal-body {
+    padding: 25px 28px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.bordo-exp-table-wrapper {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.bordo-exp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.bordo-exp-table thead tr {
+    background: rgba(255, 215, 0, 0.15);
+    border-bottom: 2px solid var(--neon-gold);
+}
+
+.bordo-exp-table th {
+    color: var(--neon-gold);
+    padding: 14px 10px;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.bordo-exp-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: background 0.2s;
+}
+
+.bordo-exp-table tbody tr:hover {
+    background: rgba(255, 215, 0, 0.08);
+}
+
+.bordo-exp-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.bordo-exp-table tbody tr:nth-child(even):hover {
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.bordo-exp-table td {
+    padding: 11px 10px;
+    text-align: center;
+    color: #ddd;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.bordo-exp-table td:nth-child(1) { color: var(--neon-green); }
+.bordo-exp-table td:nth-child(2) { color: var(--neon-gold); }
+.bordo-exp-table td:nth-child(3) { color: var(--neon-red); }
+
+.bordo-exp-modal-footer {
+    padding: 18px 28px;
+    border-top: 1px solid rgba(255, 215, 0, 0.15);
+    text-align: center;
+    color: #666;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+    .bordo-exp-mini-btn {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .bordo-exp-overlay {
+        padding: 0;
+    }
+
+    .bordo-exp-modal {
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .bordo-exp-modal-header {
+        padding: 18px 20px;
+    }
+
+    .bordo-exp-modal-title {
+        font-size: 16px;
+        letter-spacing: 2px;
+    }
+
+    .bordo-exp-modal-body {
+        padding: 15px 12px;
+    }
+
+    .bordo-exp-table {
+        font-size: 11px;
+    }
+
+    .bordo-exp-table th {
+        padding: 10px 6px;
+        font-size: 10px;
+        letter-spacing: 1px;
+    }
+
+    .bordo-exp-table td {
+        padding: 8px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bordo-exp-table td {
+        padding: 7px 4px;
+        font-size: 10px;
+    }
+
+    .bordo-exp-table th {
+        padding: 8px 4px;
+        font-size: 9px;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -1391,6 +1640,7 @@
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom:20px; flex-wrap: wrap; gap: 15px;">
             <div id="display-name" style="color:var(--neon-gold); font-size: 24px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 0 20px rgba(255,215,0,0.3);"></div>
             <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="bordo-exp-mini-btn" onclick="openExpModal()" title="EXP Tablosu">📊</button>
                 <button class="logout-btn" onclick="logout()">[ÇIKIŞ]</button>
                 <div class="theme-selector">
                     <div class="theme-btn t-default active" onclick="changeTheme('default')" title="Varsayılan (Gold)"></div>
@@ -2045,7 +2295,155 @@
              chatArea.scrollTop = chatArea.scrollHeight;
         }, 1500);
     }
+
+
+// ===== BORDO EXP TABLOSU FONKSİYONLARI =====
+function openExpModal() {
+    document.getElementById('bordo-exp-overlay').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeExpModal(e) {
+    if (e && e.target !== document.getElementById('bordo-exp-overlay')) return;
+    document.getElementById('bordo-exp-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeExpModal();
+});
+
 </script>
+
+
+
+
+<div class="bordo-exp-overlay" id="bordo-exp-overlay" onclick="closeExpModal(event)">
+    <div class="bordo-exp-modal" onclick="event.stopPropagation()">
+        <div class="bordo-exp-modal-header">
+            <h2 class="bordo-exp-modal-title">📊 EXP TABLOSU</h2>
+            <button class="bordo-exp-modal-close" onclick="closeExpModal()" title="Kapat">✕</button>
+        </div>
+        <div class="bordo-exp-modal-body">
+            <div class="bordo-exp-table-wrapper">
+                <table class="bordo-exp-table">
+                    <thead>
+                        <tr>
+                            <th>1 - 20 Arası</th>
+                            <th>21 - 40 Arası</th>
+                            <th>41 - 60 Arası</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1: 122 EXP</td>
+                            <td>21: 42.014 EXP</td>
+                            <td>41: 232.697 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>2: 374 EXP</td>
+                            <td>22: 46.935 EXP</td>
+                            <td>42: 248.929 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>3: 764 EXP</td>
+                            <td>23: 52.226 EXP</td>
+                            <td>43: 265.998 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>4: 1.298 EXP</td>
+                            <td>24: 57.903 EXP</td>
+                            <td>44: 283.938 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>5: 1.987 EXP</td>
+                            <td>25: 63.983 EXP</td>
+                            <td>45: 302.781 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>6: 2.837 EXP</td>
+                            <td>26: 70.484 EXP</td>
+                            <td>46: 322.563 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>7: 3.859 EXP</td>
+                            <td>27: 77.424 EXP</td>
+                            <td>47: 343.319 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>8: 5.061 EXP</td>
+                            <td>28: 84.822 EXP</td>
+                            <td>48: 365.087 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>9: 6.453 EXP</td>
+                            <td>29: 92.699 EXP</td>
+                            <td>49: 387.905 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>10: 8.045 EXP</td>
+                            <td>30: 101.073 EXP</td>
+                            <td>50: 411.812 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>11: 9.847 EXP</td>
+                            <td>31: 109.968 EXP</td>
+                            <td>51: 436.851 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>12: 11.870 EXP</td>
+                            <td>32: 119.404 EXP</td>
+                            <td>52: 463.062 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>13: 14.126 EXP</td>
+                            <td>33: 129.404 EXP</td>
+                            <td>53: 490.489 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>14: 16.625 EXP</td>
+                            <td>34: 139.992 EXP</td>
+                            <td>54: 519.178 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>15: 19.380 EXP</td>
+                            <td>35: 151.191 EXP</td>
+                            <td>55: 549.175 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>16: 22.403 EXP</td>
+                            <td>36: 163.027 EXP</td>
+                            <td>56: 580.528 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>17: 25.708 EXP</td>
+                            <td>37: 175.526 EXP</td>
+                            <td>57: 613.287 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>18: 29.307 EXP</td>
+                            <td>38: 188.714 EXP</td>
+                            <td>58: 647.502 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>19: 33.215 EXP</td>
+                            <td>39: 202.620 EXP</td>
+                            <td>59: 683.226 EXP</td>
+                        </tr>
+                        <tr>
+                            <td>20: 37.445 EXP</td>
+                            <td>40: 217.271 EXP</td>
+                            <td>60: 720.514 EXP</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="bordo-exp-modal-footer">
+            ZOMBIX BORSA | BORDO v9.5 — SEVİYE GELİŞİM VERİLERİ
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
