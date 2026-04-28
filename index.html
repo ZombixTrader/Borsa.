@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ZOMBIX BORSA | BORDO v9.5 (SYSTEM_BREACH_EDITION)</title>
+    <title>ZOMBIX BORSA | BORDO v9.7 (STABLE_EDITION)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
         
-        /* CANLI TEMA DEĞİŞKENLERİ - YÜKSEK DOYGUNLUK */
         :root {
             --neon-gold: #ffd700;
             --neon-green: #00ff88;
@@ -44,11 +43,7 @@
             --shadow-glow: 0 0 30px rgba(0, 229, 255, 0.3);
         }
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
             background: var(--bg-deep);
@@ -63,1464 +58,704 @@
             line-height: 1.5;
         }
 
-        /* CRT EFEKTİ - DAHA BELİRGİN */
         body::before {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.25) 50%
-            );
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
             background-size: 100% 3px;
             pointer-events: none;
             z-index: 1000;
             opacity: 0.4;
         }
 
-        /* PUMP/DUMP EFEKTLERİ - DAHA CANLI */
         .pump-effect { 
-            background: linear-gradient(90deg, rgba(255, 215, 0, 0.25) 0%, transparent 100%) !important;
-            animation: goldGlow 1.5s ease-in-out infinite alternate;
-            border-left: 4px solid var(--neon-gold) !important;
-            box-shadow: inset 10px 0 30px rgba(255, 215, 0, 0.2);
+            position: relative;
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.15) 0%, transparent 100%);
         }
-        
+        .pump-effect::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--neon-gold);
+            box-shadow: 0 0 15px var(--neon-gold);
+            animation: goldGlow 1.5s ease-in-out infinite alternate;
+            z-index: 2;
+            border-radius: 2px 0 0 2px;
+        }
+        .pump-effect td {
+            position: relative;
+            z-index: 1;
+        }
         @keyframes goldGlow { 
-            from { box-shadow: inset 5px 0 20px rgba(255, 215, 0, 0.2); } 
-            to { box-shadow: inset 5px 0 40px rgba(255, 215, 0, 0.4); } 
+            from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); } 
+            to { box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); } 
         }
         
         .dump-effect { 
-            background: linear-gradient(90deg, rgba(255, 51, 102, 0.25) 0%, transparent 100%) !important;
-            animation: redAlert 1s ease-in-out infinite alternate;
-            border-left: 4px solid var(--neon-red) !important;
-            box-shadow: inset 10px 0 30px rgba(255, 51, 102, 0.2);
+            position: relative;
+            background: linear-gradient(90deg, rgba(255, 51, 102, 0.15) 0%, transparent 100%);
         }
-        
+        .dump-effect::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--neon-red);
+            box-shadow: 0 0 15px var(--neon-red);
+            animation: redAlert 1s ease-in-out infinite alternate;
+            z-index: 2;
+            border-radius: 2px 0 0 2px;
+        }
+        .dump-effect td {
+            position: relative;
+            z-index: 1;
+        }
         @keyframes redAlert { 
-            from { opacity: 1; box-shadow: inset 5px 0 20px rgba(255, 51, 102, 0.2); } 
-            to { opacity: 0.9; box-shadow: inset 5px 0 40px rgba(255, 51, 102, 0.4); } 
+            from { box-shadow: 0 0 10px rgba(255, 51, 102, 0.5); } 
+            to { box-shadow: 0 0 25px rgba(255, 51, 102, 0.9); } 
         }
 
         .trend-label { 
-            font-size: 10px; 
-            font-weight: 700;
-            margin-left: 8px; 
-            padding: 3px 8px; 
-            border: 2px solid currentColor; 
-            border-radius: 4px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            font-size: 10px; font-weight: 700; margin-left: 8px; padding: 3px 8px; 
+            border: 2px solid currentColor; border-radius: 4px; letter-spacing: 1px; text-transform: uppercase;
             box-shadow: 0 0 10px currentColor;
         }
 
-        /* DURUM GÖSTERGESİ - PARLAK */
         #market-status-indicator { 
-            position: fixed; 
-            bottom: 20px; 
-            left: 20px; 
-            z-index: 999; 
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid var(--neon-gold);
-            padding: 10px 18px; 
-            font-size: 12px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.1);
-            letter-spacing: 2px;
-            font-weight: 700;
+            position: fixed; bottom: 20px; left: 20px; z-index: 999; 
+            background: rgba(0, 0, 0, 0.9); border: 2px solid var(--neon-gold);
+            padding: 10px 18px; font-size: 12px; display: flex; align-items: center; gap: 10px; 
+            border-radius: 8px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.1);
+            letter-spacing: 2px; font-weight: 700;
         }
-        
-        .status-dot { 
-            width: 10px; 
-            height: 10px; 
-            border-radius: 50%;
-            transition: var(--transition-smooth);
-        }
-        
-        .status-open { 
-            background: var(--neon-green); 
-            box-shadow: 0 0 15px var(--neon-green), 0 0 30px var(--neon-green);
-            animation: pulse 2s infinite;
-        }
-        
-        .status-closed { 
-            background: var(--neon-red); 
-            box-shadow: 0 0 15px var(--neon-red), 0 0 30px var(--neon-red);
-            animation: pulse 2s infinite;
-        }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; transition: var(--transition-smooth); }
+        .status-open { background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green), 0 0 30px var(--neon-green); animation: pulse 2s infinite; }
+        .status-closed { background: var(--neon-red); box-shadow: 0 0 15px var(--neon-red), 0 0 30px var(--neon-red); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        /* DUYURU BARLARI - CANLI */
         #announcement-bar { 
-            display: none; 
-            background: linear-gradient(90deg, rgba(255, 51, 102, 0.2) 0%, rgba(255, 51, 102, 0.1) 100%);
-            color: var(--neon-red); 
-            padding: 15px; 
-            text-align: center; 
-            font-weight: 700;
-            font-size: 14px; 
-            border-bottom: 2px solid var(--neon-red);
-            text-transform: uppercase; 
-            letter-spacing: 3px;
-            box-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
-            text-shadow: 0 0 10px var(--neon-red);
+            display: none; background: linear-gradient(90deg, rgba(255, 51, 102, 0.2) 0%, rgba(255, 51, 102, 0.1) 100%);
+            color: var(--neon-red); padding: 15px; text-align: center; font-weight: 700; font-size: 14px; 
+            border-bottom: 2px solid var(--neon-red); text-transform: uppercase; letter-spacing: 3px;
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.3); text-shadow: 0 0 10px var(--neon-red);
             animation: alertPulse 1.5s infinite;
         }
-
         @keyframes alertPulse { 
             0%, 100% { border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255, 51, 102, 0.3); } 
             50% { border-color: #ff0066; box-shadow: 0 0 40px rgba(255, 51, 102, 0.5); } 
         }
 
         #news-bot-sticky { 
-            display: none; 
-            background: linear-gradient(90deg, var(--neon-gold) 0%, #ffea00 100%);
-            color: #000; 
-            padding: 12px; 
-            text-align: center; 
-            font-weight: 800;
-            font-size: 13px; 
-            border-bottom: 2px solid #000;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-            position: sticky; 
-            top: 0; 
-            z-index: 100;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px rgba(0,0,0,0.3);
+            display: none; background: linear-gradient(90deg, var(--neon-gold) 0%, #ffea00 100%);
+            color: #000; padding: 12px; text-align: center; font-weight: 800; font-size: 13px; 
+            border-bottom: 2px solid #000; box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            position: sticky; top: 0; z-index: 100; letter-spacing: 1px; text-shadow: 0 0 5px rgba(0,0,0,0.3);
         }
 
-        /* VIP STİLLERİ - PARLAK */
-        .vip-name { 
-            color: var(--neon-gold) !important; 
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4);
-            font-weight: 800;
-        }
-        
-        .vip-icon { 
-            margin-right: 4px; 
-            filter: drop-shadow(0 0 8px rgba(255,215,0,0.8));
-        }
+        .vip-name { color: var(--neon-gold) !important; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4); font-weight: 800; }
+        .vip-icon { margin-right: 4px; filter: drop-shadow(0 0 8px rgba(255,215,0,0.8)); }
 
-        /* YANIT KUTULARI - CANLI */
         .reply-container { 
-            background: rgba(255, 215, 0, 0.15); 
-            border-left: 4px solid var(--neon-gold); 
-            padding: 12px; 
-            margin-bottom: 10px; 
-            font-size: 12px; 
-            color: var(--text-secondary);
-            display: none; 
-            position: relative;
-            border-radius: 0 8px 8px 0;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+            background: rgba(255, 215, 0, 0.15); border-left: 4px solid var(--neon-gold); padding: 12px; 
+            margin-bottom: 10px; font-size: 12px; color: var(--text-secondary); display: none; position: relative;
+            border-radius: 0 8px 8px 0; box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
         }
-        
-        .reply-content { 
-            font-style: italic;
-            color: #ccc;
-        }
-        
-        .cancel-reply { 
-            position: absolute; 
-            right: 10px; 
-            top: 8px; 
-            color: var(--neon-red); 
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: transform 0.2s;
-        }
-        
+        .reply-content { font-style: italic; color: #ccc; }
+        .cancel-reply { position: absolute; right: 10px; top: 8px; color: var(--neon-red); cursor: pointer; font-size: 14px; font-weight: bold; transition: transform 0.2s; }
         .cancel-reply:hover { transform: scale(1.2); }
+        .msg-reply-box { background: rgba(255,255,255,0.08); border-left: 3px solid var(--neon-gold); padding: 8px 12px; font-size: 11px; margin-bottom: 8px; color: #999; border-radius: 0 6px 6px 0; }
 
-        .msg-reply-box { 
-            background: rgba(255,255,255,0.08); 
-            border-left: 3px solid var(--neon-gold); 
-            padding: 8px 12px; 
-            font-size: 11px; 
-            margin-bottom: 8px; 
-            color: #999;
-            border-radius: 0 6px 6px 0;
-        }
-
-        /* ADMIN PANEL - CANLI */
         #admin-panel { 
-            display: none; 
-            background: rgba(10, 10, 15, 0.95);
-            border: 2px solid var(--neon-red);
-            padding: 25px; 
-            margin: 15px; 
-            z-index: 10001;
-            border-radius: 12px;
+            display: none; background: rgba(10, 10, 15, 0.95); border: 2px solid var(--neon-red);
+            padding: 25px; margin: 15px; z-index: 100000; border-radius: 12px;
             box-shadow: 0 0 40px rgba(255, 51, 102, 0.3), inset 0 0 40px rgba(255, 51, 102, 0.05);
         }
 
-        /* AUTH EKRANI - PARLAK */
         #auth-screen { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: var(--bg-deep);
-            z-index: 9999; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            flex-direction: column;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-deep);
+            z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column;
             background-image: 
                 radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.2) 0%, transparent 50%),
                 radial-gradient(circle at 70% 70%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
         }
-        
         .auth-box { 
-            background: rgba(10, 10, 15, 0.95);
-            border: 2px solid var(--neon-gold);
-            padding: 40px; 
-            width: 90%; 
-            max-width: 420px; 
-            text-align: center;
-            border-radius: 16px;
+            background: rgba(10, 10, 15, 0.95); border: 2px solid var(--neon-gold); padding: 40px; 
+            width: 90%; max-width: 420px; text-align: center; border-radius: 16px;
             box-shadow: 0 0 50px rgba(255, 215, 0, 0.3), inset 0 0 30px rgba(255, 215, 0, 0.05);
         }
 
-        /* HABER TICKER - CANLI */
         .news-ticker { 
-            background: rgba(255, 215, 0, 0.1); 
-            color: var(--neon-gold); 
-            padding: 12px 0; 
-            border-bottom: 2px solid var(--neon-gold);
-            white-space: nowrap; 
-            overflow: hidden; 
-            font-size: 13px; 
-            position: relative;
-            letter-spacing: 2px;
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.1);
+            background: rgba(255, 215, 0, 0.1); color: var(--neon-gold); padding: 12px 0; 
+            border-bottom: 2px solid var(--neon-gold); white-space: nowrap; overflow: hidden; 
+            font-size: 13px; position: relative; letter-spacing: 2px; font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); box-shadow: 0 5px 20px rgba(255, 215, 0, 0.1);
         }
-        
-        .ticker-text { 
-            display: inline-block; 
-            padding-left: 100%; 
-            animation: ticker 40s linear infinite;
-            opacity: 0.9;
-        }
-        
-        @keyframes ticker { 
-            0% { transform: translateX(0); } 
-            100% { transform: translateX(-100%); } 
-        }
+        .ticker-text { display: inline-block; padding-left: 100%; animation: ticker 40s linear infinite; opacity: 0.9; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        /* ANA DASHBOARD LAYOUT - CANLI */
         .dashboard { 
-            display: none; 
-            flex-direction: column; 
-            gap: 25px; 
-            padding: 25px; 
-            flex: 1; 
-            padding-bottom: 50px;
-            max-width: 1600px;
-            margin: 0 auto;
-            width: 100%;
+            display: none; flex-direction: column; gap: 25px; padding: 25px; flex: 1; 
+            padding-bottom: 50px; max-width: 1600px; margin: 0 auto; width: 100%;
         }
-        
-        @media (min-width: 992px) { 
-            .dashboard { 
-                display: none; 
-                flex-direction: row; 
-                gap: 30px;
-            } 
-        }
+        @media (min-width: 992px) { .dashboard { flex-direction: row; gap: 30px; } }
 
         .main-panel, .side-panel { 
-            background: var(--bg-card);
-            border: 2px solid var(--border-subtle);
-            padding: 30px; 
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5), var(--shadow-glow);
-            transition: var(--transition-smooth);
+            background: var(--bg-card); border: 2px solid var(--border-subtle); padding: 30px; 
+            border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5), var(--shadow-glow); transition: var(--transition-smooth);
         }
+        .main-panel:hover, .side-panel:hover { border-color: rgba(255, 215, 0, 0.6); box-shadow: 0 15px 50px rgba(0,0,0,0.6), 0 0 40px rgba(255, 215, 0, 0.2); }
 
-        .main-panel:hover, .side-panel:hover {
-            border-color: rgba(255, 215, 0, 0.6);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.6), 0 0 40px rgba(255, 215, 0, 0.2);
-        }
-
-        /* CHAT KONTEYNER - PARLAK */
         .chat-container { 
-            margin-top: 25px; 
-            border: 2px solid var(--border-subtle);
-            height: 500px; 
-            display: flex; 
-            flex-direction: column;
-            border-radius: 12px;
-            overflow: hidden;
-            background: rgba(0,0,0,0.4);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+            margin-top: 25px; border: 2px solid var(--border-subtle); height: 500px; 
+            display: flex; flex-direction: column; border-radius: 12px; overflow: hidden;
+            background: rgba(0,0,0,0.4); box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
         }
-        
-        .chat-header-tabs { 
-            display: flex; 
-            background: rgba(0,0,0,0.6);
-            border-bottom: 2px solid var(--border-subtle);
-        }
-        
+        .chat-header-tabs { display: flex; background: rgba(0,0,0,0.6); border-bottom: 2px solid var(--border-subtle); }
         .chat-tab { 
-            flex: 1; 
-            padding: 15px; 
-            text-align: center; 
-            color: #666; 
-            cursor: pointer; 
-            font-weight: 700;
-            font-size: 12px; 
-            transition: var(--transition-smooth);
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            flex: 1; padding: 15px; text-align: center; color: #666; cursor: pointer; 
+            font-weight: 700; font-size: 12px; transition: var(--transition-smooth); letter-spacing: 2px; text-transform: uppercase;
         }
-        
-        .chat-tab:hover {
-            background: rgba(255,215,0,0.1);
-            color: #999;
-        }
-        
+        .chat-tab:hover { background: rgba(255,215,0,0.1); color: #999; }
         .chat-tab.active { 
-            background: rgba(255, 215, 0, 0.2); 
-            color: var(--neon-gold); 
-            border-bottom: 3px solid var(--neon-gold);
+            background: rgba(255, 215, 0, 0.2); color: var(--neon-gold); border-bottom: 3px solid var(--neon-gold);
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
-
         .online-status-box { 
-            padding: 15px 18px; 
-            display: flex; 
-            align-items: center; 
-            cursor: pointer; 
-            transition: var(--transition-smooth);
-            border-left: 2px solid var(--border-subtle);
-            gap: 8px;
+            padding: 15px 18px; display: flex; align-items: center; cursor: pointer; 
+            transition: var(--transition-smooth); border-left: 2px solid var(--border-subtle); gap: 8px;
         }
-        
-        .online-status-box:hover { 
-            background: rgba(255, 215, 0, 0.1);
-        }
+        .online-status-box:hover { background: rgba(255, 215, 0, 0.1); }
 
-        #chat-content-area { 
-            flex: 1; 
-            overflow-y: auto; 
-            background: rgba(0,0,0,0.3);
-            position: relative;
-            padding: 20px;
-        }
-        
-        #global-view { 
-            display: block; 
-            height: auto; 
-            min-height: 100%;
-        }
-        
-        #dm-view { 
-            display: none; 
-            height: 100%; 
-            flex-direction: column;
-        }
+        #chat-content-area { flex: 1; overflow-y: auto; background: rgba(0,0,0,0.3); position: relative; padding: 20px; }
+        #global-view { display: block; height: auto; min-height: 100%; }
+        #dm-view { display: none; height: 100%; flex-direction: column; }
 
-        /* MESAJ STİLLERİ - CANLI */
         .chat-msg { 
-            margin-bottom: 15px; 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-            padding-bottom: 10px; 
-            word-wrap: break-word; 
-            position: relative; 
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            padding: 12px;
-            border-radius: 8px;
+            margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; 
+            word-wrap: break-word; position: relative; cursor: pointer; transition: var(--transition-smooth); padding: 12px; border-radius: 8px;
         }
-        
-        .chat-msg:hover {
-            background: rgba(255,255,255,0.05);
-            transform: translateX(5px);
-        }
-        
+        .chat-msg:hover { background: rgba(255,255,255,0.05); transform: translateX(5px); }
         .chat-img { 
-            max-width: 100%; 
-            max-height: 200px;
-            border: 2px solid var(--neon-gold); 
-            margin-top: 10px; 
-            display: block; 
-            border-radius: 8px; 
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            max-width: 100%; max-height: 200px; border: 2px solid var(--neon-gold); margin-top: 10px; 
+            display: block; border-radius: 8px; cursor: pointer; transition: var(--transition-smooth); box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
-        
-        .chat-img:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
-        }
-        
-        .msg-admin { 
-            color: var(--neon-red);
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
-        }
-        
-        .msg-user { 
-            color: var(--text-primary);
-        }
-        
+        .chat-img:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(255, 215, 0, 0.4); }
+        .msg-admin { color: var(--neon-red); font-weight: 600; text-shadow: 0 0 10px rgba(255, 51, 102, 0.3); }
+        .msg-user { color: var(--text-primary); }
         .msg-dm-self { 
-            text-align: right; 
-            color: var(--neon-green); 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-            margin-bottom: 12px; 
-            padding-bottom: 8px;
-            padding: 12px;
-            border-radius: 8px;
-            background: rgba(0, 255, 136, 0.1);
-            border-right: 4px solid var(--neon-green);
-            box-shadow: -5px 0 20px rgba(0, 255, 136, 0.1);
+            text-align: right; color: var(--neon-green); border-bottom: 1px solid rgba(255,255,255,0.1); 
+            margin-bottom: 12px; padding: 12px; border-radius: 8px; background: rgba(0, 255, 136, 0.1);
+            border-right: 4px solid var(--neon-green); box-shadow: -5px 0 20px rgba(0, 255, 136, 0.1);
         }
-        
         .msg-dm-other { 
-            text-align: left; 
-            color: var(--neon-gold); 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-            margin-bottom: 12px; 
-            padding-bottom: 8px;
-            padding: 12px;
-            border-radius: 8px;
-            background: rgba(255, 215, 0, 0.1);
-            border-left: 4px solid var(--neon-gold);
-            box-shadow: 5px 0 20px rgba(255, 215, 0, 0.1);
+            text-align: left; color: var(--neon-gold); border-bottom: 1px solid rgba(255,255,255,0.1); 
+            margin-bottom: 12px; padding: 12px; border-radius: 8px; background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid var(--neon-gold); box-shadow: 5px 0 20px rgba(255, 215, 0, 0.1);
         }
-        
-        .user-label { 
-            font-weight: 800;
-            font-size: 13px;
-        }
-        
+        .user-label { font-weight: 800; font-size: 13px; }
         .del-msg { 
-            color: #666; 
-            cursor: pointer; 
-            font-size: 11px; 
-            margin-left: 12px; 
-            vertical-align: middle;
-            opacity: 0;
-            transition: var(--transition-smooth);
-            font-weight: bold;
+            color: #666; cursor: pointer; font-size: 11px; margin-left: 12px; vertical-align: middle;
+            opacity: 0; transition: var(--transition-smooth); font-weight: bold;
         }
-        
-        .chat-msg:hover .del-msg {
-            opacity: 1;
-        }
-        
-        .del-msg:hover { 
-            color: var(--neon-red);
-            text-shadow: 0 0 10px var(--neon-red);
-        }
+        .chat-msg:hover .del-msg { opacity: 1; }
+        .del-msg:hover { color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
 
-        /* CHAT INPUT - PARLAK */
         .chat-input-area { 
-            display: flex; 
-            border-top: 2px solid var(--border-subtle);
-            flex-wrap: wrap; 
-            flex-direction: column;
-            background: rgba(0,0,0,0.5);
+            display: flex; border-top: 2px solid var(--border-subtle); flex-wrap: wrap; flex-direction: column; background: rgba(0,0,0,0.5);
         }
-        
-        .input-row { 
-            display: flex; 
-            width: 100%;
-            padding: 8px;
-        }
-        
+        .input-row { display: flex; width: 100%; padding: 8px; }
         #chat-input { 
-            background: transparent; 
-            border: none; 
-            color: #fff; 
-            padding: 15px; 
-            flex: 1; 
-            min-width: 120px;
-            font-size: 14px;
-            font-weight: 500;
+            background: transparent; border: none; color: #fff; padding: 15px; flex: 1; min-width: 120px;
+            font-size: 14px; font-weight: 500;
         }
-        
-        #chat-input:focus {
-            outline: none;
-        }
-        
-        #chat-input::placeholder {
-            color: #555;
-        }
-        
+        #chat-input:focus { outline: none; }
+        #chat-input::placeholder { color: #555; }
         .chat-tool-btn { 
-            width: 45px; 
-            border: none; 
-            background: transparent; 
-            color: var(--neon-gold); 
-            cursor: pointer; 
-            border-left: 1px solid rgba(255,255,255,0.1); 
-            font-size: 18px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
+            width: 45px; border: none; background: transparent; color: var(--neon-gold); cursor: pointer; 
+            border-left: 1px solid rgba(255,255,255,0.1); font-size: 18px; display: flex; align-items: center; justify-content: center;
             transition: var(--transition-smooth);
         }
-        
-        .chat-tool-btn:hover {
-            background: rgba(255,215,0,0.2);
-            text-shadow: 0 0 10px var(--neon-gold);
-        }
-        
+        .chat-tool-btn:hover { background: rgba(255,215,0,0.2); text-shadow: 0 0 10px var(--neon-gold); }
         #chat-send { 
-            width: 55px; 
-            border: none; 
-            background: var(--neon-gold); 
-            color: #000; 
-            font-weight: 800;
-            cursor: pointer;
-            font-size: 16px;
-            transition: var(--transition-smooth);
+            width: 55px; border: none; background: var(--neon-gold); color: #000; font-weight: 800;
+            cursor: pointer; font-size: 16px; transition: var(--transition-smooth);
         }
-        
-        #chat-send:hover {
-            filter: brightness(1.3);
-            box-shadow: 0 0 20px var(--neon-gold);
-        }
+        #chat-send:hover { filter: brightness(1.3); box-shadow: 0 0 20px var(--neon-gold); }
 
-        /* EMOJI PICKER - CANLI */
         #emoji-picker { 
-            display: none; 
-            background: rgba(10,10,15,0.98); 
-            border-top: 2px solid var(--neon-gold);
-            padding: 15px; 
-            justify-content: center; 
-            gap: 15px; 
-            width: 100%;
+            display: none; background: rgba(10,10,15,0.98); border-top: 2px solid var(--neon-gold);
+            padding: 15px; justify-content: center; gap: 15px; width: 100%;
         }
-        
         .emoji-btn { 
-            background: none; 
-            border: none; 
-            cursor: pointer; 
-            font-size: 24px; 
-            padding: 10px; 
-            width: auto; 
-            margin: 0;
-            transition: all 0.2s;
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
+            background: none; border: none; cursor: pointer; font-size: 24px; padding: 10px; 
+            width: auto; margin: 0; transition: all 0.2s; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
         }
-        
-        .emoji-btn:hover {
-            transform: scale(1.3);
-            filter: drop-shadow(0 0 10px rgba(255,215,0,0.8));
-        }
+        .emoji-btn:hover { transform: scale(1.3); filter: drop-shadow(0 0 10px rgba(255,215,0,0.8)); }
 
-        /* DM LİST - PARLAK */
-        #dm-list-container { 
-            padding: 20px; 
-        }
-        
+        #dm-list-container { padding: 20px; }
         .dm-item { 
-            padding: 15px; 
-            border: 2px solid rgba(255,255,255,0.15); 
-            margin-bottom: 10px; 
-            cursor: pointer; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            transition: var(--transition-smooth);
+            padding: 15px; border: 2px solid rgba(255,255,255,0.15); margin-bottom: 10px; cursor: pointer; 
+            display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05);
+            border-radius: 10px; transition: var(--transition-smooth);
         }
-        
         .dm-item:hover { 
-            border-color: var(--neon-gold); 
-            background: rgba(255,215,0,0.15);
-            transform: translateX(8px);
+            border-color: var(--neon-gold); background: rgba(255,215,0,0.15); transform: translateX(8px);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
-        
-        #dm-conversation-container { 
-            display: none; 
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 20px;
-        }
-        
+        #dm-conversation-container { display: none; flex: 1; overflow-y: auto; padding: 20px; }
         .dm-header-bar { 
-            padding: 15px 20px; 
-            background: rgba(0,0,0,0.6); 
-            border-bottom: 2px solid var(--neon-gold);
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            font-size: 13px;
-            display:none;
+            padding: 15px 20px; background: rgba(0,0,0,0.6); border-bottom: 2px solid var(--neon-gold);
+            display: flex; align-items: center; justify-content: space-between; font-size: 13px; display:none;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
 
-        /* TRADE SEKSIYONU - CANLI */
-        .trade-section { 
-            border: 2px solid var(--border-subtle);
-            margin-top: 25px; 
-            background: rgba(255, 215, 0, 0.08); 
-            padding: 20px; 
-            border-radius: 12px;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
-        }
-        
-        #trade-feed { 
-            height: 220px; 
-            overflow-y: auto; 
-            background: rgba(0,0,0,0.5); 
-            margin-top: 15px; 
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            font-size: 12px;
-            padding: 15px;
-        }
-        
-        .trade-item-card { 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-            padding: 15px; 
-            line-height: 1.6; 
-            position: relative;
-            background: rgba(255,255,255,0.05);
-            margin-bottom: 10px;
-            border-radius: 8px;
-            transition: var(--transition-smooth);
-            border-left: 3px solid var(--neon-gold);
-        }
-        
-        .trade-item-card:hover {
-            background: rgba(255,255,255,0.08);
-            transform: translateX(5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-        
-        .price-diff-badge { 
-            font-size: 11px; 
-            font-weight: 700;
-            margin-top: 6px;
-            padding: 4px 10px;
-            border-radius: 4px;
-            display: inline-block;
-            letter-spacing: 1px;
-        }
-
-        /* MODALLER - PARLAK */
         #confirm-modal { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.9); 
-            z-index: 30000; 
-            align-items: center; 
-            justify-content: center;
-            backdrop-filter: blur(10px);
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); z-index: 30000; align-items: center; justify-content: center; backdrop-filter: blur(10px);
         }
-        
         .confirm-box { 
-            background: rgba(10, 10, 15, 0.98);
-            border: 3px solid var(--neon-red);
-            padding: 35px; 
-            text-align: center; 
-            width: 340px; 
-            box-shadow: 0 0 50px rgba(255, 51, 102, 0.4);
-            border-radius: 16px;
+            background: rgba(10, 10, 15, 0.98); border: 3px solid var(--neon-red); padding: 35px; 
+            text-align: center; width: 340px; box-shadow: 0 0 50px rgba(255, 51, 102, 0.4); border-radius: 16px;
         }
+        .price-up { color: var(--neon-green) !important; font-weight: 700; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
+        .price-down { color: var(--neon-red) !important; font-weight: 700; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); }
 
-        .price-up { 
-            color: var(--neon-green) !important; 
-            font-weight: 700;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-        }
-        
-        .price-down { 
-            color: var(--neon-red) !important;
-            font-weight: 700;
-            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
-        }
-
-        /* FORM ELEMANLARI - CANLI */
         input, select, button { 
-            background: rgba(0,0,0,0.6); 
-            border: 2px solid var(--border-subtle); 
-            color: var(--neon-gold); 
-            padding: 14px; 
-            width: 100%; 
-            margin-bottom: 15px; 
-            font-family: inherit;
-            border-radius: 8px;
-            transition: var(--transition-smooth);
-            font-size: 14px;
-            font-weight: 600;
+            background: rgba(0,0,0,0.6); border: 2px solid var(--border-subtle); color: var(--neon-gold); 
+            padding: 14px; width: 100%; margin-bottom: 15px; font-family: inherit;
+            border-radius: 8px; transition: var(--transition-smooth); font-size: 14px; font-weight: 600;
         }
-        
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--neon-gold);
-            box-shadow: 0 0 0 4px rgba(255,215,0,0.2), 0 0 20px rgba(255,215,0,0.3);
-        }
-        
-        button {
-            cursor: pointer;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            font-size: 12px;
-        }
-        
-        button:hover {
-            background: rgba(255,215,0,0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 20px rgba(255,215,0,0.2);
-            border-color: var(--neon-gold);
-        }
-        
-        button:active {
-            transform: translateY(0);
-        }
+        input:focus, select:focus { outline: none; border-color: var(--neon-gold); box-shadow: 0 0 0 4px rgba(255,215,0,0.2), 0 0 20px rgba(255,215,0,0.3); }
+        button { cursor: pointer; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; font-size: 12px; }
+        button:hover { background: rgba(255,215,0,0.2); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 20px rgba(255,215,0,0.2); border-color: var(--neon-gold); }
+        button:active { transform: translateY(0); }
 
         .error-msg { 
-            color: var(--neon-red); 
-            font-size: 13px; 
-            margin-bottom: 20px; 
-            display: none;
-            padding: 12px;
-            background: rgba(255, 51, 102, 0.15);
-            border-radius: 6px;
-            border-left: 4px solid var(--neon-red);
-            font-weight: 600;
+            color: var(--neon-red); font-size: 13px; margin-bottom: 20px; display: none;
+            padding: 12px; background: rgba(255, 51, 102, 0.15); border-radius: 6px; border-left: 4px solid var(--neon-red); font-weight: 600;
         }
-        
         .logout-btn { 
-            background: transparent; 
-            border: 2px solid var(--neon-red); 
-            color: var(--neon-red); 
-            padding: 8px 15px; 
-            font-size: 11px; 
-            cursor: pointer; 
-            width: auto; 
-            margin-left: 10px;
-            border-radius: 6px;
-            font-weight: 700;
-            transition: var(--transition-smooth);
+            background: transparent; border: 2px solid var(--neon-red); color: var(--neon-red); 
+            padding: 8px 15px; font-size: 11px; cursor: pointer; width: auto; margin-left: 10px;
+            border-radius: 6px; font-weight: 700; transition: var(--transition-smooth);
         }
-        
-        .logout-btn:hover {
-            background: var(--neon-red);
-            color: #000;
-            box-shadow: 0 0 20px var(--neon-red);
-        }
+        .logout-btn:hover { background: var(--neon-red); color: #000; box-shadow: 0 0 20px var(--neon-red); }
 
         .footer-legal { 
-            padding: 40px; 
-            text-align: center; 
-            font-size: 12px; 
-            color: #666; 
-            border-top: 2px solid rgba(255,255,255,0.05);
-            line-height: 1.8;
-            margin-top: auto;
-            letter-spacing: 1px;
+            padding: 40px; text-align: center; font-size: 12px; color: #666; 
+            border-top: 2px solid rgba(255,255,255,0.05); line-height: 1.8; margin-top: auto; letter-spacing: 1px;
         }
 
         .online-dot { 
-            height: 10px; 
-            width: 10px; 
-            background-color: var(--neon-green); 
-            border-radius: 50%; 
-            display: inline-block; 
-            margin-right: 8px; 
-            box-shadow: 0 0 15px var(--neon-green), 0 0 30px var(--neon-green);
+            height: 10px; width: 10px; background-color: var(--neon-green); border-radius: 50%; 
+            display: inline-block; margin-right: 8px; box-shadow: 0 0 15px var(--neon-green), 0 0 30px var(--neon-green);
             animation: blink 1.5s infinite;
         }
-        
-        @keyframes blink { 
-            0%, 100% { opacity: 1; } 
-            50% { opacity: 0.4; } 
-        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        /* MODALLER - PARLAK */
         #online-modal, #img-viewer, #new-dm-modal { 
-            display: none; 
-            position: fixed; 
-            z-index: 20000; 
-            left: 0; 
-            top: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.95); 
-            backdrop-filter: blur(10px);
+            display: none; position: fixed; z-index: 20000; left: 0; top: 0; 
+            width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
         }
-        
         .modal-content { 
-            background: rgba(10, 10, 15, 0.98);
-            border: 2px solid var(--neon-gold);
-            margin: 10% auto; 
-            padding: 30px; 
-            width: 90%;
-            max-width: 380px; 
-            text-align: center; 
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
-            display: flex; 
-            flex-direction: column; 
-            max-height: 80vh;
-            border-radius: 16px;
+            background: rgba(10, 10, 15, 0.98); border: 2px solid var(--neon-gold); margin: 10% auto; 
+            padding: 30px; width: 90%; max-width: 380px; text-align: center; 
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3); display: flex; flex-direction: column; max-height: 80vh; border-radius: 16px;
         }
-        
-        .viewer-box { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100%; 
-            padding: 30px; 
-        }
-        
-        #viewer-img { 
-            max-width: 95%; 
-            max-height: 75%; 
-            border: 3px solid var(--neon-gold);
-            border-radius: 12px;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
-        }
-        
+        .viewer-box { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 30px; }
+        #viewer-img { max-width: 95%; max-height: 75%; border: 3px solid var(--neon-gold); border-radius: 12px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); }
         #marketSearch { 
-            margin-bottom: 25px; 
-            background: rgba(255, 215, 0, 0.1); 
-            border: 2px solid var(--border-subtle);
-            font-size: 14px;
-            font-weight: 600;
+            margin-bottom: 25px; background: rgba(255, 215, 0, 0.1); border: 2px solid var(--border-subtle); font-size: 14px; font-weight: 600;
         }
-        
-        .market-table td { 
-            padding: 16px 10px; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            transition: var(--transition-smooth);
-        }
-        
-        .market-table tr:hover td {
-            background: rgba(255,255,255,0.05);
-        }
+        .market-table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        .market-table td { padding: 16px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); transition: var(--transition-smooth); }
+        .market-table tr:hover td { background: rgba(255,255,255,0.05); }
 
         .suggested-user { 
-            padding: 12px; 
-            border: 2px solid rgba(255,255,255,0.15); 
-            margin-bottom: 8px; 
-            text-align: left; 
-            cursor: pointer; 
-            color: #aaa; 
-            transition: var(--transition-smooth); 
-            font-size: 14px; 
-            display: flex; 
-            justify-content: space-between;
-            border-radius: 8px;
-            font-weight: 500;
+            padding: 12px; border: 2px solid rgba(255,255,255,0.15); margin-bottom: 8px; text-align: left; 
+            cursor: pointer; color: #aaa; transition: var(--transition-smooth); font-size: 14px; 
+            display: flex; justify-content: space-between; border-radius: 8px; font-weight: 500;
         }
-        
         .suggested-user:hover { 
-            border-color: var(--neon-green); 
-            color: var(--neon-green); 
-            background: rgba(0,255,136,0.1);
-            transform: translateX(8px);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            border-color: var(--neon-green); color: var(--neon-green); background: rgba(0,255,136,0.1);
+            transform: translateX(8px); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
         }
 
-        /* TEMA SEÇİCİ - CANLI */
-        .theme-selector { 
-            display: flex; 
-            gap: 10px; 
-            margin-top: 5px; 
-            justify-content: flex-end; 
-        }
-        
+        .theme-selector { display: flex; gap: 10px; margin-top: 5px; justify-content: flex-end; }
         .theme-btn { 
-            width: 22px; 
-            height: 22px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            border: 3px solid transparent;
-            transition: var(--transition-smooth);
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 3px solid transparent;
+            transition: var(--transition-smooth); box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        
-        .theme-btn:hover { 
-            transform: scale(1.3);
-            border-color: #fff;
-        }
-        
-        .theme-btn.active {
-            border-color: #fff;
-            box-shadow: 0 0 20px currentColor;
-            transform: scale(1.2);
-        }
-        
-        .t-default { 
-            background: #ffd700; 
-        }
-        
-        .t-pistachio { 
-            background: #ccff00; 
-        }
-        
-        .t-ocean { 
-            background: #00e5ff; 
-        }
+        .theme-btn:hover { transform: scale(1.3); border-color: #fff; }
+        .theme-btn.active { border-color: #fff; box-shadow: 0 0 20px currentColor; transform: scale(1.2); }
+        .t-default { background: #ffd700; }
+        .t-pistachio { background: #ccff00; }
+        .t-ocean { background: #00e5ff; }
 
-        /* SİBER SALDIRI EFEKTİ - DAHA CANLI */
-        body.system-breach {
-            animation: glitchBody 0.2s infinite;
-        }
-        
-        body.system-breach * {
-            color: var(--neon-red) !important;
-            border-color: var(--neon-red) !important;
-            text-shadow: 2px 0 #fff, -2px 0 #000;
-        }
-        
+        body.system-breach { animation: glitchBody 0.2s infinite; }
+        body.system-breach * { color: var(--neon-red) !important; border-color: var(--neon-red) !important; text-shadow: 2px 0 #fff, -2px 0 #000; }
         @keyframes glitchBody {
-            0% { transform: translate(0) }
-            20% { transform: translate(-2px, 2px) }
-            40% { transform: translate(-2px, -2px) }
-            60% { transform: translate(2px, 2px) }
-            80% { transform: translate(2px, -2px) }
-            100% { transform: translate(0) }
+            0% { transform: translate(0) } 20% { transform: translate(-2px, 2px) } 40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) } 80% { transform: translate(2px, -2px) } 100% { transform: translate(0) }
         }
-        
         #breach-overlay {
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            background: rgba(255, 0, 0, 0.2); 
-            z-index: 99999; 
-            pointer-events: none;
-            align-items: center; 
-            justify-content: center; 
-            font-size: 50px; 
-            font-weight: 800;
-            color: var(--neon-red);
-            text-shadow: 0 0 40px var(--neon-red), 0 0 80px var(--neon-red); 
-            letter-spacing: 10px;
-            backdrop-filter: blur(3px);
-            animation: breachPulse 0.5s infinite;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 0, 0, 0.2); z-index: 99999; pointer-events: none;
+            align-items: center; justify-content: center; font-size: 50px; font-weight: 800;
+            color: var(--neon-red); text-shadow: 0 0 40px var(--neon-red), 0 0 80px var(--neon-red); 
+            letter-spacing: 10px; backdrop-filter: blur(3px); animation: breachPulse 0.5s infinite;
         }
+        @keyframes breachPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
 
-        @keyframes breachPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-
-        /* RÜTBE ROZETLERİ - PARLAK */
         .rank-badge { 
-            font-size: 10px; 
-            padding: 3px 8px; 
-            margin-right: 8px; 
-            border-radius: 4px; 
-            border: 2px solid; 
-            vertical-align: middle;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            box-shadow: 0 0 10px currentColor;
+            font-size: 10px; padding: 3px 8px; margin-right: 8px; border-radius: 4px; 
+            border: 2px solid; vertical-align: middle; font-weight: 800; letter-spacing: 1px;
+            text-transform: uppercase; box-shadow: 0 0 10px currentColor;
         }
-        
-        .rank-caylak { 
-            color: #888; 
-            border-color: #666;
-            background: rgba(136,136,136,0.2);
-        }
-        
-        .rank-analist { 
-            color: var(--neon-green); 
-            border-color: var(--neon-green); 
-            background: rgba(0,255,136,0.2);
-            box-shadow: 0 0 15px rgba(0,255,136,0.4);
-        }
-        
-        .rank-lord { 
-            color: var(--neon-gold); 
-            border-color: var(--neon-gold); 
-            background: rgba(255,215,0,0.2);
-            box-shadow: 0 0 20px rgba(255,215,0,0.5);
-            animation: lordPulse 2s infinite;
-        }
+        .rank-caylak { color: #888; border-color: #666; background: rgba(136,136,136,0.2); }
+        .rank-analist { color: var(--neon-green); border-color: var(--neon-green); background: rgba(0,255,136,0.2); box-shadow: 0 0 15px rgba(0,255,136,0.4); }
+        .rank-lord { color: var(--neon-gold); border-color: var(--neon-gold); background: rgba(255,215,0,0.2); box-shadow: 0 0 20px rgba(255,215,0,0.5); animation: lordPulse 2s infinite; }
+        @keyframes lordPulse { 0%, 100% { box-shadow: 0 0 15px rgba(255,215,0,0.4); } 50% { box-shadow: 0 0 25px rgba(255,215,0,0.8); } }
 
-        @keyframes lordPulse {
-            0%, 100% { box-shadow: 0 0 15px rgba(255,215,0,0.4); }
-            50% { box-shadow: 0 0 25px rgba(255,215,0,0.8); }
-        }
-
-        /* GÜNÜN İTEMİ - CANLI */
         .spotlight-box {
-            margin-bottom: 25px; 
-            border: 2px solid var(--neon-gold);
+            margin-bottom: 25px; border: 2px solid var(--neon-gold);
             background: 
                 radial-gradient(circle at center, rgba(255,215,0,0.2) 0%, transparent 60%),
                 linear-gradient(135deg, rgba(255,215,0,0.1) 0%, transparent 50%);
-            padding: 25px; 
-            text-align: center; 
-            position: relative;
-            border-radius: 16px;
-            overflow: hidden;
+            padding: 25px; text-align: center; position: relative;
+            border-radius: 16px; overflow: hidden;
             box-shadow: 0 0 40px rgba(255, 215, 0, 0.2), inset 0 0 40px rgba(255, 215, 0, 0.05);
             animation: spotlightPulse 3s infinite;
         }
-        
         .spotlight-box::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: linear-gradient(45deg, transparent, rgba(255,215,0,0.1), transparent);
             animation: rotate 8s linear infinite;
         }
-        
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spotlightPulse { 0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.2); } 50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.4); } }
+        .spotlight-title { color: var(--neon-gold); font-size: 16px; font-weight: 800; letter-spacing: 4px; position: relative; z-index: 1; text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+        .spotlight-tip { color: #888; font-size: 12px; margin-top: 10px; font-style: italic; position: relative; z-index: 1; font-weight: 500; }
 
-        @keyframes spotlightPulse {
-            0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.2); }
-            50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.4); }
-        }
-        
-        .spotlight-title { 
-            color: var(--neon-gold); 
-            font-size: 16px; 
-            font-weight: 800;
-            letter-spacing: 4px;
-            position: relative;
-            z-index: 1;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-        }
-        
-        .spotlight-tip { 
-            color: #888; 
-            font-size: 12px; 
-            margin-top: 10px; 
-            font-style: italic;
-            position: relative;
-            z-index: 1;
-            font-weight: 500;
-        }
+        .movers-box { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 20px; }
+        .mover-item { flex: 1; border: 2px solid rgba(255,255,255,0.15); padding: 15px; text-align: center; background: rgba(255,255,255,0.05); border-radius: 12px; transition: var(--transition-smooth); }
+        .mover-item:hover { transform: translateY(-5px); background: rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .mover-label { font-size: 10px; display: block; margin-bottom: 6px; color: #777; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+        .mover-val { font-size: 14px; font-weight: 800; }
 
-        /* HAFTALIK MOVERS - CANLI */
-        .movers-box {
-            display: flex; 
-            justify-content: space-between; 
-            gap: 15px; 
-            margin-bottom: 20px;
-        }
-        
-        .mover-item {
-            flex: 1; 
-            border: 2px solid rgba(255,255,255,0.15); 
-            padding: 15px; 
-            text-align: center; 
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            transition: var(--transition-smooth);
-        }
-        
-        .mover-item:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.08);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        
-        .mover-label { 
-            font-size: 10px; 
-            display: block; 
-            margin-bottom: 6px; 
-            color: #777;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-        
-        .mover-val { 
-            font-size: 14px; 
-            font-weight: 800;
-        }
-
-        /* PING GÖSTERGESİ - PARLAK */
         .ping-display {
-            position: fixed; 
-            top: 20px; 
-            right: 20px; 
-            z-index: 2000;
-            font-size: 12px; 
-            color: #666; 
-            font-family: monospace;
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
-            background: rgba(0,0,0,0.8);
-            padding: 10px 18px;
-            border-radius: 25px;
-            border: 2px solid rgba(255,255,255,0.1);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-            font-weight: 700;
+            position: fixed; top: 20px; right: 20px; z-index: 2000;
+            font-size: 12px; color: #666; font-family: monospace;
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(0,0,0,0.8); padding: 10px 18px;
+            border-radius: 25px; border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5); font-weight: 700;
         }
-        
-        .ping-val { 
-            font-weight: 800;
-            text-shadow: 0 0 10px currentColor;
-        }
+        .ping-val { font-weight: 800; text-shadow: 0 0 10px currentColor; }
 
-        /* LOG AKIŞI - CANLI */
         .sys-log-stream {
-            height: 28px; 
-            overflow: hidden; 
-            font-size: 11px; 
-            color: #666;
-            border-bottom: 2px solid rgba(255,255,255,0.08); 
-            margin-bottom: 10px; 
-            padding: 0 15px;
-            display: flex; 
-            align-items: center; 
-            white-space: nowrap;
-            background: rgba(0,0,0,0.4);
+            height: 28px; overflow: hidden; font-size: 11px; color: #666;
+            border-bottom: 2px solid rgba(255,255,255,0.08); margin-bottom: 10px; padding: 0 15px;
+            display: flex; align-items: center; white-space: nowrap;
+            background: rgba(0,0,0,0.4); font-weight: 600;
+        }
+        .log-line { animation: fadeLog 1s forwards; margin-right: 25px; color: var(--neon-green); text-shadow: 0 0 10px rgba(0, 255, 136, 0.3); }
+        @keyframes fadeLog { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+        ::-webkit-scrollbar-thumb { background: var(--neon-gold); border-radius: 5px; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        ::-webkit-scrollbar-thumb:hover { background: #ffea00; box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+
+        .bordo-exp-mini-btn {
+            background: transparent; border: 2px solid var(--neon-gold); color: var(--neon-gold);
+            padding: 8px 12px; font-size: 16px; cursor: pointer; border-radius: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;
+            width: auto; margin: 0; margin-right: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700;
+        }
+        .bordo-exp-mini-btn:hover { background: var(--neon-gold); color: #000; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); transform: translateY(-2px); }
+        .bordo-exp-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 50000; align-items: center; justify-content: center; padding: 20px; animation: bordoExpFadeIn 0.3s ease;
+        }
+        @keyframes bordoExpFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .bordo-exp-modal {
+            background: rgba(10, 10, 15, 0.97); border: 2px solid var(--neon-gold); border-radius: 20px;
+            width: 100%; max-width: 800px; max-height: 90vh; display: flex; flex-direction: column;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.25), 0 20px 60px rgba(0,0,0,0.8);
+            animation: bordoExpSlideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden;
+        }
+        @keyframes bordoExpSlideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .bordo-exp-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; border-bottom: 2px solid rgba(255, 215, 0, 0.3); background: rgba(255, 215, 0, 0.05); flex-shrink: 0; }
+        .bordo-exp-modal-title { color: var(--neon-gold); font-size: 20px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 0 20px rgba(255, 215, 0, 0.4); margin: 0; }
+        .bordo-exp-modal-close { background: transparent; border: 2px solid var(--neon-red); color: var(--neon-red); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; font-weight: 800; transition: all 0.3s; padding: 0; margin: 0; flex-shrink: 0; }
+        .bordo-exp-modal-close:hover { background: var(--neon-red); color: #000; box-shadow: 0 0 20px var(--neon-red); transform: rotate(90deg); }
+        .bordo-exp-modal-body { padding: 25px 28px; overflow-y: auto; flex: 1; }
+        .bordo-exp-table-wrapper { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 215, 0, 0.2); }
+        .bordo-exp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .bordo-exp-table thead tr { background: rgba(255, 215, 0, 0.15); border-bottom: 2px solid var(--neon-gold); }
+        .bordo-exp-table th { color: var(--neon-gold); padding: 14px 10px; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-align: center; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        .bordo-exp-table tbody tr { border-bottom: 1px solid rgba(255, 255, 255, 0.06); transition: background 0.2s; }
+        .bordo-exp-table tbody tr:hover { background: rgba(255, 215, 0, 0.08); }
+        .bordo-exp-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+        .bordo-exp-table tbody tr:nth-child(even):hover { background: rgba(255, 215, 0, 0.1); }
+        .bordo-exp-table td { padding: 11px 10px; text-align: center; color: #ddd; font-weight: 600; letter-spacing: 0.5px; }
+        .bordo-exp-table td:nth-child(1) { color: var(--neon-green); }
+        .bordo-exp-table td:nth-child(2) { color: var(--neon-gold); }
+        .bordo-exp-table td:nth-child(3) { color: var(--neon-red); }
+        .bordo-exp-modal-footer { padding: 18px 28px; border-top: 1px solid rgba(255, 215, 0, 0.15); text-align: center; color: #666; font-size: 11px; letter-spacing: 2px; font-weight: 600; flex-shrink: 0; }
+
+        #maintenance-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-deep);
+            z-index: 99999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        #maintenance-overlay::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .maintenance-scanline {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: rgba(255, 51, 102, 0.6);
+            box-shadow: 0 0 20px var(--neon-red);
+            animation: maintScan 2.5s linear infinite;
+            z-index: 2;
+        }
+        @keyframes maintScan {
+            0% { top: -5%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 105%; opacity: 0; }
+        }
+        .maintenance-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            padding: 50px 40px;
+            border: 3px solid var(--neon-red);
+            background: rgba(10, 10, 15, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 0 60px rgba(255, 51, 102, 0.4), inset 0 0 60px rgba(255, 51, 102, 0.1);
+            max-width: 550px;
+            width: 90%;
+            animation: maintPulse 2s ease-in-out infinite;
+        }
+        @keyframes maintPulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 51, 102, 0.3), inset 0 0 40px rgba(255, 51, 102, 0.05); }
+            50% { box-shadow: 0 0 80px rgba(255, 51, 102, 0.6), inset 0 0 60px rgba(255, 51, 102, 0.15); }
+        }
+        .maintenance-icon {
+            font-size: 72px;
+            margin-bottom: 25px;
+            animation: maintSpin 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px var(--neon-red));
+        }
+        @keyframes maintSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(15deg) scale(1.1); }
+            50% { transform: rotate(0deg) scale(1); }
+            75% { transform: rotate(-15deg) scale(1.1); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+        .maintenance-title {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--neon-red);
+            text-shadow: 0 0 30px var(--neon-red), 0 0 60px rgba(255, 51, 102, 0.5);
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            animation: maintGlitch 2.5s infinite;
+        }
+        @keyframes maintGlitch {
+            0%, 88%, 100% { transform: translate(0); }
+            89% { transform: translate(-4px, 2px); }
+            90% { transform: translate(4px, -2px); }
+            91% { transform: translate(-2px, -1px); }
+            92% { transform: translate(0); }
+        }
+        .maintenance-subtitle {
+            font-size: 15px;
+            color: #aaa;
+            margin-bottom: 35px;
+            letter-spacing: 2px;
+            min-height: 24px;
             font-weight: 600;
         }
-        
-        .log-line { 
-            animation: fadeLog 1s forwards; 
-            margin-right: 25px;
-            color: var(--neon-green);
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        .maintenance-dots {
+            font-size: 36px;
+            color: var(--neon-red);
+            margin-bottom: 30px;
+            font-weight: 800;
+            letter-spacing: 4px;
         }
-        
-        @keyframes fadeLog { 
-            from { opacity: 0; transform: translateY(10px); } 
-            to { opacity: 1; transform: translateY(0); } 
+        .maintenance-dots span {
+            animation: maintDot 1.4s infinite both;
+            display: inline-block;
+        }
+        .maintenance-dots span:nth-child(1) { animation-delay: 0s; }
+        .maintenance-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .maintenance-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes maintDot {
+            0%, 80%, 100% { opacity: 0; transform: scale(0.5); }
+            40% { opacity: 1; transform: scale(1.2); }
+        }
+        .maintenance-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 51, 102, 0.3);
+        }
+        .maintenance-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--neon-red);
+            box-shadow: 0 0 20px var(--neon-red);
+            animation: maintProgress 3s ease-in-out infinite;
+        }
+        @keyframes maintProgress {
+            0% { width: 0%; opacity: 0.5; }
+            50% { width: 70%; opacity: 1; }
+            100% { width: 100%; opacity: 0.5; }
+        }
+        .maintenance-code {
+            font-size: 11px;
+            color: #555;
+            letter-spacing: 4px;
+            font-weight: 600;
+        }
+        .maintenance-grid {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 51, 102, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 51, 102, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            animation: maintGridMove 20s linear infinite;
+        }
+        @keyframes maintGridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
 
-        /* SCROLLBAR - CANLI */
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.3);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--neon-gold);
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #ffea00;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        /* ========== RESPONSIVE DÜZENLEMELER ========== */
+        @media (max-width: 992px) {
+            .dashboard { flex-direction: column !important; }
+            .main-panel, .side-panel { width: 100%; }
         }
 
-        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .dashboard {
-                padding: 15px;
-                gap: 20px;
-            }
-            
-            .main-panel, .side-panel {
-                padding: 20px;
-            }
-            
-            .auth-box {
-                padding: 30px 20px;
-            }
-            
-            .chat-container {
-                height: 450px;
-            }
+            .dashboard { padding: 12px; gap: 15px; }
+            .main-panel, .side-panel { padding: 18px; border-radius: 12px; }
+            .auth-box { padding: 30px 20px; width: 95%; }
+            .chat-container { height: 420px; margin-top: 15px; }
+            .chat-tab { padding: 12px 8px; font-size: 10px; letter-spacing: 1px; }
+            .online-status-box { padding: 12px 10px; }
+            #display-name { font-size: 18px !important; }
+            .spotlight-box { padding: 18px; }
+            .spotlight-title { font-size: 13px; letter-spacing: 2px; }
+            .movers-box { flex-direction: column; gap: 10px; }
+            .mover-item { padding: 12px; }
+            #market-status-indicator { bottom: 10px; left: 10px; padding: 8px 12px; font-size: 10px; }
+            .ping-display { top: 10px; right: 10px; padding: 8px 14px; font-size: 11px; }
+            .footer-legal { padding: 25px 15px; font-size: 11px; }
+            .theme-selector { gap: 6px; }
+            .theme-btn { width: 18px; height: 18px; }
+            .bordo-exp-mini-btn { padding: 6px 10px; font-size: 14px; }
+            #admin-panel { padding: 15px; margin: 10px; }
+            #admin-panel > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+            #admin-panel input, #admin-panel select, #admin-panel button { font-size: 12px; padding: 12px; }
+            .market-table { min-width: 400px; }
+            .main-panel { overflow-x: auto; }
+            .market-table td { padding: 12px 8px; font-size: 13px; }
+            .market-table th { padding: 12px 8px; font-size: 11px; }
+            .sys-log-stream { font-size: 10px; padding: 0 10px; }
+            #chat-content-area { padding: 12px; }
+            .chat-msg { padding: 10px; margin-bottom: 10px; }
+            .msg-dm-self, .msg-dm-other { padding: 10px; margin-bottom: 8px; }
+            .input-row { padding: 6px; }
+            #chat-input { padding: 12px; font-size: 13px; }
+            .chat-tool-btn { width: 40px; font-size: 16px; }
+            #chat-send { width: 50px; font-size: 14px; }
+            .modal-content { width: 95%; padding: 25px 20px; margin: 15% auto; }
+            .confirm-box { width: 90%; padding: 25px 20px; }
+            .viewer-box { padding: 20px; }
+            #viewer-img { max-height: 60%; }
+            .rank-badge { font-size: 9px; padding: 2px 6px; margin-right: 4px; }
         }
 
-        ::selection {
-            background: rgba(255, 215, 0, 0.4);
-            color: #000;
-            text-shadow: none;
+        @media (max-width: 480px) {
+            .dashboard { padding: 8px; }
+            .main-panel, .side-panel { padding: 14px; border-radius: 10px; }
+            .auth-box { padding: 25px 15px; }
+            .auth-box h2 { font-size: 24px !important; letter-spacing: 3px !important; }
+            .chat-container { height: 380px; }
+            .chat-tab { font-size: 9px; padding: 10px 4px; }
+            .spotlight-title { font-size: 12px; }
+            .spotlight-tip { font-size: 11px; }
+            #portfolioVal { font-size: 24px !important; }
+            .market-table { min-width: 350px; }
+            .market-table td { padding: 10px 6px; font-size: 12px; }
+            .market-table th { padding: 10px 6px; font-size: 10px; }
+            .bordo-exp-modal { border-radius: 0; max-height: 100vh; border-left: none; border-right: none; }
+            .bordo-exp-modal-header { padding: 18px 20px; }
+            .bordo-exp-modal-title { font-size: 16px; letter-spacing: 2px; }
+            .bordo-exp-modal-body { padding: 15px 12px; }
+            .bordo-exp-table { font-size: 11px; }
+            .bordo-exp-table th { padding: 10px 6px; font-size: 10px; letter-spacing: 1px; }
+            .bordo-exp-table td { padding: 8px 6px; }
+            .maintenance-content { padding: 35px 25px; }
+            .maintenance-title { font-size: 28px; letter-spacing: 4px; }
+            .maintenance-icon { font-size: 56px; }
+            .maintenance-subtitle { font-size: 13px; }
+            #marketSearch { font-size: 13px; padding: 12px; }
         }
-    
-/* ===== BORDO EXP TABLOSU ===== */
-.bordo-exp-mini-btn {
-    background: transparent;
-    border: 2px solid var(--neon-gold);
-    color: var(--neon-gold);
-    padding: 8px 12px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-family: inherit;
-    width: auto;
-    margin: 0;
-    margin-right: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-}
 
-.bordo-exp-mini-btn:hover {
-    background: var(--neon-gold);
-    color: #000;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-    transform: translateY(-2px);
-}
-
-.bordo-exp-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    z-index: 50000;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    animation: bordoExpFadeIn 0.3s ease;
-}
-
-@keyframes bordoExpFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.bordo-exp-modal {
-    background: rgba(10, 10, 15, 0.97);
-    border: 2px solid var(--neon-gold);
-    border-radius: 20px;
-    width: 100%;
-    max-width: 800px;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 60px rgba(255, 215, 0, 0.25), 0 20px 60px rgba(0,0,0,0.8);
-    animation: bordoExpSlideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-}
-
-@keyframes bordoExpSlideUp {
-    from { transform: translateY(40px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.bordo-exp-modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 22px 28px;
-    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
-    background: rgba(255, 215, 0, 0.05);
-    flex-shrink: 0;
-}
-
-.bordo-exp-modal-title {
-    color: var(--neon-gold);
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-    margin: 0;
-}
-
-.bordo-exp-modal-close {
-    background: transparent;
-    border: 2px solid var(--neon-red);
-    color: var(--neon-red);
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 800;
-    transition: all 0.3s;
-    padding: 0;
-    margin: 0;
-    flex-shrink: 0;
-}
-
-.bordo-exp-modal-close:hover {
-    background: var(--neon-red);
-    color: #000;
-    box-shadow: 0 0 20px var(--neon-red);
-    transform: rotate(90deg);
-}
-
-.bordo-exp-modal-body {
-    padding: 25px 28px;
-    overflow-y: auto;
-    flex: 1;
-}
-
-.bordo-exp-table-wrapper {
-    width: 100%;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 215, 0, 0.2);
-}
-
-.bordo-exp-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-}
-
-.bordo-exp-table thead tr {
-    background: rgba(255, 215, 0, 0.15);
-    border-bottom: 2px solid var(--neon-gold);
-}
-
-.bordo-exp-table th {
-    color: var(--neon-gold);
-    padding: 14px 10px;
-    font-weight: 800;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-align: center;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-}
-
-.bordo-exp-table tbody tr {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    transition: background 0.2s;
-}
-
-.bordo-exp-table tbody tr:hover {
-    background: rgba(255, 215, 0, 0.08);
-}
-
-.bordo-exp-table tbody tr:nth-child(even) {
-    background: rgba(255, 255, 255, 0.02);
-}
-
-.bordo-exp-table tbody tr:nth-child(even):hover {
-    background: rgba(255, 215, 0, 0.1);
-}
-
-.bordo-exp-table td {
-    padding: 11px 10px;
-    text-align: center;
-    color: #ddd;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-.bordo-exp-table td:nth-child(1) { color: var(--neon-green); }
-.bordo-exp-table td:nth-child(2) { color: var(--neon-gold); }
-.bordo-exp-table td:nth-child(3) { color: var(--neon-red); }
-
-.bordo-exp-modal-footer {
-    padding: 18px 28px;
-    border-top: 1px solid rgba(255, 215, 0, 0.15);
-    text-align: center;
-    color: #666;
-    font-size: 11px;
-    letter-spacing: 2px;
-    font-weight: 600;
-    flex-shrink: 0;
-}
-
-/* Mobil Uyumluluk */
-@media (max-width: 768px) {
-    .bordo-exp-mini-btn {
-        padding: 6px 10px;
-        font-size: 14px;
-    }
-
-    .bordo-exp-overlay {
-        padding: 0;
-    }
-
-    .bordo-exp-modal {
-        max-width: 100%;
-        max-height: 100vh;
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-    }
-
-    .bordo-exp-modal-header {
-        padding: 18px 20px;
-    }
-
-    .bordo-exp-modal-title {
-        font-size: 16px;
-        letter-spacing: 2px;
-    }
-
-    .bordo-exp-modal-body {
-        padding: 15px 12px;
-    }
-
-    .bordo-exp-table {
-        font-size: 11px;
-    }
-
-    .bordo-exp-table th {
-        padding: 10px 6px;
-        font-size: 10px;
-        letter-spacing: 1px;
-    }
-
-    .bordo-exp-table td {
-        padding: 8px 6px;
-    }
-}
-
-@media (max-width: 480px) {
-    .bordo-exp-table td {
-        padding: 7px 4px;
-        font-size: 10px;
-    }
-
-    .bordo-exp-table th {
-        padding: 8px 4px;
-        font-size: 9px;
-    }
-}
-
+        ::selection { background: rgba(255, 215, 0, 0.4); color: #000; text-shadow: none; }
     </style>
 </head>
 <body>
 
 <div class="ping-display">PING: <span id="ping-val" class="ping-val">24ms</span></div>
 <div id="breach-overlay">⚠ SYSTEM BREACH ⚠</div>
+
+<div id="maintenance-overlay">
+    <div class="maintenance-grid"></div>
+    <div class="maintenance-scanline"></div>
+    <div class="maintenance-content">
+        <div class="maintenance-icon">🔧</div>
+        <div class="maintenance-title">SİSTEM BAKIMDA</div>
+        <div class="maintenance-subtitle" id="maintenance-display-msg">Planlı bakım çalışması devam ediyor...</div>
+        <div class="maintenance-dots"><span>.</span><span>.</span><span>.</span></div>
+        <div class="maintenance-progress">
+            <div class="maintenance-progress-bar"></div>
+        </div>
+        <div class="maintenance-code">ERR_MAINTENANCE_MODE_ACTIVE // 503 SERVICE UNAVAILABLE</div>
+    </div>
+</div>
 
 <div id="market-status-indicator">
     <div id="status-dot" class="status-dot status-open"></div>
@@ -1562,7 +797,6 @@
         <h3 style="color:var(--neon-gold); border-bottom:2px solid rgba(255,255,255,0.1); padding-bottom:15px; margin-top:0; font-size: 18px; letter-spacing: 3px; text-shadow: 0 0 20px rgba(255,215,0,0.3);">YENİ MESAJ BAŞLAT</h3>
         <input type="text" id="dm-target-manual" placeholder="Kullanıcı Adı Giriniz..." style="margin-bottom: 20px; font-size: 14px;">
         <button onclick="startDmFromInput()" style="background:var(--neon-gold); color:#000; font-weight:800; border-radius: 8px; margin-bottom: 25px; font-size: 13px;">SOHBETİ BAŞLAT</button>
-        
         <div style="border-top:2px dashed rgba(255,255,255,0.1); margin-top:20px; padding-top:20px;">
             <small style="color:#666; display:block; margin-bottom:15px; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">TANIYOR OLABİLECEĞİN KİŞİLER</small>
             <div id="registered-users-list" style="max-height: 200px; overflow-y: auto;"></div>
@@ -1573,6 +807,7 @@
 
 <div id="admin-panel">
     <h3 style="color: var(--neon-red); margin: 0 0 20px 0; font-size: 22px; letter-spacing: 3px; border-bottom: 2px solid rgba(255,71,87,0.3); padding-bottom: 15px; text-shadow: 0 0 20px rgba(255,71,87,0.3);">BORDO ADMIN</h3>
+    
     <div style="border: 2px solid rgba(255,215,0,0.3); padding: 20px; margin-bottom: 20px; border-radius: 10px; background: rgba(255,215,0,0.05); box-shadow: 0 0 20px rgba(255,215,0,0.1);">
         <input type="text" id="botNewsInput" placeholder="Haber Botu Mesajı..." style="margin-bottom:15px; background: rgba(0,0,0,0.5); font-size: 13px;">
         <div style="display: flex; gap:10px;">
@@ -1580,14 +815,26 @@
             <button onclick="deleteBotNews()" style="border-color:var(--neon-red); color:var(--neon-red); margin:0; flex:1; border-radius: 6px; font-size: 12px;">HABERİ SİL</button>
         </div>
     </div>
+    
     <div style="border: 2px solid rgba(0,255,136,0.3); padding: 20px; margin-bottom: 20px; border-radius: 10px; background: rgba(0,255,136,0.05); box-shadow: 0 0 20px rgba(0,255,136,0.1);">
         <input type="text" id="vipTargetInput" placeholder="VIP Yapılacak İsim..." style="margin-bottom:15px; background: rgba(0,0,0,0.5); font-size: 13px;">
         <button onclick="giveVip()" style="border-color:var(--neon-green); color:var(--neon-green); margin:0; border-radius: 6px; font-size: 12px; font-weight: 700;">VIP YETKİSİ VER</button>
     </div>
+    
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; border: 2px dashed rgba(255,71,87,0.3); padding: 15px; border-radius: 10px;">
         <button onclick="setMarketStatus(true)" style="background:var(--neon-green); color:#000; font-weight:800; margin:0; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(0,255,136,0.3);">BORSA AÇ</button>
         <button onclick="setMarketStatus(false)" style="background:var(--neon-red); color:#000; font-weight:800; margin:0; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(255,51,102,0.3);">BORSA DURDUR</button>
     </div>
+    
+    <div style="border: 2px solid var(--neon-red); padding: 20px; margin-bottom: 20px; border-radius: 10px; background: rgba(255,51,102,0.05); box-shadow: 0 0 20px rgba(255,51,102,0.1);">
+        <div style="color: var(--neon-red); font-weight: 800; margin-bottom: 15px; font-size: 14px; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,51,102,0.3);">🔧 BAKIM MODU KONTROLÜ</div>
+        <input type="text" id="maintenanceInput" placeholder="Bakım mesajı (örn: Güncelleme yapılıyor...)" style="margin-bottom: 15px; background: rgba(0,0,0,0.5); font-size: 13px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button onclick="setMaintenance(true)" style="background: var(--neon-red); color: #000; font-weight: 800; margin: 0; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(255,51,102,0.3);">BAKIMI AÇ</button>
+            <button onclick="setMaintenance(false)" style="border-color: var(--neon-green); color: var(--neon-green); margin: 0; border-radius: 6px; font-size: 12px; font-weight: 700;">BAKIMI KAPAT</button>
+        </div>
+    </div>
+    
     <button onclick="toggleBreachEffect()" style="border-color:var(--neon-red); color:var(--neon-red); margin-top:5px; width:100%; border-radius: 6px; font-weight: 800; font-size: 13px; text-shadow: 0 0 10px rgba(255,51,102,0.3);">⚠ SİBER SALDIRI EFEKTİ (AÇ/KAPA)</button>
     
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:20px;">
@@ -1595,11 +842,21 @@
         <input type="number" id="newItemPrice" placeholder="Başlangıç G" style="background: rgba(0,0,0,0.5); font-size: 13px;">
     </div>
     <button onclick="addItem()" style="color:var(--neon-green); border-color:var(--neon-green); margin-top: 10px; border-radius: 6px; font-weight: 700; font-size: 12px;">YENİ ÜRÜNÜ SİSTEME EKLE</button>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:15px;">
-        <select id="admSelect" style="background: rgba(0,0,0,0.5); font-size: 13px;"></select>
-        <input type="number" id="admPrice" placeholder="Yeni Fiyat" style="background: rgba(0,0,0,0.5); font-size: 13px;">
+    
+    <div style="border: 2px solid rgba(255,215,0,0.3); padding: 20px; margin-top: 20px; border-radius: 10px; background: rgba(255,215,0,0.05);">
+        <div style="color: var(--neon-gold); font-weight: 800; margin-bottom: 12px; font-size: 13px; letter-spacing: 2px;">⚡ ANLIK FİYAT KONTROLÜ</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:10px;">
+            <select id="admSelect" style="background: rgba(0,0,0,0.5); font-size: 13px;"></select>
+            <input type="number" id="admPrice" placeholder="Yeni Fiyat (G)" style="background: rgba(0,0,0,0.5); font-size: 13px;">
+        </div>
+        <button onclick="pushPrice()" style="background:var(--neon-red); color:#000; font-weight:800; margin-top: 10px; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(255,51,102,0.3); width: 100%;">FİYATI SABİTLE VE BAS</button>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+            <button onclick="setStable(true)" style="background: var(--neon-gold); color: #000; font-weight: 800; margin: 0; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(255,215,0,0.3);">🔒 STABİL KALSIN</button>
+            <button onclick="setStable(false)" style="border-color: var(--neon-red); color: var(--neon-red); margin: 0; border-radius: 6px; font-size: 12px; font-weight: 700;">🔓 STABİLİ KALDIR</button>
+        </div>
     </div>
-    <button onclick="pushPrice()" style="background:var(--neon-red); color:#000; font-weight:800; margin-top: 10px; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(255,51,102,0.3);">FİYATI SABİTLE VE BAS</button>
+    
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:15px;">
         <button onclick="setTrend('pump')" style="border-color:var(--neon-gold); color:var(--neon-gold); font-size:11px; border-radius: 6px; font-weight: 700;">PUMP (SARI)</button>
         <button onclick="setTrend('dump')" style="border-color:var(--neon-red); color:var(--neon-red); font-size:11px; border-radius: 6px; font-weight: 700;">DUMP (KIRMIZI)</button>
@@ -1725,23 +982,6 @@
                     <button id="chat-send" onclick="sendChat()">➤</button>
                 </div>
             </div>
-        </div>
-
-        <div class="trade-section">
-            <div style="color:var(--neon-gold); font-size:13px; border-bottom:2px solid rgba(255,215,0,0.3); padding-bottom:10px; margin-bottom: 15px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,215,0,0.2);">[+] PAZAR İLANI VER</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:15px;">
-                <select id="pazarItemSelect" onchange="checkPriceDiff()" style="padding:10px; margin:0; font-size:12px; background: rgba(0,0,0,0.5);"></select>
-                <select id="pazarServerSelect" style="padding:10px; margin:0; font-size:12px; background: rgba(0,0,0,0.5);">
-                    <option value="#1">SUNUCU #1</option>
-                    <option value="#2">SUNUCU #2</option>
-                    <option value="#3">SUNUCU #3</option>
-                </select>
-            </div>
-            <input type="number" id="pazarPriceInput" placeholder="Satış Fiyatı (G)" oninput="checkPriceDiff()" style="padding:10px; margin:10px 0 0 0; font-size:12px; background: rgba(0,0,0,0.5);">
-            <div id="pazarPriceStatus" class="price-diff-badge" style="height:20px; margin-top: 8px;"></div>
-            <input type="text" id="pazarContactInput" placeholder="Discord / No" style="padding:10px; margin:10px 0 0 0; font-size:12px; background: rgba(0,0,0,0.5);">
-            <button onclick="postTrade()" style="background:var(--neon-gold); color:#000; font-weight:800; padding:12px; margin-top:12px; border:none; cursor:pointer; font-size:12px; border-radius: 6px; box-shadow: 0 0 20px rgba(255,215,0,0.3);">İLAN YAYINLA</button>
-            <div id="trade-feed"></div>
         </div>
     </div>
     <div class="main-panel">
@@ -1962,6 +1202,23 @@
             const data = await res.json();
             if(!data) return;
 
+            const maintOverlay = document.getElementById('maintenance-overlay');
+            const isAdmin = activeSession && activeSession.name === "Bordo";
+            
+            if(data.maintenance && data.maintenance.active === true) {
+                const dispMsg = document.getElementById('maintenance-display-msg');
+                if(dispMsg) dispMsg.innerText = data.maintenance.msg || "Planlı bakım çalışması devam ediyor...";
+                
+                if(!isAdmin) {
+                    maintOverlay.style.display = 'flex';
+                } else {
+                    maintOverlay.style.display = 'none';
+                    addSystemLog("🔧 BAKIM MODU AKTİF — Kullanıcılar engelleniyor");
+                }
+            } else {
+                maintOverlay.style.display = 'none';
+            }
+
             if(data.system_breach !== undefined) {
                 applyBreach(data.system_breach);
             }
@@ -1992,8 +1249,7 @@
             if(data.chat) {
                 const chatBox = document.getElementById('chat-messages');
                 const chatArea = document.getElementById('chat-content-area'); 
-                const tradeBox = document.getElementById('trade-feed');
-                let chatHtml = ""; let tradeHtml = "";
+                let chatHtml = "";
                 const chatKeys = Object.keys(data.chat).sort(); 
                 
                 let shouldScroll = false;
@@ -2010,8 +1266,7 @@
                     const delBtn = isMine ? `<span class="del-msg" onclick="event.stopPropagation(); proConfirm('${key}')">[SİL]</span>` : "";
                     
                     if(m.type === "trade") {
-                        const tradeDelBtn = isMine ? `<span class="del-msg" onclick="event.stopPropagation(); proConfirm('${key}')" style="position:absolute; right:10px; top:10px;">[SİL]</span>` : "";
-                        tradeHtml = `<div class="trade-item-card">${tradeDelBtn}<div style="color:var(--neon-gold); font-weight:800; margin-bottom: 6px; font-size: 13px; letter-spacing: 1px;">[${m.server}] ${m.item}</div><div style="color:var(--neon-green); font-size: 14px; margin-bottom: 5px; font-weight: 700; text-shadow: 0 0 10px rgba(0,255,136,0.3);">${m.price} G</div><div style="color:#777; font-size:10px; letter-spacing: 0.5px; font-weight: 600;">${m.u} • ${m.contact}</div></div>` + tradeHtml;
+                        // Pazar ilanı kaldırıldı - artık gösterilmiyor
                     } else {
                         const colorClass = isAdm ? "msg-admin" : "msg-user";
                         const vipClass = isVip ? "vip-name" : ""; const vipIcon = isVip ? "💎 " : "";
@@ -2025,31 +1280,25 @@
                 });
                 
                 chatBox.innerHTML = chatHtml; 
-                tradeBox.innerHTML = tradeHtml;
 
                 if(shouldScroll && chatMode === 'global') {
                     chatArea.scrollTop = chatArea.scrollHeight;
                 }
             }
 
-            const systemKeys = ['ann','chat','system_announcement','bans','presence', 'market_status', 'bot_news', 'vips', 'dms', 'system_breach'];
+            const systemKeys = ['ann','chat','system_announcement','bans','presence', 'market_status', 'bot_news', 'vips', 'dms', 'system_breach', 'maintenance'];
             const names = Object.keys(data).filter(k => !systemKeys.includes(k) && data[k] && typeof data[k] === 'object' && data[k].price !== undefined);
             
-            // FİYAT GÜNCELLEME MANTIĞI - MAX 3G DÜŞÜŞ / MAX 4G ARTIŞ
             localItems = names.map(n => {
                 const item = data[n];
-                const basePrice = parseFloat(item.base || item.price);
                 let currentPrice = parseFloat(item.price);
+                const basePrice = parseFloat(item.base || item.price);
                 
-                // Eğer admin sabitlemediyse otomatik dalgalanma uygula
-                if (!item.locked) {
-                    const change = (Math.random() * 7) - 3; // -3 ile +4 arası
+                if (!item.stable && !item.locked) {
+                    const change = (Math.random() * 6) - 2;
                     let newPrice = currentPrice + change;
-                    
-                    // Sınırları kontrol et - base fiyatın max 3 altı, max 4 üstü
-                    const minPrice = basePrice - 3;
+                    const minPrice = basePrice - 2;
                     const maxPrice = basePrice + 4;
-                    
                     newPrice = Math.max(minPrice, Math.min(maxPrice, newPrice));
                     currentPrice = newPrice;
                 }
@@ -2059,7 +1308,8 @@
                     price: currentPrice, 
                     last: parseFloat(item.last || item.price), 
                     base: basePrice, 
-                    trend: item.trend || 'normal' 
+                    trend: item.trend || 'normal',
+                    stable: item.stable || false
                 };
             }).sort((a, b) => b.price - a.price);
             
@@ -2073,21 +1323,33 @@
         const body = document.getElementById('marketBody');
         const sel = document.getElementById('tradeSelect');
         const admSel = document.getElementById('admSelect');
-        const pazarSel = document.getElementById('pazarItemSelect');
-        let html = ""; let options = "";
+        let html = ""; 
+        let options = "";
+        
         localItems.forEach(item => {
             if(item.name.toLowerCase().includes(search)) {
                 const diff = item.price - item.last;
                 const priceColor = diff > 0 ? "var(--neon-green)" : (diff < 0 ? "var(--neon-red)" : "var(--neon-gold)");
                 const trendIcon = diff > 0 ? "▲" : (diff < 0 ? "▼" : "•");
                 let rowClass = item.trend === 'pump' ? "pump-effect" : (item.trend === 'dump' ? "dump-effect" : "");
-                let extraTag = item.trend === 'pump' ? "<span class='trend-label' style='color:var(--neon-gold); background: rgba(255,215,0,0.2); box-shadow: 0 0 15px rgba(255,215,0,0.3);'>YÜKSELİŞ</span>" : (item.trend === 'dump' ? "<span class='trend-label' style='color:var(--neon-red); background: rgba(255,51,102,0.2); box-shadow: 0 0 15px rgba(255,51,102,0.3);'>DÜŞÜŞ</span>" : "");
+                let extraTag = "";
+                
+                // STABİL ETİKETİ KALDIRILDI - SADECE PUMP/DUMP GÖZÜKSÜN
+                if(item.trend === 'pump') {
+                    extraTag = "<span class='trend-label' style='color:var(--neon-gold); background: rgba(255,215,0,0.2); box-shadow: 0 0 15px rgba(255,215,0,0.3);'>YÜKSELİŞ</span>";
+                } else if(item.trend === 'dump') {
+                    extraTag = "<span class='trend-label' style='color:var(--neon-red); background: rgba(255,51,102,0.2); box-shadow: 0 0 15px rgba(255,51,102,0.3);'>DÜŞÜŞ</span>";
+                }
+                
                 html += `<tr class="${rowClass}"><td style="color:#fff; font-weight: 700; font-size: 14px;">${item.name} ${extraTag}</td><td style="color:${priceColor}; font-weight:800; font-size: 15px; text-shadow: 0 0 10px ${priceColor};">${item.price.toFixed(2)} G</td><td style="color:${priceColor}; font-size: 13px; font-weight: 700;">${trendIcon} ${Math.abs(diff).toFixed(2)}</td></tr>`;
             }
             options += `<option value="${item.name}">${item.name}</option>`;
         });
+        
         body.innerHTML = html;
-        if(sel.options.length !== localItems.length) { sel.innerHTML = options; admSel.innerHTML = options; pazarSel.innerHTML = options; }
+        sel.innerHTML = options; 
+        admSel.innerHTML = options;
+        
         renderInventory();
         updateExtras();
     }
@@ -2121,18 +1383,7 @@
     async function pushAnnouncement() { const t = document.getElementById('announcementInput').value.trim(); if(!t) return; await fetch(`${FB}/ann.json`, { method: 'PUT', body: JSON.stringify(t) }); sync(); }
     async function clearAnnouncement() { await fetch(`${FB}/ann.json`, { method: 'DELETE' }); sync(); }
     async function banUser() { const u = prompt("BANLANACAK KULLANICI ADI:"); if(!u) return; await fetch(`${FB}/bans/${u}.json`, { method: 'PUT', body: JSON.stringify(true) }); alert(u + " SİSTEMDEN YASAKLANDI."); }
-    async function postTrade() {
-        const item = document.getElementById('pazarItemSelect').value; const srv = document.getElementById('pazarServerSelect').value;
-        const price = parseFloat(document.getElementById('pazarPriceInput').value); const contact = document.getElementById('pazarContactInput').value;
-        if(!item || isNaN(price) || !contact) return alert("Bilgileri eksiksiz doldur!");
-        const msg = { u: activeSession.name, item: item, server: srv, price: price, contact: contact, type: "trade", time: Date.now() };
-        await fetch(`${FB}/chat.json`, { method: 'POST', body: JSON.stringify(msg) }); sync();
-    }
-    function checkPriceDiff() {
-        const name = document.getElementById('pazarItemSelect').value; const price = parseFloat(document.getElementById('pazarPriceInput').value); const status = document.getElementById('pazarPriceStatus');
-        const item = localItems.find(i => i.name === name); if(!item || isNaN(price)) { status.innerText = ""; return; }
-        const diff = price - item.price; if(diff > 0) { status.innerText = `▲ +${diff.toFixed(2)}`; status.style.color = "#000"; status.style.background = "var(--neon-red)"; status.style.boxShadow = "0 0 10px var(--neon-red)"; } else { status.innerText = `▼ ${diff.toFixed(2)}`; status.style.color = "#000"; status.style.background = "var(--neon-green)"; status.style.boxShadow = "0 0 10px var(--neon-green)"; }
-    }
+    
     function uploadImage(input) {
         const file = input.files[0]; if(!file) return;
         const reader = new FileReader();
@@ -2157,6 +1408,20 @@
     async function deleteBotNews() { await fetch(`${FB}/bot_news.json`, { method: 'DELETE' }); sync(); }
     async function giveVip() { const u = document.getElementById('vipTargetInput').value.trim(); if(!u) return; await fetch(`${FB}/vips/${u}.json`, { method: 'PUT', body: JSON.stringify(true) }); alert(u + " ARTIK VIP!"); sync(); }
     async function setMarketStatus(s) { await fetch(`${FB}/market_status.json`, { method: 'PUT', body: JSON.stringify(s) }); sync(); }
+    
+    async function setMaintenance(status) {
+        const msg = document.getElementById('maintenanceInput').value.trim();
+        await fetch(`${FB}/maintenance.json`, { 
+            method: 'PUT', 
+            body: JSON.stringify({ 
+                active: status, 
+                msg: msg || "Planlı bakım çalışması devam ediyor...",
+                since: Date.now() 
+            }) 
+        });
+        sync();
+    }
+    
     function proConfirm(key) { const modal = document.getElementById('confirm-modal'); modal.style.display = 'flex'; document.getElementById('confirm-yes').onclick = () => { deleteMessage(key); modal.style.display = 'none'; }; document.getElementById('confirm-no').onclick = () => { modal.style.display = 'none'; }; }
     
     async function sendChat() {
@@ -2189,19 +1454,53 @@
     function buyItem() { const n = document.getElementById('tradeSelect').value; const a = parseFloat(document.getElementById('tradeAmount').value); if(!n || isNaN(a) || a <= 0) return; const ex = inventory.find(i => i.name === n); if(ex) ex.amount += a; else inventory.push({ name: n, amount: a }); localStorage.setItem('bordo_inv', JSON.stringify(inventory)); renderInventory(); }
     function removeItem(idx) { inventory.splice(idx, 1); localStorage.setItem('bordo_inv', JSON.stringify(inventory)); renderInventory(); }
     function updateLiveTicker() { document.getElementById('newsText').innerText = localItems.map(i => `${i.name}: ${i.price.toFixed(2)}G`).join("  ⚡  "); }
+    
     async function pushPrice() { 
         const n = document.getElementById('admSelect').value; 
         const p = parseFloat(document.getElementById('admPrice').value); 
         const item = localItems.find(i => i.name === n); 
-        if(isNaN(p) || !item) return; 
-        // Admin sabitlediğinde locked=true yap ve sınırları kontrol et
-        const basePrice = item.base;
-        const minPrice = basePrice - 3;
-        const maxPrice = basePrice + 4;
-        const clampedPrice = Math.max(minPrice, Math.min(maxPrice, p));
-        await fetch(`${FB}/${n}.json`, { method: 'PATCH', body: JSON.stringify({ price: clampedPrice, last: item.price, locked: true }) }); 
+        if(isNaN(p) || !item) {
+            alert("Lütfen ürün seçin ve geçerli fiyat girin!");
+            return;
+        } 
+        
+        const newBase = p;
+        const currentPrice = item.price;
+        
+        await fetch(`${FB}/${n}.json`, { 
+            method: 'PATCH', 
+            body: JSON.stringify({ 
+                price: newBase, 
+                last: currentPrice, 
+                base: newBase,
+                locked: false 
+            }) 
+        }); 
+        document.getElementById('admPrice').value = '';
+        alert(n + " fiyatı " + newBase.toFixed(2) + " G olarak güncellendi! Bundan sonra " + (newBase - 2).toFixed(2) + " - " + (newBase + 4).toFixed(2) + " arası dalgalanacak.");
         sync(); 
     }
+    
+    async function setStable(status) {
+        const n = document.getElementById('admSelect').value;
+        if(!n) {
+            alert("Lütfen ürün seçin!");
+            return;
+        }
+        
+        await fetch(`${FB}/${n}.json`, { 
+            method: 'PATCH', 
+            body: JSON.stringify({ stable: status }) 
+        });
+        
+        if(status) {
+            alert(n + " artık STABİL modda! Fiyat değişmeyecek.");
+        } else {
+            alert(n + " stabıl moddan çıkarıldı! Dalgalanma başlayacak.");
+        }
+        sync();
+    }
+    
     async function deleteMessage(key) { await fetch(`${FB}/chat/${key}.json`, { method: 'DELETE' }); sync(); }
     async function setTrend(t) { const n = document.getElementById('admSelect').value; if(!n) return; await fetch(`${FB}/${n}/trend.json`, { method: 'PUT', body: JSON.stringify(t) }); sync(); }
     function openImageViewer(src) { document.getElementById('viewer-img').src = src; document.getElementById('viewer-dl').href = src; document.getElementById('img-viewer').style.display = 'block'; }
@@ -2296,27 +1595,21 @@
         }, 1500);
     }
 
+    function openExpModal() {
+        document.getElementById('bordo-exp-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
 
-// ===== BORDO EXP TABLOSU FONKSİYONLARI =====
-function openExpModal() {
-    document.getElementById('bordo-exp-overlay').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
+    function closeExpModal(e) {
+        if (e && e.target !== document.getElementById('bordo-exp-overlay')) return;
+        document.getElementById('bordo-exp-overlay').style.display = 'none';
+        document.body.style.overflow = '';
+    }
 
-function closeExpModal(e) {
-    if (e && e.target !== document.getElementById('bordo-exp-overlay')) return;
-    document.getElementById('bordo-exp-overlay').style.display = 'none';
-    document.body.style.overflow = '';
-}
-
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeExpModal();
-});
-
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeExpModal();
+    });
 </script>
-
-
-
 
 <div class="bordo-exp-overlay" id="bordo-exp-overlay" onclick="closeExpModal(event)">
     <div class="bordo-exp-modal" onclick="event.stopPropagation()">
@@ -2335,112 +1628,32 @@ document.addEventListener('keydown', function(e) {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1: 122 EXP</td>
-                            <td>21: 42.014 EXP</td>
-                            <td>41: 232.697 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>2: 374 EXP</td>
-                            <td>22: 46.935 EXP</td>
-                            <td>42: 248.929 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>3: 764 EXP</td>
-                            <td>23: 52.226 EXP</td>
-                            <td>43: 265.998 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>4: 1.298 EXP</td>
-                            <td>24: 57.903 EXP</td>
-                            <td>44: 283.938 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>5: 1.987 EXP</td>
-                            <td>25: 63.983 EXP</td>
-                            <td>45: 302.781 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>6: 2.837 EXP</td>
-                            <td>26: 70.484 EXP</td>
-                            <td>46: 322.563 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>7: 3.859 EXP</td>
-                            <td>27: 77.424 EXP</td>
-                            <td>47: 343.319 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>8: 5.061 EXP</td>
-                            <td>28: 84.822 EXP</td>
-                            <td>48: 365.087 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>9: 6.453 EXP</td>
-                            <td>29: 92.699 EXP</td>
-                            <td>49: 387.905 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>10: 8.045 EXP</td>
-                            <td>30: 101.073 EXP</td>
-                            <td>50: 411.812 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>11: 9.847 EXP</td>
-                            <td>31: 109.968 EXP</td>
-                            <td>51: 436.851 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>12: 11.870 EXP</td>
-                            <td>32: 119.404 EXP</td>
-                            <td>52: 463.062 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>13: 14.126 EXP</td>
-                            <td>33: 129.404 EXP</td>
-                            <td>53: 490.489 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>14: 16.625 EXP</td>
-                            <td>34: 139.992 EXP</td>
-                            <td>54: 519.178 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>15: 19.380 EXP</td>
-                            <td>35: 151.191 EXP</td>
-                            <td>55: 549.175 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>16: 22.403 EXP</td>
-                            <td>36: 163.027 EXP</td>
-                            <td>56: 580.528 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>17: 25.708 EXP</td>
-                            <td>37: 175.526 EXP</td>
-                            <td>57: 613.287 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>18: 29.307 EXP</td>
-                            <td>38: 188.714 EXP</td>
-                            <td>58: 647.502 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>19: 33.215 EXP</td>
-                            <td>39: 202.620 EXP</td>
-                            <td>59: 683.226 EXP</td>
-                        </tr>
-                        <tr>
-                            <td>20: 37.445 EXP</td>
-                            <td>40: 217.271 EXP</td>
-                            <td>60: 720.514 EXP</td>
-                        </tr>
+                        <tr><td>1: 122 EXP</td><td>21: 42.014 EXP</td><td>41: 232.697 EXP</td></tr>
+                        <tr><td>2: 374 EXP</td><td>22: 46.935 EXP</td><td>42: 248.929 EXP</td></tr>
+                        <tr><td>3: 764 EXP</td><td>23: 52.226 EXP</td><td>43: 265.998 EXP</td></tr>
+                        <tr><td>4: 1.298 EXP</td><td>24: 57.903 EXP</td><td>44: 283.938 EXP</td></tr>
+                        <tr><td>5: 1.987 EXP</td><td>25: 63.983 EXP</td><td>45: 302.781 EXP</td></tr>
+                        <tr><td>6: 2.837 EXP</td><td>26: 70.484 EXP</td><td>46: 322.563 EXP</td></tr>
+                        <tr><td>7: 3.859 EXP</td><td>27: 77.424 EXP</td><td>47: 343.319 EXP</td></tr>
+                        <tr><td>8: 5.061 EXP</td><td>28: 84.822 EXP</td><td>48: 365.087 EXP</td></tr>
+                        <tr><td>9: 6.453 EXP</td><td>29: 92.699 EXP</td><td>49: 387.905 EXP</td></tr>
+                        <tr><td>10: 8.045 EXP</td><td>30: 101.073 EXP</td><td>50: 411.812 EXP</td></tr>
+                        <tr><td>11: 9.847 EXP</td><td>31: 109.968 EXP</td><td>51: 436.851 EXP</td></tr>
+                        <tr><td>12: 11.870 EXP</td><td>32: 119.404 EXP</td><td>52: 463.062 EXP</td></tr>
+                        <tr><td>13: 14.126 EXP</td><td>33: 129.404 EXP</td><td>53: 490.489 EXP</td></tr>
+                        <tr><td>14: 16.625 EXP</td><td>34: 139.992 EXP</td><td>54: 519.178 EXP</td></tr>
+                        <tr><td>15: 19.380 EXP</td><td>35: 151.191 EXP</td><td>55: 549.175 EXP</td></tr>
+                        <tr><td>16: 22.403 EXP</td><td>36: 163.027 EXP</td><td>56: 580.528 EXP</td></tr>
+                        <tr><td>17: 25.708 EXP</td><td>37: 175.526 EXP</td><td>57: 613.287 EXP</td></tr>
+                        <tr><td>18: 29.307 EXP</td><td>38: 188.714 EXP</td><td>58: 647.502 EXP</td></tr>
+                        <tr><td>19: 33.215 EXP</td><td>39: 202.620 EXP</td><td>59: 683.226 EXP</td></tr>
+                        <tr><td>20: 37.445 EXP</td><td>40: 217.271 EXP</td><td>60: 720.514 EXP</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="bordo-exp-modal-footer">
-            ZOMBIX BORSA | BORDO v9.5 — SEVİYE GELİŞİM VERİLERİ
+            ZOMBIX BORSA | BORDO v9.7 — SEVİYE GELİŞİM VERİLERİ
         </div>
     </div>
 </div>
