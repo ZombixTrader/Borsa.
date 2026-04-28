@@ -71,7 +71,7 @@
 
         .pump-effect { 
             position: relative;
-            background: linear-gradient(90deg, rgba(255, 215, 0, 0.15) 0%, transparent 100%);
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.12) 0%, transparent 100%);
         }
         .pump-effect::before {
             content: '';
@@ -97,7 +97,7 @@
         
         .dump-effect { 
             position: relative;
-            background: linear-gradient(90deg, rgba(255, 51, 102, 0.15) 0%, transparent 100%);
+            background: linear-gradient(90deg, rgba(255, 51, 102, 0.12) 0%, transparent 100%);
         }
         .dump-effect::before {
             content: '';
@@ -122,9 +122,12 @@
         }
 
         .trend-label { 
-            font-size: 10px; font-weight: 700; margin-left: 8px; padding: 3px 8px; 
-            border: 2px solid currentColor; border-radius: 4px; letter-spacing: 1px; text-transform: uppercase;
-            box-shadow: 0 0 10px currentColor;
+            font-size: 9px; font-weight: 700; margin-left: 6px; padding: 2px 6px; 
+            border: 1.5px solid currentColor; border-radius: 3px; letter-spacing: 0.5px; text-transform: uppercase;
+            box-shadow: 0 0 8px currentColor;
+            display: inline-block;
+            vertical-align: middle;
+            white-space: nowrap;
         }
 
         #market-status-indicator { 
@@ -212,7 +215,8 @@
         .main-panel:hover, .side-panel:hover { border-color: rgba(255, 215, 0, 0.6); box-shadow: 0 15px 50px rgba(0,0,0,0.6), 0 0 40px rgba(255, 215, 0, 0.2); }
 
         .chat-container { 
-            margin-top: 25px; border: 2px solid var(--border-subtle); height: 500px; 
+            margin-top: 25px; border: 2px solid var(--border-subtle); 
+            height: calc(100vh - 380px); min-height: 550px; max-height: 750px;
             display: flex; flex-direction: column; border-radius: 12px; overflow: hidden;
             background: rgba(0,0,0,0.4); box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
         }
@@ -373,9 +377,22 @@
         #marketSearch { 
             margin-bottom: 25px; background: rgba(255, 215, 0, 0.1); border: 2px solid var(--border-subtle); font-size: 14px; font-weight: 600;
         }
-        .market-table { width: 100%; border-collapse: collapse; min-width: 500px; }
-        .market-table td { padding: 16px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); transition: var(--transition-smooth); }
+        .market-table { width: 100%; border-collapse: collapse; }
+        .market-table td { 
+            padding: 16px 10px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+            transition: var(--transition-smooth);
+            word-break: break-word;
+            white-space: normal;
+            vertical-align: middle;
+        }
+        .market-table th { 
+            padding: 15px 10px; 
+            text-align: left;
+            white-space: nowrap;
+        }
         .market-table tr:hover td { background: rgba(255,255,255,0.05); }
+        .market-table td:first-child { min-width: 140px; }
 
         .suggested-user { 
             padding: 12px; border: 2px solid rgba(255,255,255,0.15); margin-bottom: 8px; text-align: left; 
@@ -661,6 +678,50 @@
             100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
 
+        /* ========== MOBİL BOTTOM NAV ========== */
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 9998;
+            background: rgba(10, 10, 15, 0.98);
+            border-top: 2px solid var(--neon-gold);
+            padding: 0;
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.8), 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+        .mobile-nav-row {
+            display: flex;
+            width: 100%;
+        }
+        .mobile-nav-btn {
+            flex: 1;
+            padding: 14px 8px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            color: #888;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            margin: 0;
+            border-radius: 0;
+        }
+        .mobile-nav-btn:last-child { border-right: none; }
+        .mobile-nav-btn:hover { background: rgba(255,215,0,0.1); color: var(--neon-gold); }
+        .mobile-nav-btn.active {
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--neon-gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+        .mobile-nav-icon { font-size: 18px; display: block; margin-bottom: 4px; }
+
         /* ========== RESPONSIVE DÜZENLEMELER ========== */
         @media (max-width: 992px) {
             .dashboard { flex-direction: column !important; }
@@ -668,10 +729,14 @@
         }
 
         @media (max-width: 768px) {
-            .dashboard { padding: 12px; gap: 15px; }
+            .dashboard { padding: 12px; gap: 15px; padding-bottom: 70px; }
             .main-panel, .side-panel { padding: 18px; border-radius: 12px; }
             .auth-box { padding: 30px 20px; width: 95%; }
-            .chat-container { height: 420px; margin-top: 15px; }
+            .chat-container { 
+                min-height: 450px; 
+                height: calc(100vh - 320px);
+                margin-top: 15px; 
+            }
             .chat-tab { padding: 12px 8px; font-size: 10px; letter-spacing: 1px; }
             .online-status-box { padding: 12px 10px; }
             #display-name { font-size: 18px !important; }
@@ -679,19 +744,19 @@
             .spotlight-title { font-size: 13px; letter-spacing: 2px; }
             .movers-box { flex-direction: column; gap: 10px; }
             .mover-item { padding: 12px; }
-            #market-status-indicator { bottom: 10px; left: 10px; padding: 8px 12px; font-size: 10px; }
+            #market-status-indicator { bottom: 65px; left: 10px; padding: 8px 12px; font-size: 10px; }
             .ping-display { top: 10px; right: 10px; padding: 8px 14px; font-size: 11px; }
-            .footer-legal { padding: 25px 15px; font-size: 11px; }
+            .footer-legal { padding: 25px 15px; font-size: 11px; margin-bottom: 50px; }
             .theme-selector { gap: 6px; }
             .theme-btn { width: 18px; height: 18px; }
             .bordo-exp-mini-btn { padding: 6px 10px; font-size: 14px; }
             #admin-panel { padding: 15px; margin: 10px; }
             #admin-panel > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
             #admin-panel input, #admin-panel select, #admin-panel button { font-size: 12px; padding: 12px; }
-            .market-table { min-width: 400px; }
-            .main-panel { overflow-x: auto; }
             .market-table td { padding: 12px 8px; font-size: 13px; }
             .market-table th { padding: 12px 8px; font-size: 11px; }
+            .market-table td:first-child { min-width: 100px; }
+            .trend-label { font-size: 8px; padding: 1px 4px; margin-left: 4px; letter-spacing: 0; }
             .sys-log-stream { font-size: 10px; padding: 0 10px; }
             #chat-content-area { padding: 12px; }
             .chat-msg { padding: 10px; margin-bottom: 10px; }
@@ -705,21 +770,23 @@
             .viewer-box { padding: 20px; }
             #viewer-img { max-height: 60%; }
             .rank-badge { font-size: 9px; padding: 2px 6px; margin-right: 4px; }
+            .mobile-bottom-nav { display: block; }
         }
 
         @media (max-width: 480px) {
-            .dashboard { padding: 8px; }
+            .dashboard { padding: 8px; padding-bottom: 70px; }
             .main-panel, .side-panel { padding: 14px; border-radius: 10px; }
             .auth-box { padding: 25px 15px; }
             .auth-box h2 { font-size: 24px !important; letter-spacing: 3px !important; }
-            .chat-container { height: 380px; }
+            .chat-container { min-height: 400px; height: calc(100vh - 300px); }
             .chat-tab { font-size: 9px; padding: 10px 4px; }
             .spotlight-title { font-size: 12px; }
             .spotlight-tip { font-size: 11px; }
             #portfolioVal { font-size: 24px !important; }
-            .market-table { min-width: 350px; }
             .market-table td { padding: 10px 6px; font-size: 12px; }
             .market-table th { padding: 10px 6px; font-size: 10px; }
+            .market-table td:first-child { min-width: 80px; }
+            .trend-label { font-size: 7px; padding: 1px 3px; }
             .bordo-exp-modal { border-radius: 0; max-height: 100vh; border-left: none; border-right: none; }
             .bordo-exp-modal-header { padding: 18px 20px; }
             .bordo-exp-modal-title { font-size: 16px; letter-spacing: 2px; }
@@ -732,6 +799,8 @@
             .maintenance-icon { font-size: 56px; }
             .maintenance-subtitle { font-size: 13px; }
             #marketSearch { font-size: 13px; padding: 12px; }
+            .mobile-nav-btn { font-size: 10px; padding: 12px 4px; }
+            .mobile-nav-icon { font-size: 16px; }
         }
 
         ::selection { background: rgba(255, 215, 0, 0.4); color: #000; text-shadow: none; }
@@ -893,7 +962,7 @@
 <div class="news-ticker"><div class="ticker-text" id="newsText">PIYASA ANALIZ EDILIYOR...</div></div>
 
 <div class="dashboard" id="main-dashboard">
-    <div class="side-panel">
+    <div class="side-panel" id="side-panel">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom:20px; flex-wrap: wrap; gap: 15px;">
             <div id="display-name" style="color:var(--neon-gold); font-size: 24px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 0 20px rgba(255,215,0,0.3);"></div>
             <div style="display: flex; align-items: center; gap: 15px;">
@@ -984,7 +1053,7 @@
             </div>
         </div>
     </div>
-    <div class="main-panel">
+    <div class="main-panel" id="main-panel">
         
         <div class="spotlight-box" id="daily-spotlight">
             <div class="spotlight-title">★ GÜNÜN FIRSATI: <span id="spotlight-name">YÜKLENİYOR...</span> ★</div>
@@ -992,19 +1061,35 @@
         </div>
 
         <input type="text" id="marketSearch" placeholder="[ VARLIK ARA... ]" oninput="updateUI()">
-        <table class="market-table" style="width:100%; border-collapse: collapse; margin-top: 15px;">
-            <thead><tr style="color:var(--neon-gold); font-size:12px; border-bottom:3px solid rgba(255,215,0,0.4); text-transform: uppercase; letter-spacing: 2px;">
-                <th align="left" style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3);">VARLIK</th>
-                <th align="left" style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3);">FİYAT</th>
-                <th align="left" style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3);">TREND</th>
-            </tr></thead>
-            <tbody id="marketBody"></tbody>
-        </table>
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <table class="market-table" style="margin-top: 15px;">
+                <thead><tr style="color:var(--neon-gold); font-size:12px; border-bottom:3px solid rgba(255,215,0,0.4); text-transform: uppercase; letter-spacing: 2px;">
+                    <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 140px;">VARLIK</th>
+                    <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 100px;">FİYAT</th>
+                    <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 100px;">TREND</th>
+                </tr></thead>
+                <tbody id="marketBody"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
 <div class="footer-legal">
     &copy; 2024-2026 ZOMBIX BORSA | Tüm kodların lisansı ve fikri mülkiyet hakları <strong style="color: var(--neon-gold); text-shadow: 0 0 10px rgba(255,215,0,0.3);">TheBordoTurke</strong> aittir.
+</div>
+
+<!-- MOBİL BOTTOM NAV -->
+<div class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <div class="mobile-nav-row">
+        <button class="mobile-nav-btn active" id="nav-chat" onclick="mobileSwitchView('chat')">
+            <span class="mobile-nav-icon">💬</span>
+            <span>SOHBET</span>
+        </button>
+        <button class="mobile-nav-btn" id="nav-market" onclick="mobileSwitchView('market')">
+            <span class="mobile-nav-icon">📈</span>
+            <span>PİYASA</span>
+        </button>
+    </div>
 </div>
 
 <script>
@@ -1056,6 +1141,28 @@
     }
     
     loadSavedTheme();
+
+    // MOBİL VİEW SWITCH
+    function mobileSwitchView(view) {
+        const sidePanel = document.getElementById('side-panel');
+        const mainPanel = document.getElementById('main-panel');
+        const navChat = document.getElementById('nav-chat');
+        const navMarket = document.getElementById('nav-market');
+        
+        if(view === 'chat') {
+            sidePanel.style.display = 'block';
+            mainPanel.style.display = 'none';
+            navChat.classList.add('active');
+            navMarket.classList.remove('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            sidePanel.style.display = 'none';
+            mainPanel.style.display = 'block';
+            navMarket.classList.add('active');
+            navChat.classList.remove('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
 
     function playNotification() { new Audio('https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3').play().catch(e => {}); }
     function setReply(userName, text) { 
@@ -1266,7 +1373,7 @@
                     const delBtn = isMine ? `<span class="del-msg" onclick="event.stopPropagation(); proConfirm('${key}')">[SİL]</span>` : "";
                     
                     if(m.type === "trade") {
-                        // Pazar ilanı kaldırıldı - artık gösterilmiyor
+                        // Pazar ilanı kaldırıldı
                     } else {
                         const colorClass = isAdm ? "msg-admin" : "msg-user";
                         const vipClass = isVip ? "vip-name" : ""; const vipIcon = isVip ? "💎 " : "";
@@ -1334,14 +1441,13 @@
                 let rowClass = item.trend === 'pump' ? "pump-effect" : (item.trend === 'dump' ? "dump-effect" : "");
                 let extraTag = "";
                 
-                // STABİL ETİKETİ KALDIRILDI - SADECE PUMP/DUMP GÖZÜKSÜN
                 if(item.trend === 'pump') {
                     extraTag = "<span class='trend-label' style='color:var(--neon-gold); background: rgba(255,215,0,0.2); box-shadow: 0 0 15px rgba(255,215,0,0.3);'>YÜKSELİŞ</span>";
                 } else if(item.trend === 'dump') {
                     extraTag = "<span class='trend-label' style='color:var(--neon-red); background: rgba(255,51,102,0.2); box-shadow: 0 0 15px rgba(255,51,102,0.3);'>DÜŞÜŞ</span>";
                 }
                 
-                html += `<tr class="${rowClass}"><td style="color:#fff; font-weight: 700; font-size: 14px;">${item.name} ${extraTag}</td><td style="color:${priceColor}; font-weight:800; font-size: 15px; text-shadow: 0 0 10px ${priceColor};">${item.price.toFixed(2)} G</td><td style="color:${priceColor}; font-size: 13px; font-weight: 700;">${trendIcon} ${Math.abs(diff).toFixed(2)}</td></tr>`;
+                html += `<tr class="${rowClass}"><td style="color:#fff; font-weight: 700; font-size: 14px;">${item.name} ${extraTag}</td><td style="color:${priceColor}; font-weight:800; font-size: 15px; text-shadow: 0 0 10px ${priceColor}; white-space: nowrap;">${item.price.toFixed(2)} G</td><td style="color:${priceColor}; font-size: 13px; font-weight: 700; white-space: nowrap;">${trendIcon} ${Math.abs(diff).toFixed(2)}</td></tr>`;
             }
             options += `<option value="${item.name}">${item.name}</option>`;
         });
