@@ -72,6 +72,7 @@
         .pump-effect { 
             position: relative;
             background: linear-gradient(90deg, rgba(255, 215, 0, 0.12) 0%, transparent 100%);
+            overflow: hidden;
         }
         .pump-effect::before {
             content: '';
@@ -83,12 +84,8 @@
             background: var(--neon-gold);
             box-shadow: 0 0 15px var(--neon-gold);
             animation: goldGlow 1.5s ease-in-out infinite alternate;
-            z-index: 2;
-            border-radius: 2px 0 0 2px;
-        }
-        .pump-effect td {
-            position: relative;
             z-index: 1;
+            border-radius: 2px 0 0 2px;
         }
         @keyframes goldGlow { 
             from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); } 
@@ -98,6 +95,7 @@
         .dump-effect { 
             position: relative;
             background: linear-gradient(90deg, rgba(255, 51, 102, 0.12) 0%, transparent 100%);
+            overflow: hidden;
         }
         .dump-effect::before {
             content: '';
@@ -109,12 +107,8 @@
             background: var(--neon-red);
             box-shadow: 0 0 15px var(--neon-red);
             animation: redAlert 1s ease-in-out infinite alternate;
-            z-index: 2;
-            border-radius: 2px 0 0 2px;
-        }
-        .dump-effect td {
-            position: relative;
             z-index: 1;
+            border-radius: 2px 0 0 2px;
         }
         @keyframes redAlert { 
             from { box-shadow: 0 0 10px rgba(255, 51, 102, 0.5); } 
@@ -1061,7 +1055,7 @@
         </div>
 
         <input type="text" id="marketSearch" placeholder="[ VARLIK ARA... ]" oninput="updateUI()">
-        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; display: flex; justify-content: center;">
             <table class="market-table" style="margin-top: 15px;">
                 <thead><tr style="color:var(--neon-gold); font-size:12px; border-bottom:3px solid rgba(255,215,0,0.4); text-transform: uppercase; letter-spacing: 2px;">
                     <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 140px;">VARLIK</th>
@@ -1393,35 +1387,46 @@
                 }
             }
 
-            const systemKeys = ['ann','chat','system_announcement','bans','presence', 'market_status', 'bot_news', 'vips', 'dms', 'system_breach', 'maintenance'];
-            const names = Object.keys(data).filter(k => !systemKeys.includes(k) && data[k] && typeof data[k] === 'object' && data[k].price !== undefined);
-            
-            localItems = names.map(n => {
-                const item = data[n];
-                let currentPrice = parseFloat(item.price);
-                const basePrice = parseFloat(item.base || item.price);
-                
-                if (!item.stable && !item.locked) {
-                    const change = (Math.random() * 6) - 2;
-                    let newPrice = currentPrice + change;
-                    const minPrice = basePrice - 2;
-                    const maxPrice = basePrice + 4;
-                    newPrice = Math.max(minPrice, Math.min(maxPrice, newPrice));
-                    currentPrice = newPrice;
-                }
-                
-                return { 
-                    name: n, 
-                    price: currentPrice, 
-                    last: parseFloat(item.last || item.price), 
-                    base: basePrice, 
-                    trend: item.trend || 'normal',
-                    stable: item.stable || false
-                };
-            }).sort((a, b) => b.price - a.price);
-            
-            updateUI(); 
-            updateLiveTicker();
+            if (isMarketOpen) {
+                const systemKeys = ['ann','chat','system_announcement','bans','presence', 'market_status', 'bot_news', 'vips', 'dms', 'system_breach', 'maintenance'];
+                const names = Object.keys(data).filter(k => !systemKeys.includes(k) && data[k] && typeof data[k] === 'object' && data[k].price !== undefined);
+
+                localItems = names.map(n => {
+                    const item = data[n];
+                    let currentPrice = parseFloat(item.price);
+                    const basePrice = parseFloat(item.base || item.price);
+
+                    if (!item.stable && !item.locked) {
+                        const change = (Math.random() * 6) - 2;
+                        let newPrice = currentPrice + change;
+                        const minPrice = basePrice - 2;
+                        const maxPrice = basePrice + 4;
+                        newPrice = Math.max(minPrice, Math.min(maxPrice, newPrice));
+                        currentPrice = newPrice;
+                    }
+
+                    return { 
+                        name: n, 
+                        price: currentPrice, 
+                        last: parseFloat(item.last || item.price), 
+                        base: basePrice, 
+                        trend: item.trend || 'normal',
+                        stable: item.stable || false
+                    };
+                }).sort((a, b) => b.price - a.price);
+
+                updateUI(); 
+                updateLiveTicker();
+            } else {
+                document.getElementById('marketBody').innerHTML = '<tr><td colspan="3" style="text-align:center; padding:40px; color:var(--neon-red); font-size:18px; font-weight:800; text-shadow: 0 0 20px var(--neon-red); letter-spacing: 4px;">◼ BORSA KAPALI ◼</td></tr>';
+                document.getElementById('tradeSelect').innerHTML = '';
+                document.getElementById('admSelect').innerHTML = '';
+                document.getElementById('newsText').innerText = "BORSA KAPALI — İŞLEMLER DURDURULDU";
+                document.getElementById('top-gainer').innerHTML = '---';
+                document.getElementById('top-loser').innerHTML = '---';
+                document.getElementById('spotlight-name').innerText = "PAZAR KAPALI";
+                document.getElementById('spotlight-tip').innerText = "Borsa tekrar açıldığında işlemler devam edecek.";
+            }
         } catch(e){ console.error("Sync Error:", e); }
     }
 
@@ -1447,7 +1452,7 @@
                     extraTag = "<span class='trend-label' style='color:var(--neon-red); background: rgba(255,51,102,0.2); box-shadow: 0 0 15px rgba(255,51,102,0.3);'>DÜŞÜŞ</span>";
                 }
                 
-                html += `<tr class="${rowClass}"><td style="color:#fff; font-weight: 700; font-size: 14px;">${item.name} ${extraTag}</td><td style="color:${priceColor}; font-weight:800; font-size: 15px; text-shadow: 0 0 10px ${priceColor}; white-space: nowrap;">${item.price.toFixed(2)} G</td><td style="color:${priceColor}; font-size: 13px; font-weight: 700; white-space: nowrap;">${trendIcon} ${Math.abs(diff).toFixed(2)}</td></tr>`;
+html += `<tr><td class="${rowClass}" style="color:#fff; font-weight: 700; font-size: 14px;">${item.name} ${extraTag}</td><td class="${rowClass}" style="color:${priceColor}; font-weight:800; font-size: 15px; text-shadow: 0 0 10px ${priceColor}; white-space: nowrap;">${item.price.toFixed(2)} G</td><td class="${rowClass}" style="color:${priceColor}; font-size: 13px; font-weight: 700; white-space: nowrap;">${trendIcon} ${Math.abs(diff).toFixed(2)}</td></tr>`;
             }
             options += `<option value="${item.name}">${item.name}</option>`;
         });
@@ -1557,7 +1562,7 @@
         sync();
     }
 
-    function buyItem() { const n = document.getElementById('tradeSelect').value; const a = parseFloat(document.getElementById('tradeAmount').value); if(!n || isNaN(a) || a <= 0) return; const ex = inventory.find(i => i.name === n); if(ex) ex.amount += a; else inventory.push({ name: n, amount: a }); localStorage.setItem('bordo_inv', JSON.stringify(inventory)); renderInventory(); }
+    function buyItem() { if (!isMarketOpen) { alert("⚠ BORSA KAPALI! İşlem yapılamaz."); return; } const n = document.getElementById('tradeSelect').value; const a = parseFloat(document.getElementById('tradeAmount').value); if(!n || isNaN(a) || a <= 0) return; const ex = inventory.find(i => i.name === n); if(ex) ex.amount += a; else inventory.push({ name: n, amount: a }); localStorage.setItem('bordo_inv', JSON.stringify(inventory)); renderInventory(); }
     function removeItem(idx) { inventory.splice(idx, 1); localStorage.setItem('bordo_inv', JSON.stringify(inventory)); renderInventory(); }
     function updateLiveTicker() { document.getElementById('newsText').innerText = localItems.map(i => `${i.name}: ${i.price.toFixed(2)}G`).join("  ⚡  "); }
     
