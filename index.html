@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ZOMBIX BORSA | BORDO v9.7 (STABLE_EDITION)</title>
+    <link rel="dns-prefetch" href="https://bordotrader-e0b9e-default-rtdb.europe-west1.firebasedatabase.app">
+    <link rel="preconnect" href="https://bordotrader-e0b9e-default-rtdb.europe-west1.firebasedatabase.app" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
         
@@ -169,10 +173,118 @@
         .msg-reply-box { background: rgba(255,255,255,0.08); border-left: 3px solid var(--neon-gold); padding: 8px 12px; font-size: 11px; margin-bottom: 8px; color: #999; border-radius: 0 6px 6px 0; }
 
         #admin-panel { 
-            display: none; background: rgba(10, 10, 15, 0.95); border: 2px solid var(--neon-red);
-            padding: 25px; margin: 15px; z-index: 100000; border-radius: 12px;
-            box-shadow: 0 0 40px rgba(255, 51, 102, 0.3), inset 0 0 40px rgba(255, 51, 102, 0.05);
+            display: none;
+            position: relative;
+            z-index: 500;
+            max-width: 1080px;
+            margin: 16px auto;
+            padding: 20px 22px 24px;
+            background: rgba(10, 10, 15, 0.97);
+            border: 2px solid var(--neon-red);
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(255, 51, 102, 0.25), inset 0 0 40px rgba(255, 51, 102, 0.04);
         }
+        .admin-panel-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid rgba(255, 71, 87, 0.35);
+        }
+        .admin-panel-header h3 {
+            margin: 0;
+            color: var(--neon-red);
+            font-size: 20px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(255, 71, 87, 0.35);
+        }
+        .admin-panel-sub {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #888;
+            text-transform: uppercase;
+        }
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            align-items: start;
+        }
+        .admin-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.35);
+            min-width: 0;
+        }
+        .admin-section-wide { grid-column: 1 / -1; }
+        .admin-section-gold { border-color: rgba(255, 215, 0, 0.35); background: rgba(255, 215, 0, 0.04); }
+        .admin-section-green { border-color: rgba(0, 255, 136, 0.35); background: rgba(0, 255, 136, 0.04); }
+        .admin-section-red { border-color: rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.05); }
+        .admin-section-title {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--neon-gold);
+            margin: 0 0 2px;
+            line-height: 1.3;
+        }
+        .admin-section-red .admin-section-title { color: var(--neon-red); }
+        .admin-section-green .admin-section-title { color: var(--neon-green); }
+        #admin-panel input,
+        #admin-panel select,
+        #admin-panel button {
+            width: 100%;
+            margin: 0;
+            padding: 10px 12px;
+            font-size: 11px;
+            min-height: 38px;
+            line-height: 1.25;
+            border-radius: 6px;
+        }
+        #admin-panel input,
+        #admin-panel select {
+            background: rgba(0, 0, 0, 0.55);
+        }
+        .admin-btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .admin-btn-row-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .admin-field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        #admin-panel button {
+            letter-spacing: 0.5px;
+            white-space: normal;
+            text-align: center;
+            word-break: break-word;
+        }
+        #admin-panel button:hover {
+            transform: none;
+        }
+        #admin-panel .admin-btn-gold { background: var(--neon-gold); color: #000; border-color: var(--neon-gold); font-weight: 800; }
+        #admin-panel .admin-btn-green { background: var(--neon-green); color: #000; border-color: var(--neon-green); font-weight: 800; }
+        #admin-panel .admin-btn-red { background: var(--neon-red); color: #000; border-color: var(--neon-red); font-weight: 800; }
+        #admin-panel .admin-btn-outline-green { border-color: var(--neon-green); color: var(--neon-green); background: transparent; font-weight: 700; }
+        #admin-panel .admin-btn-outline-red { border-color: var(--neon-red); color: var(--neon-red); background: transparent; font-weight: 700; }
+        #admin-panel .admin-btn-outline-gold { border-color: var(--neon-gold); color: var(--neon-gold); background: transparent; font-weight: 700; }
+        #admin-panel .admin-btn-muted { border-color: #555; color: #888; background: transparent; font-weight: 600; }
+        #admin-panel .admin-btn-gold:hover,
+        #admin-panel .admin-btn-green:hover,
+        #admin-panel .admin-btn-red:hover { filter: brightness(1.12); }
 
         #auth-screen { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-deep);
@@ -200,7 +312,11 @@
             display: none; flex-direction: column; gap: 25px; padding: 25px; flex: 1; 
             padding-bottom: 50px; max-width: 1600px; margin: 0 auto; width: 100%;
         }
-        @media (min-width: 992px) { .dashboard { flex-direction: row; gap: 30px; } }
+        @media (min-width: 992px) {
+            .dashboard { flex-direction: row; gap: 30px; align-items: flex-start; }
+            .side-panel { flex: 1; min-width: 0; }
+            .main-panel { flex: 0 0 auto; width: 100%; max-width: 460px; }
+        }
 
         .main-panel, .side-panel { 
             background: var(--bg-card); border: 2px solid var(--border-subtle); padding: 30px; 
@@ -387,6 +503,184 @@
         }
         .market-table tr:hover td { background: rgba(255,255,255,0.05); }
         .market-table td:first-child { min-width: 140px; }
+        .market-shell { margin-top: 15px; width: 100%; }
+        .market-closed-banner {
+            text-align: center;
+            padding: 12px 10px;
+            margin-bottom: 10px;
+            color: var(--neon-red);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: rgba(255, 51, 102, 0.08);
+            border: 1px solid rgba(255, 51, 102, 0.35);
+            border-radius: 8px;
+        }
+        .market-category-nav {
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 4px 2px 12px;
+            margin-bottom: 4px;
+            box-sizing: border-box;
+        }
+        .market-category-primary {
+            display: flex;
+            width: 100%;
+            min-width: 0;
+        }
+        .market-cat-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border: 2px solid rgba(255, 215, 0, 0.28);
+            background: rgba(0, 0, 0, 0.35);
+            color: #aaa;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: var(--transition-smooth);
+            margin: 0;
+        }
+        .market-cat-more-btn:hover {
+            color: var(--neon-gold);
+            border-color: rgba(255, 215, 0, 0.5);
+            background: rgba(255, 215, 0, 0.08);
+        }
+        .market-cat-more-btn.active {
+            color: var(--neon-gold);
+            border-color: var(--neon-gold);
+            background: rgba(255, 215, 0, 0.1);
+        }
+        .market-cat-more-icon {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+        .market-category-extra {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            overflow: hidden;
+            width: 100%;
+            min-width: 0;
+            transition: grid-template-rows 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.28s ease;
+        }
+        .market-category-extra.open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+        }
+        .market-category-extra-inner {
+            min-height: 0;
+            overflow: hidden;
+            width: 100%;
+        }
+        .market-category-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 8px;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .market-cat-tab {
+            flex: 0 1 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 14px;
+            border: 2px solid rgba(255, 215, 0, 0.35);
+            background: rgba(0, 0, 0, 0.45);
+            color: var(--neon-gold);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: var(--transition-smooth);
+            margin: 0;
+            max-width: 100%;
+            min-height: auto;
+        }
+        .market-cat-tab:hover {
+            background: rgba(255, 215, 0, 0.12);
+            border-color: var(--neon-gold);
+            transform: none;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+        .market-cat-tab.active {
+            background: rgba(255, 215, 0, 0.22);
+            border-color: var(--neon-gold);
+            color: #fff;
+            box-shadow: 0 0 22px rgba(255, 215, 0, 0.35), inset 0 0 16px rgba(255, 215, 0, 0.08);
+        }
+        .market-cat-tab.active::after {
+            content: ' ▾';
+            font-size: 10px;
+            opacity: 0.85;
+        }
+        .market-cat-tab--genel {
+            border-color: rgba(255, 215, 0, 0.55);
+            flex-shrink: 0;
+        }
+        .market-cat-count {
+            font-size: 10px;
+            opacity: 0.75;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.35);
+            letter-spacing: 0;
+        }
+        .market-category-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            transform: translateY(-8px);
+            overflow: hidden;
+            transition: grid-template-rows 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.32s ease,
+                        transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .market-category-content.open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .market-category-inner {
+            min-height: 0;
+            overflow: hidden;
+        }
+        .market-table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .market-empty-hint {
+            text-align: center;
+            padding: 28px 16px;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+        .admin-category-hint {
+            font-size: 10px;
+            color: #888;
+            letter-spacing: 1px;
+            line-height: 1.4;
+            margin: 0;
+        }
 
         .suggested-user { 
             padding: 12px; border: 2px solid rgba(255,255,255,0.15); margin-bottom: 8px; text-align: left; 
@@ -716,6 +1010,33 @@
         }
         .mobile-nav-icon { font-size: 18px; display: block; margin-bottom: 4px; }
 
+        .user-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .user-display-name {
+            color: var(--neon-gold);
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .user-toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
         /* ========== RESPONSIVE DÜZENLEMELER ========== */
         @media (max-width: 992px) {
             .dashboard { flex-direction: column !important; }
@@ -723,78 +1044,190 @@
         }
 
         @media (max-width: 768px) {
-            .dashboard { padding: 12px; gap: 15px; padding-bottom: 70px; }
-            .main-panel, .side-panel { padding: 18px; border-radius: 12px; }
-            .auth-box { padding: 30px 20px; width: 95%; }
-            .chat-container { 
-                min-height: 450px; 
-                height: calc(100vh - 320px);
-                margin-top: 15px; 
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
             }
-            .chat-tab { padding: 12px 8px; font-size: 10px; letter-spacing: 1px; }
-            .online-status-box { padding: 12px 10px; }
-            #display-name { font-size: 18px !important; }
-            .spotlight-box { padding: 18px; }
-            .spotlight-title { font-size: 13px; letter-spacing: 2px; }
-            .movers-box { flex-direction: column; gap: 10px; }
-            .mover-item { padding: 12px; }
-            #market-status-indicator { bottom: 65px; left: 10px; padding: 8px 12px; font-size: 10px; }
-            .ping-display { top: 10px; right: 10px; padding: 8px 14px; font-size: 11px; }
-            .footer-legal { padding: 25px 15px; font-size: 11px; margin-bottom: 50px; }
+
+            .news-ticker { font-size: 11px; padding: 10px 0; letter-spacing: 1px; }
+
+            .dashboard {
+                padding: 12px 10px;
+                gap: 14px;
+                padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+            }
+            .main-panel, .side-panel {
+                padding: 16px 14px;
+                border-radius: 12px;
+            }
+            .main-panel:hover, .side-panel:hover {
+                transform: none;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.5), var(--shadow-glow);
+            }
+
+            .user-toolbar { margin-bottom: 14px; gap: 10px; }
+            .user-display-name { font-size: 18px; letter-spacing: 1px; max-width: 55vw; }
+            .user-toolbar-actions { gap: 8px; }
+            .logout-btn { padding: 8px 10px; font-size: 10px; margin-left: 0; }
             .theme-selector { gap: 6px; }
-            .theme-btn { width: 18px; height: 18px; }
-            .bordo-exp-mini-btn { padding: 6px 10px; font-size: 14px; }
-            #admin-panel { padding: 15px; margin: 10px; }
-            #admin-panel > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
-            #admin-panel input, #admin-panel select, #admin-panel button { font-size: 12px; padding: 12px; }
-            .market-table td { padding: 12px 8px; font-size: 13px; }
-            .market-table th { padding: 12px 8px; font-size: 11px; }
-            .market-table td:first-child { min-width: 100px; }
+            .theme-btn { width: 20px; height: 20px; }
+            .bordo-exp-mini-btn { padding: 8px 10px; font-size: 15px; min-width: 40px; }
+
+            .auth-box { padding: 28px 18px; width: 94%; max-width: 400px; }
+            .auth-box input, .auth-box button { margin-bottom: 14px; min-height: 46px; }
+
+            .chat-container {
+                min-height: 420px;
+                height: min(68vh, 560px);
+                margin-top: 12px;
+            }
+            .chat-header-tabs { flex-wrap: nowrap; }
+            .chat-tab { padding: 12px 6px; font-size: 10px; letter-spacing: 1px; flex: 1 1 0; min-width: 0; }
+            .online-status-box { padding: 10px 8px; flex-shrink: 0; border-left-width: 1px; }
+            .online-status-box span:last-child { font-size: 11px !important; }
+
+            .spotlight-box { padding: 16px; }
+            .spotlight-title { font-size: 13px; letter-spacing: 2px; }
+            .movers-box { flex-direction: row; gap: 10px; }
+            .mover-item { padding: 12px 10px; flex: 1; min-width: 0; }
+
+            #market-status-indicator {
+                bottom: calc(68px + env(safe-area-inset-bottom, 0px));
+                left: max(10px, env(safe-area-inset-left));
+                padding: 8px 12px;
+                font-size: 10px;
+                letter-spacing: 1px;
+                max-width: calc(100vw - 120px);
+            }
+            .ping-display {
+                top: max(8px, env(safe-area-inset-top));
+                right: max(8px, env(safe-area-inset-right));
+                padding: 6px 10px;
+                font-size: 10px;
+                opacity: 0.85;
+            }
+
+            .footer-legal { padding: 22px 14px; font-size: 11px; margin-bottom: 20px; line-height: 1.7; }
+
+            /* Admin panel — mobil */
+            #admin-panel {
+                margin: 8px 6px 12px;
+                padding: 14px 12px 16px;
+                border-radius: 10px;
+            }
+            .admin-panel-header {
+                margin-bottom: 14px;
+                padding-bottom: 12px;
+            }
+            .admin-panel-header h3 { font-size: 17px; letter-spacing: 2px; }
+            .admin-panel-sub { width: 100%; text-align: right; font-size: 9px; }
+            .admin-grid { grid-template-columns: 1fr; gap: 10px; }
+            .admin-section { padding: 12px 13px; gap: 9px; border-radius: 8px; }
+            .admin-section-title { font-size: 10px; letter-spacing: 1.5px; margin-bottom: 0; }
+            .admin-field-row { grid-template-columns: 1fr; gap: 8px; }
+            .admin-btn-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .admin-btn-row-3 {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .admin-btn-row-3 button:last-child { grid-column: 1 / -1; }
+            #admin-panel input,
+            #admin-panel select,
+            #admin-panel button {
+                font-size: 12px;
+                padding: 12px 10px;
+                min-height: 44px;
+                border-radius: 8px;
+            }
+            #admin-panel button { letter-spacing: 0.8px; }
+
+            .market-cat-tab { padding: 9px 12px; font-size: 10px; letter-spacing: 1px; }
+            .market-category-nav { gap: 6px; padding-bottom: 10px; }
+            .market-category-bar { gap: 6px; }
+
+            .market-table td { padding: 11px 8px; font-size: 13px; }
+            .market-table th { padding: 11px 8px; font-size: 11px; }
+            .market-table td:first-child { min-width: 90px; }
             .trend-label { font-size: 8px; padding: 1px 4px; margin-left: 4px; letter-spacing: 0; }
             .sys-log-stream { font-size: 10px; padding: 0 10px; }
             #chat-content-area { padding: 12px; }
             .chat-msg { padding: 10px; margin-bottom: 10px; }
+            .chat-msg:hover { transform: none; }
             .msg-dm-self, .msg-dm-other { padding: 10px; margin-bottom: 8px; }
-            .input-row { padding: 6px; }
-            #chat-input { padding: 12px; font-size: 13px; }
-            .chat-tool-btn { width: 40px; font-size: 16px; }
-            #chat-send { width: 50px; font-size: 14px; }
-            .modal-content { width: 95%; padding: 25px 20px; margin: 15% auto; }
-            .confirm-box { width: 90%; padding: 25px 20px; }
-            .viewer-box { padding: 20px; }
-            #viewer-img { max-height: 60%; }
+            .input-row { padding: 6px; gap: 4px; }
+            #chat-input { padding: 12px 10px; font-size: 16px; }
+            .chat-tool-btn { width: 42px; font-size: 17px; min-height: 44px; }
+            #chat-send { width: 52px; font-size: 14px; min-height: 44px; }
+
+            .modal-content { width: 94%; padding: 22px 18px; margin: 12vh auto 0; max-height: 85vh; }
+            .confirm-box { width: 92%; padding: 24px 18px; }
+            .viewer-box { padding: 18px; }
+            #viewer-img { max-height: 55vh; }
             .rank-badge { font-size: 9px; padding: 2px 6px; margin-right: 4px; }
-            .mobile-bottom-nav { display: block; }
+
+            .mobile-bottom-nav {
+                display: block;
+                padding-bottom: env(safe-area-inset-bottom, 0px);
+            }
+            .mobile-nav-btn {
+                padding: 10px 6px 12px;
+                font-size: 10px;
+                min-height: 52px;
+            }
+            .mobile-nav-icon { font-size: 17px; margin-bottom: 3px; }
         }
 
         @media (max-width: 480px) {
-            .dashboard { padding: 8px; padding-bottom: 70px; }
-            .main-panel, .side-panel { padding: 14px; border-radius: 10px; }
-            .auth-box { padding: 25px 15px; }
+            .dashboard { padding: 8px 6px; padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); gap: 12px; }
+            .main-panel, .side-panel { padding: 14px 12px; border-radius: 10px; }
+
+            .user-display-name { font-size: 16px; max-width: 48vw; }
+            .logout-btn { padding: 7px 8px; font-size: 9px; }
+
+            .auth-box { padding: 24px 14px; }
             .auth-box h2 { font-size: 24px !important; letter-spacing: 3px !important; }
-            .chat-container { min-height: 400px; height: calc(100vh - 300px); }
-            .chat-tab { font-size: 9px; padding: 10px 4px; }
+
+            .chat-container { min-height: 380px; height: min(62vh, 480px); }
+            .chat-tab { font-size: 9px; padding: 10px 4px; letter-spacing: 0.5px; }
+            .online-status-box { padding: 8px 6px; }
+
             .spotlight-title { font-size: 12px; }
             .spotlight-tip { font-size: 11px; }
-            #portfolioVal { font-size: 24px !important; }
+            .movers-box { flex-direction: column; }
+            #portfolioVal { font-size: 26px !important; }
+
+            #admin-panel { margin: 6px 4px 10px; padding: 12px 10px 14px; }
+            .admin-panel-header h3 { font-size: 15px; }
+            .admin-section { padding: 11px 11px; gap: 8px; }
+            .admin-btn-row { gap: 6px; }
+            .admin-btn-row-3 { grid-template-columns: 1fr; }
+            .admin-btn-row-3 button:last-child { grid-column: auto; }
+            #admin-panel input,
+            #admin-panel select,
+            #admin-panel button { font-size: 11px; padding: 11px 9px; min-height: 46px; }
+
             .market-table td { padding: 10px 6px; font-size: 12px; }
             .market-table th { padding: 10px 6px; font-size: 10px; }
-            .market-table td:first-child { min-width: 80px; }
+            .market-table td:first-child { min-width: 90px; }
             .trend-label { font-size: 7px; padding: 1px 3px; }
+
             .bordo-exp-modal { border-radius: 0; max-height: 100vh; border-left: none; border-right: none; }
-            .bordo-exp-modal-header { padding: 18px 20px; }
-            .bordo-exp-modal-title { font-size: 16px; letter-spacing: 2px; }
-            .bordo-exp-modal-body { padding: 15px 12px; }
+            .bordo-exp-modal-header { padding: 16px 14px; }
+            .bordo-exp-modal-title { font-size: 15px; letter-spacing: 2px; }
+            .bordo-exp-modal-body { padding: 14px 10px; }
             .bordo-exp-table { font-size: 11px; }
-            .bordo-exp-table th { padding: 10px 6px; font-size: 10px; letter-spacing: 1px; }
-            .bordo-exp-table td { padding: 8px 6px; }
-            .maintenance-content { padding: 35px 25px; }
-            .maintenance-title { font-size: 28px; letter-spacing: 4px; }
-            .maintenance-icon { font-size: 56px; }
-            .maintenance-subtitle { font-size: 13px; }
-            #marketSearch { font-size: 13px; padding: 12px; }
-            .mobile-nav-btn { font-size: 10px; padding: 12px 4px; }
-            .mobile-nav-icon { font-size: 16px; }
+            .bordo-exp-table th { padding: 9px 5px; font-size: 9px; letter-spacing: 0.5px; }
+            .bordo-exp-table td { padding: 8px 5px; }
+
+            .maintenance-content { padding: 30px 20px; }
+            .maintenance-title { font-size: 24px; letter-spacing: 3px; }
+            .maintenance-icon { font-size: 48px; }
+            .maintenance-subtitle { font-size: 12px; }
+
+            #marketSearch { font-size: 16px; padding: 12px; min-height: 46px; }
+            #market-status-indicator { font-size: 9px; padding: 7px 10px; }
+            .mobile-nav-btn { font-size: 9px; padding: 9px 3px 11px; letter-spacing: 1px; }
+            .mobile-nav-icon { font-size: 15px; }
         }
 
         ::selection { background: rgba(255, 215, 0, 0.4); color: #000; text-shadow: none; }
@@ -869,68 +1302,106 @@
 </div>
 
 <div id="admin-panel">
-    <h3 style="color: var(--neon-red); margin: 0 0 20px 0; font-size: 22px; letter-spacing: 3px; border-bottom: 2px solid rgba(255,71,87,0.3); padding-bottom: 15px; text-shadow: 0 0 20px rgba(255,71,87,0.3);">BORDO ADMIN</h3>
-    
-    <div style="border: 2px solid rgba(255,215,0,0.3); padding: 20px; margin-bottom: 20px; border-radius: 10px; background: rgba(255,215,0,0.05); box-shadow: 0 0 20px rgba(255,215,0,0.1);">
-        <input type="text" id="botNewsInput" placeholder="Haber Botu Mesajı..." style="margin-bottom:15px; background: rgba(0,0,0,0.5); font-size: 13px;">
-        <div style="display: flex; gap:10px;">
-            <button onclick="pushBotNews()" style="background:var(--neon-gold); color:#000; font-weight:800; margin:0; flex:1; border-radius: 6px; font-size: 12px;">BOT HABER GÖNDER</button>
-            <button onclick="deleteBotNews()" style="border-color:var(--neon-red); color:var(--neon-red); margin:0; flex:1; border-radius: 6px; font-size: 12px;">HABERİ SİL</button>
-        </div>
+    <div class="admin-panel-header">
+        <h3>BORDO ADMIN</h3>
+        <span class="admin-panel-sub">Kontrol merkezi</span>
     </div>
-    
-    <div style="border: 2px solid rgba(0,255,136,0.3); padding: 20px; margin-bottom: 20px; border-radius: 10px; background: rgba(0,255,136,0.05); box-shadow: 0 0 20px rgba(0,255,136,0.1);">
-        <input type="text" id="vipTargetInput" placeholder="VIP Yapılacak İsim..." style="margin-bottom:15px; background: rgba(0,0,0,0.5); font-size: 13px;">
-        <button onclick="giveVip()" style="border-color:var(--neon-green); color:var(--neon-green); margin:0; border-radius: 6px; font-size: 12px; font-weight: 700;">VIP YETKİSİ VER</button>
-    </div>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; border: 2px dashed rgba(255,71,87,0.3); padding: 15px; border-radius: 10px;">
-        <button onclick="setMarketStatus(true)" style="background:var(--neon-green); color:#000; font-weight:800; margin:0; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(0,255,136,0.3);">BORSA AÇ</button>
-        <button onclick="setMarketStatus(false)" style="background:var(--neon-red); color:#000; font-weight:800; margin:0; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(255,51,102,0.3);">BORSA DURDUR</button>
-    </div>
-    
-    <div style="border: 2px solid var(--neon-red); padding: 20px; margin-bottom: 20px; border-radius: 10px; background: rgba(255,51,102,0.05); box-shadow: 0 0 20px rgba(255,51,102,0.1);">
-        <div style="color: var(--neon-red); font-weight: 800; margin-bottom: 15px; font-size: 14px; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,51,102,0.3);">🔧 BAKIM MODU KONTROLÜ</div>
-        <input type="text" id="maintenanceInput" placeholder="Bakım mesajı (örn: Güncelleme yapılıyor...)" style="margin-bottom: 15px; background: rgba(0,0,0,0.5); font-size: 13px;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <button onclick="setMaintenance(true)" style="background: var(--neon-red); color: #000; font-weight: 800; margin: 0; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(255,51,102,0.3);">BAKIMI AÇ</button>
-            <button onclick="setMaintenance(false)" style="border-color: var(--neon-green); color: var(--neon-green); margin: 0; border-radius: 6px; font-size: 12px; font-weight: 700;">BAKIMI KAPAT</button>
-        </div>
-    </div>
-    
-    <button onclick="toggleBreachEffect()" style="border-color:var(--neon-red); color:var(--neon-red); margin-top:5px; width:100%; border-radius: 6px; font-weight: 800; font-size: 13px; text-shadow: 0 0 10px rgba(255,51,102,0.3);">⚠ SİBER SALDIRI EFEKTİ (AÇ/KAPA)</button>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:20px;">
-        <input type="text" id="newItemName" placeholder="Ürün İsmi" style="background: rgba(0,0,0,0.5); font-size: 13px;">
-        <input type="number" id="newItemPrice" placeholder="Başlangıç G" style="background: rgba(0,0,0,0.5); font-size: 13px;">
-    </div>
-    <button onclick="addItem()" style="color:var(--neon-green); border-color:var(--neon-green); margin-top: 10px; border-radius: 6px; font-weight: 700; font-size: 12px;">YENİ ÜRÜNÜ SİSTEME EKLE</button>
-    
-    <div style="border: 2px solid rgba(255,215,0,0.3); padding: 20px; margin-top: 20px; border-radius: 10px; background: rgba(255,215,0,0.05);">
-        <div style="color: var(--neon-gold); font-weight: 800; margin-bottom: 12px; font-size: 13px; letter-spacing: 2px;">⚡ ANLIK FİYAT KONTROLÜ</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:10px;">
-            <select id="admSelect" style="background: rgba(0,0,0,0.5); font-size: 13px;"></select>
-            <input type="number" id="admPrice" placeholder="Yeni Fiyat (G)" style="background: rgba(0,0,0,0.5); font-size: 13px;">
-        </div>
-        <button onclick="pushPrice()" style="background:var(--neon-red); color:#000; font-weight:800; margin-top: 10px; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(255,51,102,0.3); width: 100%;">FİYATI SABİTLE VE BAS</button>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-            <button onclick="setStable(true)" style="background: var(--neon-gold); color: #000; font-weight: 800; margin: 0; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(255,215,0,0.3);">🔒 STABİL KALSIN</button>
-            <button onclick="setStable(false)" style="border-color: var(--neon-red); color: var(--neon-red); margin: 0; border-radius: 6px; font-size: 12px; font-weight: 700;">🔓 STABİLİ KALDIR</button>
-        </div>
-    </div>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:15px;">
-        <button onclick="setTrend('pump')" style="border-color:var(--neon-gold); color:var(--neon-gold); font-size:11px; border-radius: 6px; font-weight: 700;">PUMP (SARI)</button>
-        <button onclick="setTrend('dump')" style="border-color:var(--neon-red); color:var(--neon-red); font-size:11px; border-radius: 6px; font-weight: 700;">DUMP (KIRMIZI)</button>
-    </div>
-    <button onclick="setTrend('normal')" style="font-size:11px; border-color:#555; margin-top: 10px; border-radius: 6px; color: #777;">EFEKTLERİ TEMİZLE</button>
-    <button onclick="deleteItem()" style="font-size:11px; border-color:#555; margin-top:15px; border-radius: 6px; color: #777;">SEÇİLİ ÜRÜNÜ SİL</button>
-    <button onclick="banUser()" style="border-color:var(--neon-red); color:var(--neon-red); margin-top:15px; font-weight: 800; border-radius: 6px; font-size: 13px; box-shadow: 0 0 20px rgba(255,51,102,0.2);">KULLANICIYI BANLA</button>
-    <input type="text" id="announcementInput" placeholder="Sistem duyurusu..." style="margin-top:20px; background: rgba(0,0,0,0.5); font-size: 13px;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-        <button onclick="pushAnnouncement()" style="background:var(--neon-red); color:#000; font-weight:800; border-radius: 6px; font-size: 12px; box-shadow: 0 0 20px rgba(255,51,102,0.3);">DUYURUYU YAYINLA</button>
-        <button onclick="clearAnnouncement()" style="border-color:#555; border-radius: 6px; color: #777; font-size: 12px;">SİSTEMDEN KALDIR</button>
+
+    <div class="admin-grid">
+        <section class="admin-section admin-section-gold">
+            <div class="admin-section-title">Haber botu</div>
+            <input type="text" id="botNewsInput" placeholder="Haber botu mesajı...">
+            <div class="admin-btn-row">
+                <button type="button" class="admin-btn-gold" onclick="pushBotNews()">Gönder</button>
+                <button type="button" class="admin-btn-outline-red" onclick="deleteBotNews()">Sil</button>
+            </div>
+        </section>
+
+        <section class="admin-section admin-section-green">
+            <div class="admin-section-title">VIP yetkisi</div>
+            <input type="text" id="vipTargetInput" placeholder="VIP yapılacak isim...">
+            <button type="button" class="admin-btn-outline-green" onclick="giveVip()">VIP ver</button>
+        </section>
+
+        <section class="admin-section admin-section-green">
+            <div class="admin-section-title">Borsa durumu</div>
+            <div class="admin-btn-row">
+                <button type="button" class="admin-btn-green" onclick="setMarketStatus(true)">Borsa aç</button>
+                <button type="button" class="admin-btn-red" onclick="setMarketStatus(false)">Durdur</button>
+            </div>
+        </section>
+
+        <section class="admin-section admin-section-red">
+            <div class="admin-section-title">Bakım modu</div>
+            <input type="text" id="maintenanceInput" placeholder="Bakım mesajı...">
+            <div class="admin-btn-row">
+                <button type="button" class="admin-btn-red" onclick="setMaintenance(true)">Bakımı aç</button>
+                <button type="button" class="admin-btn-outline-green" onclick="setMaintenance(false)">Kapat</button>
+            </div>
+        </section>
+
+        <section class="admin-section admin-section-wide admin-section-red">
+            <div class="admin-section-title">Efektler</div>
+            <button type="button" class="admin-btn-outline-red" onclick="toggleBreachEffect()">Siber saldırı efekti (aç/kapa)</button>
+        </section>
+
+        <section class="admin-section admin-section-green">
+            <div class="admin-section-title">Yeni ürün</div>
+            <div class="admin-field-row">
+                <input type="text" id="newItemName" placeholder="Ürün ismi">
+                <input type="number" id="newItemPrice" placeholder="Başlangıç G">
+            </div>
+            <input type="text" id="newItemCategory" list="categoryNamesList" placeholder="Kategori (örn: Silahlar, VIP...)">
+            <button type="button" class="admin-btn-outline-green" onclick="addItem()">Ürünü ekle</button>
+        </section>
+
+        <section class="admin-section admin-section-gold">
+            <div class="admin-section-title">Kategori yönetimi</div>
+            <select id="admSelectCategory"></select>
+            <input type="text" id="categoryNameInput" list="categoryNamesList" placeholder="Kategori adı yaz veya seç">
+            <datalist id="categoryNamesList"></datalist>
+            <p class="admin-category-hint" id="category-current-hint">Ürün seçince mevcut kategori burada görünür.</p>
+            <div class="admin-btn-row">
+                <button type="button" class="admin-btn-gold" onclick="assignItemCategory()">Kategoriye ata</button>
+                <button type="button" class="admin-btn-muted" onclick="clearItemCategory()">Genel yap</button>
+            </div>
+            <button type="button" class="admin-btn-outline-gold" onclick="registerCategoryOnly()">Yeni kategori oluştur</button>
+        </section>
+
+        <section class="admin-section admin-section-gold">
+            <div class="admin-section-title">Fiyat &amp; stabil</div>
+            <div class="admin-field-row">
+                <select id="admSelect"></select>
+                <input type="number" id="admPrice" placeholder="Yeni fiyat (G)">
+            </div>
+            <button type="button" class="admin-btn-red" onclick="pushPrice()">Fiyatı sabitle</button>
+            <div class="admin-btn-row">
+                <button type="button" class="admin-btn-gold" onclick="setStable(true)">Stabil kalsın</button>
+                <button type="button" class="admin-btn-outline-red" onclick="setStable(false)">Stabili kaldır</button>
+            </div>
+        </section>
+
+        <section class="admin-section admin-section-gold">
+            <div class="admin-section-title">Trend efektleri</div>
+            <div class="admin-btn-row">
+                <button type="button" class="admin-btn-outline-gold" onclick="setTrend('pump')">Pump</button>
+                <button type="button" class="admin-btn-outline-red" onclick="setTrend('dump')">Dump</button>
+            </div>
+            <div class="admin-btn-row admin-btn-row-3">
+                <button type="button" class="admin-btn-muted" onclick="setTrend('normal')">Temizle</button>
+                <button type="button" class="admin-btn-muted" onclick="deleteItem()">Ürün sil</button>
+                <button type="button" class="admin-btn-outline-red" onclick="banUser()">Banla</button>
+            </div>
+        </section>
+
+        <section class="admin-section admin-section-wide admin-section-red">
+            <div class="admin-section-title">Sistem duyurusu</div>
+            <input type="text" id="announcementInput" placeholder="Duyuru metni...">
+            <div class="admin-btn-row">
+                <button type="button" class="admin-btn-red" onclick="pushAnnouncement()">Yayınla</button>
+                <button type="button" class="admin-btn-muted" onclick="clearAnnouncement()">Kaldır</button>
+            </div>
+        </section>
     </div>
 </div>
 
@@ -957,9 +1428,9 @@
 
 <div class="dashboard" id="main-dashboard">
     <div class="side-panel" id="side-panel">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom:20px; flex-wrap: wrap; gap: 15px;">
-            <div id="display-name" style="color:var(--neon-gold); font-size: 24px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 0 20px rgba(255,215,0,0.3);"></div>
-            <div style="display: flex; align-items: center; gap: 15px;">
+        <div class="user-toolbar">
+            <div id="display-name" class="user-display-name"></div>
+            <div class="user-toolbar-actions">
                 <button class="bordo-exp-mini-btn" onclick="openExpModal()" title="EXP Tablosu">📊</button>
                 <button class="logout-btn" onclick="logout()">[ÇIKIŞ]</button>
                 <div class="theme-selector">
@@ -1055,15 +1526,32 @@
         </div>
 
         <input type="text" id="marketSearch" placeholder="[ VARLIK ARA... ]" oninput="updateUI()">
-        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; display: flex; justify-content: center;">
-            <table class="market-table" style="margin-top: 15px;">
-                <thead><tr style="color:var(--neon-gold); font-size:12px; border-bottom:3px solid rgba(255,215,0,0.4); text-transform: uppercase; letter-spacing: 2px;">
-                    <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 140px;">VARLIK</th>
-                    <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 100px;">FİYAT</th>
-                    <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 100px;">TREND</th>
-                </tr></thead>
-                <tbody id="marketBody"></tbody>
-            </table>
+        <div class="market-shell">
+            <div id="marketClosedBanner" class="market-closed-banner" style="display:none;"></div>
+            <div class="market-category-nav" id="marketCategoryNav">
+                <div class="market-category-primary" id="marketPrimaryCategory"></div>
+                <button type="button" class="market-cat-more-btn" id="marketCategoryToggle" style="display:none;">KATEGORİLER <span class="market-cat-more-icon">▾</span></button>
+                <div class="market-category-extra" id="marketCategoryExtra">
+                    <div class="market-category-extra-inner">
+                        <div class="market-category-bar" id="marketCategoryBar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="market-category-content" id="marketCategoryContent">
+                <div class="market-category-inner">
+                    <div class="market-table-scroll">
+                        <table class="market-table">
+                        <thead><tr style="color:var(--neon-gold); font-size:12px; border-bottom:3px solid rgba(255,215,0,0.4); text-transform: uppercase; letter-spacing: 2px;">
+                            <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 140px;">VARLIK</th>
+                            <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 100px;">FİYAT</th>
+                            <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 100px;">TREND</th>
+                        </tr></thead>
+                        <tbody id="marketBody"></tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+            <div id="marketPickHint" class="market-empty-hint">Kategori seç — ürünler burada açılır</div>
         </div>
     </div>
 </div>
@@ -1088,7 +1576,16 @@
 
 <script>
     const FB = "https://bordotrader-e0b9e-default-rtdb.europe-west1.firebasedatabase.app";
+    const MARKET_CACHE_KEY = 'bordo_market_cache';
+    let syncBusy = false;
+    let syncTimer = null;
+    let dashboardBooted = false;
     let localItems = [];
+    let marketCategories = [];
+    const DEFAULT_CATEGORY = 'Genel';
+    let activeMarketCategory = DEFAULT_CATEGORY;
+    let marketCategoriesExpanded = false;
+    let marketItemsByCategory = {};
     let inventory = JSON.parse(localStorage.getItem('bordo_inv')) || [];
     let activeSession = JSON.parse(localStorage.getItem('bordo_session'));
     let activeUsersList = [];
@@ -1171,7 +1668,11 @@
     function toggleAuth(isReg) { document.getElementById('login-form').style.display = isReg ? 'none' : 'block'; document.getElementById('register-form').style.display = isReg ? 'block' : 'none'; document.getElementById('auth-error').style.display = 'none'; }
     function register() { const u = document.getElementById('reg-user').value.trim(); const p = document.getElementById('reg-pass').value.trim(); if(!u || !p) return; let users = JSON.parse(localStorage.getItem('bordo_accounts')) || {}; if(users[u]) { alert("Bu kullanıcı adı alınmış!"); return; } users[u] = { pass: p }; localStorage.setItem('bordo_accounts', JSON.stringify(users)); alert("Kayıt Başarılı!"); toggleAuth(false); }
     function login() { const u = document.getElementById('auth-user').value.trim(); const p = document.getElementById('auth-pass').value.trim(); let users = JSON.parse(localStorage.getItem('bordo_accounts')) || {}; if(u === "Bordo" && p === "1991bordo") { startSession(u); return; } if(users[u] && users[u].pass === p) { startSession(u); } else { document.getElementById('auth-error').style.display = 'block'; } }
-    function startSession(name) { localStorage.setItem('bordo_session', JSON.stringify({name: name})); location.reload(); }
+    function startSession(name) {
+        localStorage.setItem('bordo_session', JSON.stringify({ name: name }));
+        activeSession = { name: name };
+        bootDashboard();
+    }
     function logout() { localStorage.removeItem('bordo_session'); location.reload(); }
 
     function switchChatTab(mode) {
@@ -1297,9 +1798,90 @@
         container.innerHTML = html;
     }
 
-    async function sync() {
+    function updatePingDisplay(ms) {
+        const el = document.getElementById('ping-val');
+        if (!el) return;
+        el.innerText = ms + "ms";
+        el.style.color = ms < 120 ? "var(--neon-green)" : (ms < 300 ? "var(--neon-gold)" : "var(--neon-red)");
+    }
+
+    function saveMarketCache() {
         try {
-            const res = await fetch(`${FB}/.json`);
+            localStorage.setItem(MARKET_CACHE_KEY, JSON.stringify({
+                ts: Date.now(),
+                localItems,
+                marketCategories,
+                isMarketOpen
+            }));
+        } catch (e) {}
+    }
+
+    function hydrateMarketCache() {
+        try {
+            const raw = localStorage.getItem(MARKET_CACHE_KEY);
+            if (!raw) return;
+            const cached = JSON.parse(raw);
+            if (!cached.localItems || !cached.localItems.length) return;
+            localItems = cached.localItems;
+            marketCategories = cached.marketCategories || [];
+            isMarketOpen = cached.isMarketOpen !== false;
+            mergeCategoriesFromItems();
+            const dot = document.getElementById('status-dot');
+            const txt = document.getElementById('status-text');
+            if (dot && txt) {
+                if (isMarketOpen) {
+                    dot.className = "status-dot status-open";
+                    txt.innerText = "BORSA AÇIK";
+                } else {
+                    dot.className = "status-dot status-closed";
+                    txt.innerText = "BORSA KAPALI";
+                }
+            }
+            updateUI();
+            if (isMarketOpen) updateLiveTicker();
+        } catch (e) {}
+    }
+
+    function initDashboardEvents() {
+        if (dashboardBooted) return;
+        dashboardBooted = true;
+        const admCatSel = document.getElementById('admSelectCategory');
+        if (admCatSel) admCatSel.addEventListener('change', updateCategoryControls);
+        const marketCatNav = document.getElementById('marketCategoryNav');
+        if (marketCatNav) {
+            marketCatNav.addEventListener('click', (e) => {
+                if (e.target.closest('#marketCategoryToggle')) {
+                    toggleMarketCategoriesList();
+                    return;
+                }
+                const btn = e.target.closest('.market-cat-tab');
+                if (!btn || !btn.dataset.cat) return;
+                toggleMarketCategory(btn.dataset.cat);
+            });
+        }
+    }
+
+    function bootDashboard() {
+        if (!activeSession) return;
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('main-dashboard').style.display = 'flex';
+        document.getElementById('display-name').innerText = activeSession.name;
+        if (activeSession.name === "Bordo") document.getElementById('admin-panel').style.display = 'block';
+        initDashboardEvents();
+        hydrateMarketCache();
+        sync();
+        if (!syncTimer) syncTimer = setInterval(sync, 5000);
+    }
+
+    async function sync() {
+        if (syncBusy) return;
+        syncBusy = true;
+        const syncStart = performance.now();
+        const statusText = document.getElementById('status-text');
+        const hadMarketData = localItems.length > 0;
+        if (statusText && !hadMarketData) statusText.innerText = "BAĞLANIYOR...";
+        try {
+            const res = await fetch(`${FB}/.json`, { cache: 'no-store' });
             const data = await res.json();
             if(!data) return;
 
@@ -1324,6 +1906,77 @@
                 applyBreach(data.system_breach);
             }
 
+            isMarketOpen = data.market_status !== false;
+            const dot = document.getElementById('status-dot');
+            const txt = document.getElementById('status-text');
+            if(isMarketOpen) { dot.className = "status-dot status-open"; txt.innerText = "BORSA AÇIK"; } else { dot.className = "status-dot status-closed"; txt.innerText = "BORSA KAPALI"; }
+
+            const systemKeys = ['ann','chat','system_announcement','bans','presence', 'market_status', 'bot_news', 'vips', 'dms', 'system_breach', 'maintenance', 'categories'];
+            marketCategories = [];
+            if (data.categories && typeof data.categories === 'object' && !Array.isArray(data.categories)) {
+                marketCategories = Object.entries(data.categories)
+                    .map(([key, val]) => ({
+                        name: (val && val.name) ? String(val.name) : key,
+                        order: (val && typeof val.order === 'number') ? val.order : 999
+                    }))
+                    .sort((a, b) => a.order - b.order)
+                    .map(c => c.name)
+                    .filter(c => c !== DEFAULT_CATEGORY);
+            }
+
+            const names = Object.keys(data).filter(k => !systemKeys.includes(k) && data[k] && typeof data[k] === 'object' && data[k].price !== undefined);
+
+            localItems = names.map(n => {
+                const item = data[n];
+                let currentPrice = parseFloat(item.price);
+                const basePrice = parseFloat(item.base || item.price);
+
+                if (isMarketOpen && !item.stable && !item.locked) {
+                    const change = (Math.random() * 6) - 2;
+                    let newPrice = currentPrice + change;
+                    const minPrice = basePrice - 2;
+                    const maxPrice = basePrice + 4;
+                    newPrice = Math.max(minPrice, Math.min(maxPrice, newPrice));
+                    currentPrice = newPrice;
+                }
+
+                const category = normalizeCategoryName(item.category) || DEFAULT_CATEGORY;
+
+                return { 
+                    name: n, 
+                    price: currentPrice, 
+                    last: parseFloat(item.last || item.price), 
+                    base: basePrice, 
+                    trend: item.trend || 'normal',
+                    stable: item.stable || false,
+                    category: category
+                };
+            }).sort((a, b) => b.price - a.price);
+
+            mergeCategoriesFromItems();
+            updateUI();
+            saveMarketCache();
+            if (isMarketOpen) {
+                updateLiveTicker();
+            } else {
+                document.getElementById('newsText').innerText = isBordoAdmin()
+                    ? "BORSA KAPALI — Admin fiyat güncelleyebilir"
+                    : "BORSA KAPALI — İŞLEMLER DURDURULDU";
+            }
+
+            if(activeSession) {
+                fetch(`${FB}/presence/${activeSession.name}.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(Date.now())
+                }).catch(() => {});
+            }
+            if(data.presence) { const now = Date.now(); activeUsersList = Object.keys(data.presence).filter(user => (now - data.presence[user]) < 120000); document.getElementById('online-count').innerText = activeUsersList.length; }
+
+            if(data.bot_news) { document.getElementById('news-bot-sticky').style.display = 'block'; document.getElementById('news-bot-sticky').querySelector('span').innerText = data.bot_news; } else { document.getElementById('news-bot-sticky').style.display = 'none'; }
+
+            const bar = document.getElementById('announcement-bar');
+            if(data.ann && data.ann !== "") { bar.innerText = "[ SİSTEM DUYURUSU: " + data.ann + " ]"; bar.style.display = 'block'; } else { bar.style.display = 'none'; }
+
             if(data.dms) {
                 dmCache = data.dms;
                 if(chatMode === 'dm' && activeDmTarget) {
@@ -1334,18 +1987,6 @@
                     renderDmList();
                 }
             }
-
-            if(data.bot_news) { document.getElementById('news-bot-sticky').style.display = 'block'; document.getElementById('news-bot-sticky').querySelector('span').innerText = data.bot_news; } else { document.getElementById('news-bot-sticky').style.display = 'none'; }
-            isMarketOpen = data.market_status !== false;
-            const dot = document.getElementById('status-dot');
-            const txt = document.getElementById('status-text');
-            if(isMarketOpen) { dot.className = "status-dot status-open"; txt.innerText = "BORSA AÇIK"; } else { dot.className = "status-dot status-closed"; txt.innerText = "BORSA KAPALI"; }
-
-            if(activeSession) { await fetch(`${FB}/presence/${activeSession.name}.json`, { method: 'PUT', body: JSON.stringify(Date.now()) }); }
-            if(data.presence) { const now = Date.now(); activeUsersList = Object.keys(data.presence).filter(user => (now - data.presence[user]) < 120000); document.getElementById('online-count').innerText = activeUsersList.length; }
-
-            const bar = document.getElementById('announcement-bar');
-            if(data.ann && data.ann !== "") { bar.innerText = "[ SİSTEM DUYURUSU: " + data.ann + " ]"; bar.style.display = 'block'; } else { bar.style.display = 'none'; }
 
             if(data.chat) {
                 const chatBox = document.getElementById('chat-messages');
@@ -1387,47 +2028,257 @@
                 }
             }
 
-            if (isMarketOpen) {
-                const systemKeys = ['ann','chat','system_announcement','bans','presence', 'market_status', 'bot_news', 'vips', 'dms', 'system_breach', 'maintenance'];
-                const names = Object.keys(data).filter(k => !systemKeys.includes(k) && data[k] && typeof data[k] === 'object' && data[k].price !== undefined);
-
-                localItems = names.map(n => {
-                    const item = data[n];
-                    let currentPrice = parseFloat(item.price);
-                    const basePrice = parseFloat(item.base || item.price);
-
-                    if (!item.stable && !item.locked) {
-                        const change = (Math.random() * 6) - 2;
-                        let newPrice = currentPrice + change;
-                        const minPrice = basePrice - 2;
-                        const maxPrice = basePrice + 4;
-                        newPrice = Math.max(minPrice, Math.min(maxPrice, newPrice));
-                        currentPrice = newPrice;
-                    }
-
-                    return { 
-                        name: n, 
-                        price: currentPrice, 
-                        last: parseFloat(item.last || item.price), 
-                        base: basePrice, 
-                        trend: item.trend || 'normal',
-                        stable: item.stable || false
-                    };
-                }).sort((a, b) => b.price - a.price);
-
-                updateUI(); 
-                updateLiveTicker();
-            } else {
-                document.getElementById('marketBody').innerHTML = '<tr><td colspan="3" style="text-align:center; padding:40px; color:var(--neon-red); font-size:18px; font-weight:800; text-shadow: 0 0 20px var(--neon-red); letter-spacing: 4px;">◼ BORSA KAPALI ◼</td></tr>';
-                document.getElementById('tradeSelect').innerHTML = '';
-                document.getElementById('admSelect').innerHTML = '';
-                document.getElementById('newsText').innerText = "BORSA KAPALI — İŞLEMLER DURDURULDU";
-                document.getElementById('top-gainer').innerHTML = '---';
-                document.getElementById('top-loser').innerHTML = '---';
-                document.getElementById('spotlight-name').innerText = "PAZAR KAPALI";
-                document.getElementById('spotlight-tip').innerText = "Borsa tekrar açıldığında işlemler devam edecek.";
-            }
+            updatePingDisplay(Math.round(performance.now() - syncStart));
         } catch(e){ console.error("Sync Error:", e); }
+        finally { syncBusy = false; }
+    }
+
+    function isBordoAdmin() {
+        return activeSession && activeSession.name === "Bordo";
+    }
+
+    function refillSelect(selectEl, optionsHtml, previousValue) {
+        if (!selectEl) return;
+        selectEl.innerHTML = optionsHtml;
+        if (previousValue && [...selectEl.options].some(o => o.value === previousValue)) {
+            selectEl.value = previousValue;
+        }
+    }
+
+    function escapeHtml(text) {
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function normalizeCategoryName(name) {
+        if (name === undefined || name === null) return '';
+        return String(name).trim().replace(/\s+/g, ' ').slice(0, 40);
+    }
+
+    function categoryFirebaseKey(name) {
+        return encodeURIComponent(normalizeCategoryName(name));
+    }
+
+    function mergeCategoriesFromItems() {
+        localItems.forEach(item => {
+            const cat = item.category || DEFAULT_CATEGORY;
+            if (cat !== DEFAULT_CATEGORY && !marketCategories.includes(cat)) marketCategories.push(cat);
+        });
+        marketCategories = marketCategories.filter(c => c !== DEFAULT_CATEGORY);
+    }
+
+    function getCategoryDisplayOrder() {
+        const order = marketCategories.filter(c => c !== DEFAULT_CATEGORY);
+        const seen = new Set(order);
+        localItems.forEach(item => {
+            const cat = item.category || DEFAULT_CATEGORY;
+            if (cat !== DEFAULT_CATEGORY && !seen.has(cat)) {
+                order.push(cat);
+                seen.add(cat);
+            }
+        });
+        return [DEFAULT_CATEGORY, ...order];
+    }
+
+    function getCategoryTabLabel(cat) {
+        return cat === DEFAULT_CATEGORY ? 'TÜM ÜRÜNLER' : cat;
+    }
+
+    function updateCategoryControls() {
+        const datalist = document.getElementById('categoryNamesList');
+        const hint = document.getElementById('category-current-hint');
+        const nameInput = document.getElementById('categoryNameInput');
+        const catSel = document.getElementById('admSelectCategory');
+        const productName = catSel ? catSel.value : '';
+
+        if (datalist) {
+            datalist.innerHTML = marketCategories
+                .filter(c => c !== DEFAULT_CATEGORY)
+                .map(c => `<option value="${escapeHtml(c)}"></option>`)
+                .join('');
+        }
+
+        if (hint) {
+            const item = localItems.find(i => i.name === productName);
+            if (!productName) {
+                hint.textContent = 'Ürün seçince mevcut kategori burada görünür.';
+            } else if (item) {
+                hint.textContent = `Seçili: ${productName} → kategori: ${item.category || DEFAULT_CATEGORY}`;
+                if (nameInput && document.activeElement !== nameInput) {
+                    nameInput.value = item.category === DEFAULT_CATEGORY ? '' : item.category;
+                }
+            } else {
+                hint.textContent = 'Ürün bulunamadı.';
+            }
+        }
+    }
+
+    function toggleMarketCategory(encodedCat) {
+        const cat = decodeURIComponent(encodedCat);
+        activeMarketCategory = activeMarketCategory === cat ? null : cat;
+        document.querySelectorAll('.market-cat-tab').forEach(btn => {
+            btn.classList.toggle('active', decodeURIComponent(btn.dataset.cat) === activeMarketCategory);
+        });
+        renderMarketCategoryPanel();
+    }
+
+    function toggleMarketCategoriesList() {
+        marketCategoriesExpanded = !marketCategoriesExpanded;
+        const extra = document.getElementById('marketCategoryExtra');
+        const toggle = document.getElementById('marketCategoryToggle');
+        if (extra) {
+            if (marketCategoriesExpanded) {
+                requestAnimationFrame(() => extra.classList.add('open'));
+            } else {
+                extra.classList.remove('open');
+            }
+        }
+        if (toggle) {
+            toggle.classList.toggle('active', marketCategoriesExpanded);
+            toggle.innerHTML = marketCategoriesExpanded
+                ? 'KATEGORİLER <span class="market-cat-more-icon">▴</span>'
+                : 'KATEGORİLER <span class="market-cat-more-icon">▾</span>';
+        }
+    }
+
+    function buildCategoryTab(cat) {
+        const count = (marketItemsByCategory[cat] || []).length;
+        const enc = encodeURIComponent(cat);
+        const active = activeMarketCategory === cat ? ' active' : '';
+        const genelClass = cat === DEFAULT_CATEGORY ? ' market-cat-tab--genel' : '';
+        const label = getCategoryTabLabel(cat);
+        return `<button type="button" class="market-cat-tab${genelClass}${active}" data-cat="${enc}">${escapeHtml(label)}<span class="market-cat-count">${count}</span></button>`;
+    }
+
+    function renderMarketCategoryBar(categories) {
+        const primary = document.getElementById('marketPrimaryCategory');
+        const bar = document.getElementById('marketCategoryBar');
+        const toggle = document.getElementById('marketCategoryToggle');
+        const extra = document.getElementById('marketCategoryExtra');
+        const hint = document.getElementById('marketPickHint');
+        if (!primary || !bar) return;
+
+        if (!categories.length) {
+            primary.innerHTML = '';
+            bar.innerHTML = '';
+            if (toggle) toggle.style.display = 'none';
+            if (extra) extra.classList.remove('open');
+            if (hint) hint.style.display = 'none';
+            return;
+        }
+
+        const genelCats = categories.filter(c => c === DEFAULT_CATEGORY);
+        const otherCats = categories.filter(c => c !== DEFAULT_CATEGORY);
+
+        primary.innerHTML = genelCats.map(buildCategoryTab).join('');
+        bar.innerHTML = otherCats.map(buildCategoryTab).join('');
+
+        if (toggle) {
+            toggle.style.display = otherCats.length ? 'inline-flex' : 'none';
+            toggle.classList.toggle('active', marketCategoriesExpanded);
+            toggle.innerHTML = marketCategoriesExpanded
+                ? 'KATEGORİLER <span class="market-cat-more-icon">▴</span>'
+                : 'KATEGORİLER <span class="market-cat-more-icon">▾</span>';
+        }
+
+        if (extra) {
+            if (marketCategoriesExpanded && otherCats.length) {
+                extra.classList.add('open');
+            } else {
+                extra.classList.remove('open');
+            }
+        }
+
+        if (hint) hint.style.display = activeMarketCategory ? 'none' : 'block';
+    }
+
+    function renderMarketCategoryPanel() {
+        const content = document.getElementById('marketCategoryContent');
+        const body = document.getElementById('marketBody');
+        const hint = document.getElementById('marketPickHint');
+        if (!content || !body) return;
+
+        if (!activeMarketCategory || !marketItemsByCategory[activeMarketCategory]) {
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                setTimeout(() => {
+                    if (!activeMarketCategory) body.innerHTML = '';
+                }, 430);
+            } else {
+                body.innerHTML = '';
+            }
+            if (hint) hint.style.display = Object.keys(marketItemsByCategory).length ? 'block' : 'none';
+            return;
+        }
+
+        const items = [...marketItemsByCategory[activeMarketCategory]].sort((a, b) => b.price - a.price);
+        body.innerHTML = items.map(item => buildMarketItemRow(item)).join('');
+        if (hint) hint.style.display = 'none';
+
+        if (!content.classList.contains('open')) {
+            requestAnimationFrame(() => content.classList.add('open'));
+        }
+    }
+
+    function buildMarketItemRow(item) {
+        const diff = item.price - item.last;
+        const priceColor = diff > 0 ? "var(--neon-green)" : (diff < 0 ? "var(--neon-red)" : "var(--neon-gold)");
+        const trendIcon = diff > 0 ? "▲" : (diff < 0 ? "▼" : "•");
+        let rowClass = item.trend === 'pump' ? "pump-effect" : (item.trend === 'dump' ? "dump-effect" : "");
+        let extraTag = "";
+
+        if (item.trend === 'pump') {
+            extraTag = "<span class='trend-label' style='color:var(--neon-gold); background: rgba(255,215,0,0.2); box-shadow: 0 0 15px rgba(255,215,0,0.3);'>YÜKSELİŞ</span>";
+        } else if (item.trend === 'dump') {
+            extraTag = "<span class='trend-label' style='color:var(--neon-red); background: rgba(255,51,102,0.2); box-shadow: 0 0 15px rgba(255,51,102,0.3);'>DÜŞÜŞ</span>";
+        }
+
+        return `<tr><td class="${rowClass}" style="color:#fff; font-weight: 700; font-size: 14px;">${escapeHtml(item.name)} ${extraTag}</td><td class="${rowClass}" style="color:${priceColor}; font-weight:800; font-size: 15px; text-shadow: 0 0 10px ${priceColor}; white-space: nowrap;">${item.price.toFixed(2)} G</td><td class="${rowClass}" style="color:${priceColor}; font-size: 13px; font-weight: 700; white-space: nowrap;">${trendIcon} ${Math.abs(diff).toFixed(2)}</td></tr>`;
+    }
+
+    async function ensureCategoryExists(categoryName) {
+        const cat = normalizeCategoryName(categoryName);
+        if (!cat) return '';
+        const key = categoryFirebaseKey(cat);
+        const order = marketCategories.filter(c => c !== DEFAULT_CATEGORY).length;
+        await fetch(`${FB}/categories/${key}.json`, {
+            method: 'PUT',
+            body: JSON.stringify({ name: cat, order: order })
+        });
+        if (!marketCategories.includes(cat)) marketCategories.push(cat);
+        return cat;
+    }
+
+    async function assignItemCategory() {
+        const product = document.getElementById('admSelectCategory').value;
+        const cat = normalizeCategoryName(document.getElementById('categoryNameInput').value);
+        if (!product) return alert('Önce ürün seç!');
+        if (!cat) return alert('Kategori adı yaz!');
+        await ensureCategoryExists(cat);
+        await fetch(`${FB}/${product}.json`, { method: 'PATCH', body: JSON.stringify({ category: cat }) });
+        alert(product + ' → "' + cat + '" kategorisine eklendi.');
+        sync();
+    }
+
+    async function clearItemCategory() {
+        const product = document.getElementById('admSelectCategory').value;
+        if (!product) return alert('Önce ürün seç!');
+        await fetch(`${FB}/${product}.json`, { method: 'PATCH', body: JSON.stringify({ category: DEFAULT_CATEGORY }) });
+        document.getElementById('categoryNameInput').value = '';
+        alert(product + ' artık "' + DEFAULT_CATEGORY + '" kategorisinde.');
+        sync();
+    }
+
+    async function registerCategoryOnly() {
+        const cat = normalizeCategoryName(document.getElementById('categoryNameInput').value);
+        if (!cat) return alert('Kategori adı yaz!');
+        if (cat === DEFAULT_CATEGORY) return alert('Bu isim sistem kategorisi. Başka bir isim seç.');
+        await ensureCategoryExists(cat);
+        alert('"' + cat + '" kategorisi oluşturuldu. Ürün atamak için ürün seçip "Kategoriye ata"ya bas.');
+        sync();
     }
 
     function updateUI() {
@@ -1435,34 +2286,102 @@
         const body = document.getElementById('marketBody');
         const sel = document.getElementById('tradeSelect');
         const admSel = document.getElementById('admSelect');
-        let html = ""; 
+        const admCatSel = document.getElementById('admSelectCategory');
+        const adminUser = isBordoAdmin();
+        const prevAdm = admSel ? admSel.value : '';
+        const prevAdmCat = admCatSel ? admCatSel.value : '';
+        const prevTrade = sel.value;
         let options = "";
-        
-        localItems.forEach(item => {
-            if(item.name.toLowerCase().includes(search)) {
-                const diff = item.price - item.last;
-                const priceColor = diff > 0 ? "var(--neon-green)" : (diff < 0 ? "var(--neon-red)" : "var(--neon-gold)");
-                const trendIcon = diff > 0 ? "▲" : (diff < 0 ? "▼" : "•");
-                let rowClass = item.trend === 'pump' ? "pump-effect" : (item.trend === 'dump' ? "dump-effect" : "");
-                let extraTag = "";
-                
-                if(item.trend === 'pump') {
-                    extraTag = "<span class='trend-label' style='color:var(--neon-gold); background: rgba(255,215,0,0.2); box-shadow: 0 0 15px rgba(255,215,0,0.3);'>YÜKSELİŞ</span>";
-                } else if(item.trend === 'dump') {
-                    extraTag = "<span class='trend-label' style='color:var(--neon-red); background: rgba(255,51,102,0.2); box-shadow: 0 0 15px rgba(255,51,102,0.3);'>DÜŞÜŞ</span>";
-                }
-                
-html += `<tr><td class="${rowClass}" style="color:#fff; font-weight: 700; font-size: 14px;">${item.name} ${extraTag}</td><td class="${rowClass}" style="color:${priceColor}; font-weight:800; font-size: 15px; text-shadow: 0 0 10px ${priceColor}; white-space: nowrap;">${item.price.toFixed(2)} G</td><td class="${rowClass}" style="color:${priceColor}; font-size: 13px; font-weight: 700; white-space: nowrap;">${trendIcon} ${Math.abs(diff).toFixed(2)}</td></tr>`;
+
+        const closedBanner = document.getElementById('marketClosedBanner');
+        const categoryBar = document.getElementById('marketCategoryBar');
+        const categoryContent = document.getElementById('marketCategoryContent');
+        const pickHint = document.getElementById('marketPickHint');
+
+        if (!isMarketOpen && !adminUser) {
+            if (closedBanner) {
+                closedBanner.style.display = 'block';
+                closedBanner.innerHTML = '◼ BORSA KAPALI ◼<br><span style="font-size:11px; color:#888; font-weight:600;">İşlemler durduruldu.</span>';
             }
-            options += `<option value="${item.name}">${item.name}</option>`;
+            const primaryCat = document.getElementById('marketPrimaryCategory');
+            if (primaryCat) primaryCat.innerHTML = '';
+            if (categoryBar) categoryBar.innerHTML = '';
+            const catToggle = document.getElementById('marketCategoryToggle');
+            if (catToggle) catToggle.style.display = 'none';
+            const catExtra = document.getElementById('marketCategoryExtra');
+            if (catExtra) catExtra.classList.remove('open');
+            if (categoryContent) categoryContent.classList.remove('open');
+            body.innerHTML = '';
+            if (pickHint) pickHint.style.display = 'none';
+            sel.innerHTML = "";
+            if (admSel) admSel.innerHTML = "";
+            if (admCatSel) admCatSel.innerHTML = "";
+            renderInventory();
+            return;
+        }
+
+        if (closedBanner) {
+            if (!isMarketOpen && adminUser) {
+                closedBanner.style.display = 'block';
+                closedBanner.textContent = '◼ BORSA KAPALI — Admin: fiyat / kategori yönetimi aktif';
+            } else {
+                closedBanner.style.display = 'none';
+            }
+        }
+
+        const filteredItems = localItems.filter(item => item.name.toLowerCase().includes(search));
+        marketItemsByCategory = {};
+        filteredItems.forEach(item => {
+            const cat = item.category || DEFAULT_CATEGORY;
+            if (!marketItemsByCategory[cat]) marketItemsByCategory[cat] = [];
+            marketItemsByCategory[cat].push(item);
         });
-        
-        body.innerHTML = html;
-        sel.innerHTML = options; 
-        admSel.innerHTML = options;
+
+        let categoriesWithItems = getCategoryDisplayOrder().filter(cat => marketItemsByCategory[cat] && marketItemsByCategory[cat].length);
+        if (filteredItems.length) {
+            if (!marketItemsByCategory[DEFAULT_CATEGORY]) marketItemsByCategory[DEFAULT_CATEGORY] = [];
+            if (!categoriesWithItems.includes(DEFAULT_CATEGORY)) {
+                categoriesWithItems = [DEFAULT_CATEGORY, ...categoriesWithItems];
+            }
+        }
+        if (activeMarketCategory && !marketItemsByCategory[activeMarketCategory]) {
+            activeMarketCategory = marketItemsByCategory[DEFAULT_CATEGORY] ? DEFAULT_CATEGORY : null;
+        }
+        if (!activeMarketCategory && filteredItems.length) {
+            activeMarketCategory = DEFAULT_CATEGORY;
+        }
+
+        localItems.forEach(item => {
+            const catLabel = item.category && item.category !== DEFAULT_CATEGORY ? ` [${item.category}]` : '';
+            const safeVal = item.name.replace(/"/g, '&quot;');
+            options += `<option value="${safeVal}">${escapeHtml(item.name)}${escapeHtml(catLabel)}</option>`;
+        });
+
+        renderMarketCategoryBar(categoriesWithItems);
+        renderMarketCategoryPanel();
+
+        if (!categoriesWithItems.length) {
+            const primaryCat = document.getElementById('marketPrimaryCategory');
+            if (primaryCat) primaryCat.innerHTML = '';
+            if (categoryBar) categoryBar.innerHTML = '';
+            const catToggle = document.getElementById('marketCategoryToggle');
+            if (catToggle) catToggle.style.display = 'none';
+            const catExtra = document.getElementById('marketCategoryExtra');
+            if (catExtra) catExtra.classList.remove('open');
+            if (categoryContent) categoryContent.classList.remove('open');
+            body.innerHTML = '<tr><td colspan="3" class="market-empty-hint" style="padding:30px;">Ürün bulunamadı</td></tr>';
+            if (pickHint) pickHint.style.display = 'none';
+        }
+        if (isMarketOpen) refillSelect(sel, options, prevTrade);
+        else sel.innerHTML = "";
+        refillSelect(admSel, options, prevAdm);
+        refillSelect(admCatSel, options, prevAdmCat);
+        updateCategoryControls();
         
         renderInventory();
-        updateExtras();
+        if (isMarketOpen) {
+            updateExtras();
+        }
     }
 
     function renderInventory() {
@@ -1482,9 +2401,16 @@ html += `<tr><td class="${rowClass}" style="color:#fff; font-weight: 700; font-s
     async function addItem() {
         const name = document.getElementById('newItemName').value.trim();
         const price = parseFloat(document.getElementById('newItemPrice').value);
+        const categoryRaw = document.getElementById('newItemCategory').value;
+        const category = normalizeCategoryName(categoryRaw) || DEFAULT_CATEGORY;
         if(!name || isNaN(price)) return alert("İsim ve fiyat gir!");
-        await fetch(`${FB}/${name}.json`, { method: 'PUT', body: JSON.stringify({ price: price, last: price, base: price, trend: 'normal' }) });
-        alert("Ürün eklendi!"); sync();
+        if (category !== DEFAULT_CATEGORY) await ensureCategoryExists(category);
+        await fetch(`${FB}/${name}.json`, { method: 'PUT', body: JSON.stringify({ price: price, last: price, base: price, trend: 'normal', category: category }) });
+        document.getElementById('newItemName').value = '';
+        document.getElementById('newItemPrice').value = '';
+        document.getElementById('newItemCategory').value = '';
+        alert("Ürün eklendi! Kategori: " + category);
+        sync();
     }
     async function deleteItem() {
         const name = document.getElementById('admSelect').value;
@@ -1569,14 +2495,14 @@ html += `<tr><td class="${rowClass}" style="color:#fff; font-weight: 700; font-s
     async function pushPrice() { 
         const n = document.getElementById('admSelect').value; 
         const p = parseFloat(document.getElementById('admPrice').value); 
-        const item = localItems.find(i => i.name === n); 
-        if(isNaN(p) || !item) {
+        if(!n || isNaN(p)) {
             alert("Lütfen ürün seçin ve geçerli fiyat girin!");
             return;
         } 
         
+        const item = localItems.find(i => i.name === n);
         const newBase = p;
-        const currentPrice = item.price;
+        const currentPrice = item ? item.price : p;
         
         await fetch(`${FB}/${n}.json`, { 
             method: 'PATCH', 
@@ -1623,7 +2549,7 @@ html += `<tr><td class="${rowClass}" style="color:#fff; font-weight: 700; font-s
     setInterval(() => {
         myPlayTime++;
         localStorage.setItem('bordo_playtime', myPlayTime);
-    }, 60000); 
+    }, 60000);
 
     function getRankTitle(minutes) {
         if (minutes > 3000) return { title: "SİBER LORD", class: "rank-lord" };
@@ -1650,11 +2576,6 @@ html += `<tr><td class="${rowClass}" style="color:#fff; font-weight: 700; font-s
     }
 
     setInterval(() => {
-        const p = Math.floor(Math.random() * 80) + 20; 
-        const el = document.getElementById('ping-val');
-        el.innerText = p + "ms";
-        el.style.color = p < 50 ? "var(--neon-green)" : (p < 120 ? "var(--neon-gold)" : "var(--neon-red)");
-        
         if(Math.random() > 0.85) {
             const logs = ["Fiyatlar senkronize edildi", "Blok zinciri güncellendi", "Piyasa verisi alındı", "Şifreleme protokolü aktif", "Hacim analizi tamamlandı"];
             addSystemLog(logs[Math.floor(Math.random() * logs.length)]);
@@ -1694,16 +2615,7 @@ html += `<tr><td class="${rowClass}" style="color:#fff; font-weight: 700; font-s
     }
 
     if(activeSession) {
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('main-dashboard').style.display = 'flex';
-        document.getElementById('display-name').innerText = activeSession.name;
-        if(activeSession.name === "Bordo") document.getElementById('admin-panel').style.display = 'block';
-        sync(); setInterval(sync, 5000);
-        
-        setTimeout(() => {
-             const chatArea = document.getElementById('chat-content-area');
-             chatArea.scrollTop = chatArea.scrollHeight;
-        }, 1500);
+        bootDashboard();
     }
 
     function openExpModal() {
