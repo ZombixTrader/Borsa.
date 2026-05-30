@@ -1579,6 +1579,8 @@
     const MARKET_CACHE_KEY = 'bordo_market_cache';
     let syncBusy = false;
     let syncTimer = null;
+    let chatSyncBusy = false;
+    let chatSyncTimer = null;
     let dashboardBooted = false;
     let localItems = [];
     let marketCategories = [];
@@ -1870,13 +1872,14 @@
         initDashboardEvents();
         hydrateMarketCache();
         sync();
+        syncChat();
         if (!syncTimer) syncTimer = setInterval(sync, 5000);
+        if (!chatSyncTimer) chatSyncTimer = setInterval(syncChat, 1000);
     }
 
     async function sync() {
         if (syncBusy) return;
         syncBusy = true;
-        const syncStart = performance.now();
         const statusText = document.getElementById('status-text');
         const hadMarketData = localItems.length > 0;
         if (statusText && !hadMarketData) statusText.innerText = "BAĞLANIYOR...";
@@ -1977,60 +1980,84 @@
             const bar = document.getElementById('announcement-bar');
             if(data.ann && data.ann !== "") { bar.innerText = "[ SİSTEM DUYURUSU: " + data.ann + " ]"; bar.style.display = 'block'; } else { bar.style.display = 'none'; }
 
-            if(data.dms) {
-                dmCache = data.dms;
-                if(chatMode === 'dm' && activeDmTarget) {
+        } catch(e){ console.error("Sync Error:", e); }
+        finally { syncBusy = false; }
+    }
+
+    function renderGlobalChat(chatData, vipsData) {
+        if (!chatData) return;
+        const chatBox = document.getElementById('chat-messages');
+        const chatArea = document.getElementById('chat-content-area');
+        if (!chatBox || !chatArea) return;
+
+        let chatHtml = "";
+        const chatKeys = Object.keys(chatData).sort();
+        let shouldScroll = false;
+        if (chatKeys.length > lastChatCount) {
+            if (lastChatCount !== 0) playNotification();
+            shouldScroll = true;
+        }
+        lastChatCount = chatKeys.length;
+
+        chatKeys.forEach(key => {
+            const m = chatData[key];
+            if (!m) return;
+            const isAdm = m.u === "Bordo";
+            const isVip = vipsData && vipsData[m.u];
+            const isMine = activeSession && m.u === activeSession.name;
+            const delBtn = isMine ? `<span class="del-msg" onclick="event.stopPropagation(); proConfirm('${key}')">[SİL]</span>` : "";
+
+            if (m.type === "trade") {
+                return;
+            }
+            const colorClass = isAdm ? "msg-admin" : "msg-user";
+            const vipClass = isVip ? "vip-name" : "";
+            const vipIcon = isVip ? "💎 " : "";
+            const content = m.type === "img" ? `<img src="${m.t}" class="chat-img" onclick="openImageViewer('${m.t}')">` : m.t;
+            const replyHtml = m.reply ? `<div class="msg-reply-box">↳ @${m.reply.u}: ${m.reply.t}</div>` : "";
+            const rankBadge = m.r ? `<span class="rank-badge ${m.r === 'SİBER LORD' ? 'rank-lord' : (m.r === 'VERİ MADENCİSİ' ? 'rank-analist' : 'rank-caylak')}">${m.r}</span>` : "";
+            chatHtml += `<div class="chat-msg ${colorClass}" onclick="setReply('${m.u}', '${m.type === "img" ? "Görsel gönderdi" : m.t}')">${replyHtml}${rankBadge}<span class="user-label ${vipClass}">${vipIcon}${m.u}:</span> <span style="font-size: 14px; font-weight: 500;">${content}</span> ${delBtn}</div>`;
+        });
+
+        chatBox.innerHTML = chatHtml;
+        if (shouldScroll && chatMode === 'global') {
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+    }
+
+    async function syncChat() {
+        if (chatSyncBusy || !activeSession) return;
+        chatSyncBusy = true;
+        const syncStart = performance.now();
+        try {
+            const [chatRes, vipsRes, dmsRes] = await Promise.all([
+                fetch(`${FB}/chat.json`, { cache: 'no-store' }),
+                fetch(`${FB}/vips.json`, { cache: 'no-store' }),
+                fetch(`${FB}/dms.json`, { cache: 'no-store' })
+            ]);
+            const chatData = await chatRes.json();
+            const vipsData = await vipsRes.json();
+            const dmsData = await dmsRes.json();
+
+            renderGlobalChat(chatData, vipsData);
+
+            if (dmsData) {
+                dmCache = dmsData;
+                if (chatMode === 'dm' && activeDmTarget) {
                     renderActiveDm();
-                     const dmContainer = document.getElementById('dm-conversation-container');
-                     if(dmContainer) dmContainer.scrollTop = dmContainer.scrollHeight;
-                } else if(chatMode === 'dm' && !activeDmTarget) {
+                    const dmContainer = document.getElementById('dm-conversation-container');
+                    if (dmContainer) dmContainer.scrollTop = dmContainer.scrollHeight;
+                } else if (chatMode === 'dm' && !activeDmTarget) {
                     renderDmList();
                 }
             }
 
-            if(data.chat) {
-                const chatBox = document.getElementById('chat-messages');
-                const chatArea = document.getElementById('chat-content-area'); 
-                let chatHtml = "";
-                const chatKeys = Object.keys(data.chat).sort(); 
-                
-                let shouldScroll = false;
-                if(chatKeys.length > lastChatCount) {
-                    if(lastChatCount !== 0) playNotification();
-                    shouldScroll = true;
-                }
-                lastChatCount = chatKeys.length;
-
-                chatKeys.forEach(key => {
-                    const m = data.chat[key]; if(!m) return;
-                    const isAdm = m.u === "Bordo"; const isVip = data.vips && data.vips[m.u];
-                    const isMine = activeSession && m.u === activeSession.name;
-                    const delBtn = isMine ? `<span class="del-msg" onclick="event.stopPropagation(); proConfirm('${key}')">[SİL]</span>` : "";
-                    
-                    if(m.type === "trade") {
-                        // Pazar ilanı kaldırıldı
-                    } else {
-                        const colorClass = isAdm ? "msg-admin" : "msg-user";
-                        const vipClass = isVip ? "vip-name" : ""; const vipIcon = isVip ? "💎 " : "";
-                        const content = m.type === "img" ? `<img src="${m.t}" class="chat-img" onclick="openImageViewer('${m.t}')">` : m.t;
-                        const replyHtml = m.reply ? `<div class="msg-reply-box">↳ @${m.reply.u}: ${m.reply.t}</div>` : "";
-                        
-                        const rankBadge = m.r ? `<span class="rank-badge ${m.r === 'SİBER LORD' ? 'rank-lord' : (m.r === 'VERİ MADENCİSİ' ? 'rank-analist' : 'rank-caylak')}">${m.r}</span>` : "";
-                        
-                        chatHtml += `<div class="chat-msg ${colorClass}" onclick="setReply('${m.u}', '${m.type === "img" ? "Görsel gönderdi" : m.t}')">${replyHtml}${rankBadge}<span class="user-label ${vipClass}">${vipIcon}${m.u}:</span> <span style="font-size: 14px; font-weight: 500;">${content}</span> ${delBtn}</div>`;
-                    }
-                });
-                
-                chatBox.innerHTML = chatHtml; 
-
-                if(shouldScroll && chatMode === 'global') {
-                    chatArea.scrollTop = chatArea.scrollHeight;
-                }
-            }
-
             updatePingDisplay(Math.round(performance.now() - syncStart));
-        } catch(e){ console.error("Sync Error:", e); }
-        finally { syncBusy = false; }
+        } catch (e) {
+            console.error("Chat Sync Error:", e);
+        } finally {
+            chatSyncBusy = false;
+        }
     }
 
     function isBordoAdmin() {
@@ -2079,6 +2106,12 @@
                 order.push(cat);
                 seen.add(cat);
             }
+        });
+        order.sort((a, b) => {
+            const countA = (marketItemsByCategory[a] || []).length;
+            const countB = (marketItemsByCategory[b] || []).length;
+            if (countB !== countA) return countB - countA;
+            return a.localeCompare(b, 'tr');
         });
         return [DEFAULT_CATEGORY, ...order];
     }
@@ -2332,9 +2365,13 @@
         const filteredItems = localItems.filter(item => item.name.toLowerCase().includes(search));
         marketItemsByCategory = {};
         filteredItems.forEach(item => {
+            if (!marketItemsByCategory[DEFAULT_CATEGORY]) marketItemsByCategory[DEFAULT_CATEGORY] = [];
+            marketItemsByCategory[DEFAULT_CATEGORY].push(item);
             const cat = item.category || DEFAULT_CATEGORY;
-            if (!marketItemsByCategory[cat]) marketItemsByCategory[cat] = [];
-            marketItemsByCategory[cat].push(item);
+            if (cat !== DEFAULT_CATEGORY) {
+                if (!marketItemsByCategory[cat]) marketItemsByCategory[cat] = [];
+                marketItemsByCategory[cat].push(item);
+            }
         });
 
         let categoriesWithItems = getCategoryDisplayOrder().filter(cat => marketItemsByCategory[cat] && marketItemsByCategory[cat].length);
@@ -2437,7 +2474,7 @@
                 const msg = { u: u, t: b64, type: "img", time: time };
                 await fetch(`${FB}/dms/${key}.json`, { method: 'POST', body: JSON.stringify(msg) });
             }
-            sync();
+            syncChat();
         };
         reader.readAsDataURL(file);
     }
@@ -2485,7 +2522,7 @@
             await fetch(`${FB}/dms/${key}.json`, { method: 'POST', body: JSON.stringify(msg) });
             inp.value = '';
         }
-        sync();
+        syncChat();
     }
 
     function buyItem() { if (!isMarketOpen) { alert("⚠ BORSA KAPALI! İşlem yapılamaz."); return; } const n = document.getElementById('tradeSelect').value; const a = parseFloat(document.getElementById('tradeAmount').value); if(!n || isNaN(a) || a <= 0) return; const ex = inventory.find(i => i.name === n); if(ex) ex.amount += a; else inventory.push({ name: n, amount: a }); localStorage.setItem('bordo_inv', JSON.stringify(inventory)); renderInventory(); }
@@ -2538,7 +2575,7 @@
         sync();
     }
     
-    async function deleteMessage(key) { await fetch(`${FB}/chat/${key}.json`, { method: 'DELETE' }); sync(); }
+    async function deleteMessage(key) { await fetch(`${FB}/chat/${key}.json`, { method: 'DELETE' }); syncChat(); }
     async function setTrend(t) { const n = document.getElementById('admSelect').value; if(!n) return; await fetch(`${FB}/${n}/trend.json`, { method: 'PUT', body: JSON.stringify(t) }); sync(); }
     function openImageViewer(src) { document.getElementById('viewer-img').src = src; document.getElementById('viewer-dl').href = src; document.getElementById('img-viewer').style.display = 'block'; }
     function showOnlineUsers() { document.getElementById('online-list').innerHTML = activeUsersList.map(u => `<div style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 700; letter-spacing: 1px;">> ${u}</div>`).join(''); document.getElementById('online-modal').style.display = 'block'; }
