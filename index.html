@@ -2,2721 +2,534 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ZOMBIX BORSA | BORDO v9.7 (STABLE_EDITION)</title>
-    <link rel="dns-prefetch" href="https://bordotrader-e0b9e-default-rtdb.europe-west1.firebasedatabase.app">
-    <link rel="preconnect" href="https://bordotrader-e0b9e-default-rtdb.europe-west1.firebasedatabase.app" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zombix Trade Sitesi Duyurusu</title>
+    <!-- Google Fonts: Premium ve okunaklı font seçimi (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-        
+        /* --- Temel Ayarlar ve Değişkenler --- */
         :root {
-            --neon-gold: #ffd700;
-            --neon-green: #00ff88;
-            --neon-red: #ff3366;
-            --bg-deep: #050508;
-            --bg-card: rgba(20, 20, 30, 0.85);
-            --bg-hover: rgba(255, 215, 0, 0.15);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --border-subtle: rgba(255, 215, 0, 0.4);
-            --shadow-glow: 0 0 30px rgba(255, 215, 0, 0.3);
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-color: #0b0c10;
+            --accent-color: #7289da; /* Discord esintili premium mavi/mor tonu */
+            --accent-glow: rgba(114, 137, 218, 0.3);
+            --text-main: #f5f6fa;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(25, 25, 35, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shine: rgba(255, 255, 255, 0.03);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        [data-theme="pistachio"] {
-            --neon-gold: #ccff00;
-            --neon-green: #66ff99;
-            --neon-red: #ff5555;
-            --bg-deep: #0a0f0a;
-            --bg-card: rgba(20, 30, 20, 0.85);
-            --bg-hover: rgba(204, 255, 0, 0.15);
-            --border-subtle: rgba(204, 255, 0, 0.4);
-            --shadow-glow: 0 0 30px rgba(204, 255, 0, 0.3);
-        }
-
-        [data-theme="ocean"] {
-            --neon-gold: #00e5ff;
-            --neon-green: #00ffcc;
-            --neon-red: #ff0066;
-            --bg-deep: #0a0f14;
-            --bg-card: rgba(15, 25, 35, 0.85);
-            --bg-hover: rgba(0, 229, 255, 0.15);
-            --border-subtle: rgba(0, 229, 255, 0.4);
-            --shadow-glow: 0 0 30px rgba(0, 229, 255, 0.3);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            background: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 60%);
-            color: var(--text-primary);
-            font-family: 'Share Tech Mono', monospace;
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.5;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 3px;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0.4;
-        }
-
-        .pump-effect { 
-            position: relative;
-            background: linear-gradient(90deg, rgba(255, 215, 0, 0.12) 0%, transparent 100%);
-            overflow: hidden;
-        }
-        .pump-effect::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--neon-gold);
-            box-shadow: 0 0 15px var(--neon-gold);
-            animation: goldGlow 1.5s ease-in-out infinite alternate;
-            z-index: 1;
-            border-radius: 2px 0 0 2px;
-        }
-        @keyframes goldGlow { 
-            from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); } 
-            to { box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); } 
-        }
-        
-        .dump-effect { 
-            position: relative;
-            background: linear-gradient(90deg, rgba(255, 51, 102, 0.12) 0%, transparent 100%);
-            overflow: hidden;
-        }
-        .dump-effect::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--neon-red);
-            box-shadow: 0 0 15px var(--neon-red);
-            animation: redAlert 1s ease-in-out infinite alternate;
-            z-index: 1;
-            border-radius: 2px 0 0 2px;
-        }
-        @keyframes redAlert { 
-            from { box-shadow: 0 0 10px rgba(255, 51, 102, 0.5); } 
-            to { box-shadow: 0 0 25px rgba(255, 51, 102, 0.9); } 
-        }
-
-        .trend-label { 
-            font-size: 9px; font-weight: 700; margin-left: 6px; padding: 2px 6px; 
-            border: 1.5px solid currentColor; border-radius: 3px; letter-spacing: 0.5px; text-transform: uppercase;
-            box-shadow: 0 0 8px currentColor;
-            display: inline-block;
-            vertical-align: middle;
-            white-space: nowrap;
-        }
-
-        #market-status-indicator { 
-            position: fixed; bottom: 20px; left: 20px; z-index: 999; 
-            background: rgba(0, 0, 0, 0.9); border: 2px solid var(--neon-gold);
-            padding: 10px 18px; font-size: 12px; display: flex; align-items: center; gap: 10px; 
-            border-radius: 8px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.1);
-            letter-spacing: 2px; font-weight: 700;
-        }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; transition: var(--transition-smooth); }
-        .status-open { background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green), 0 0 30px var(--neon-green); animation: pulse 2s infinite; }
-        .status-closed { background: var(--neon-red); box-shadow: 0 0 15px var(--neon-red), 0 0 30px var(--neon-red); animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-
-        #announcement-bar { 
-            display: none; background: linear-gradient(90deg, rgba(255, 51, 102, 0.2) 0%, rgba(255, 51, 102, 0.1) 100%);
-            color: var(--neon-red); padding: 15px; text-align: center; font-weight: 700; font-size: 14px; 
-            border-bottom: 2px solid var(--neon-red); text-transform: uppercase; letter-spacing: 3px;
-            box-shadow: 0 0 30px rgba(255, 51, 102, 0.3); text-shadow: 0 0 10px var(--neon-red);
-            animation: alertPulse 1.5s infinite;
-        }
-        @keyframes alertPulse { 
-            0%, 100% { border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255, 51, 102, 0.3); } 
-            50% { border-color: #ff0066; box-shadow: 0 0 40px rgba(255, 51, 102, 0.5); } 
-        }
-
-        #news-bot-sticky { 
-            display: none; background: linear-gradient(90deg, var(--neon-gold) 0%, #ffea00 100%);
-            color: #000; padding: 12px; text-align: center; font-weight: 800; font-size: 13px; 
-            border-bottom: 2px solid #000; box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-            position: sticky; top: 0; z-index: 100; letter-spacing: 1px; text-shadow: 0 0 5px rgba(0,0,0,0.3);
-        }
-
-        .vip-name { color: var(--neon-gold) !important; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4); font-weight: 800; }
-        .vip-icon { margin-right: 4px; filter: drop-shadow(0 0 8px rgba(255,215,0,0.8)); }
-
-        .reply-container { 
-            background: rgba(255, 215, 0, 0.15); border-left: 4px solid var(--neon-gold); padding: 12px; 
-            margin-bottom: 10px; font-size: 12px; color: var(--text-secondary); display: none; position: relative;
-            border-radius: 0 8px 8px 0; box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
-        }
-        .reply-content { font-style: italic; color: #ccc; }
-        .cancel-reply { position: absolute; right: 10px; top: 8px; color: var(--neon-red); cursor: pointer; font-size: 14px; font-weight: bold; transition: transform 0.2s; }
-        .cancel-reply:hover { transform: scale(1.2); }
-        .msg-reply-box { background: rgba(255,255,255,0.08); border-left: 3px solid var(--neon-gold); padding: 8px 12px; font-size: 11px; margin-bottom: 8px; color: #999; border-radius: 0 6px 6px 0; }
-
-        #admin-panel { 
-            display: none;
-            position: relative;
-            z-index: 500;
-            max-width: 1080px;
-            margin: 16px auto;
-            padding: 20px 22px 24px;
-            background: rgba(10, 10, 15, 0.97);
-            border: 2px solid var(--neon-red);
-            border-radius: 12px;
-            box-shadow: 0 0 40px rgba(255, 51, 102, 0.25), inset 0 0 40px rgba(255, 51, 102, 0.04);
-        }
-        .admin-panel-header {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 18px;
-            padding-bottom: 14px;
-            border-bottom: 2px solid rgba(255, 71, 87, 0.35);
-        }
-        .admin-panel-header h3 {
-            margin: 0;
-            color: var(--neon-red);
-            font-size: 20px;
-            letter-spacing: 3px;
-            text-shadow: 0 0 20px rgba(255, 71, 87, 0.35);
-        }
-        .admin-panel-sub {
-            font-size: 10px;
-            letter-spacing: 2px;
-            color: #888;
-            text-transform: uppercase;
-        }
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
-            align-items: start;
-        }
-        .admin-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 14px 16px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: rgba(0, 0, 0, 0.35);
-            min-width: 0;
-        }
-        .admin-section-wide { grid-column: 1 / -1; }
-        .admin-section-gold { border-color: rgba(255, 215, 0, 0.35); background: rgba(255, 215, 0, 0.04); }
-        .admin-section-green { border-color: rgba(0, 255, 136, 0.35); background: rgba(0, 255, 136, 0.04); }
-        .admin-section-red { border-color: rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.05); }
-        .admin-section-title {
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--neon-gold);
-            margin: 0 0 2px;
-            line-height: 1.3;
-        }
-        .admin-section-red .admin-section-title { color: var(--neon-red); }
-        .admin-section-green .admin-section-title { color: var(--neon-green); }
-        #admin-panel input,
-        #admin-panel select,
-        #admin-panel button {
-            width: 100%;
-            margin: 0;
-            padding: 10px 12px;
-            font-size: 11px;
-            min-height: 38px;
-            line-height: 1.25;
-            border-radius: 6px;
-        }
-        #admin-panel input,
-        #admin-panel select {
-            background: rgba(0, 0, 0, 0.55);
-        }
-        .admin-btn-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        .admin-btn-row-3 {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-        .admin-field-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        #admin-panel button {
-            letter-spacing: 0.5px;
-            white-space: normal;
-            text-align: center;
-            word-break: break-word;
-        }
-        #admin-panel button:hover {
-            transform: none;
-        }
-        #admin-panel .admin-btn-gold { background: var(--neon-gold); color: #000; border-color: var(--neon-gold); font-weight: 800; }
-        #admin-panel .admin-btn-green { background: var(--neon-green); color: #000; border-color: var(--neon-green); font-weight: 800; }
-        #admin-panel .admin-btn-red { background: var(--neon-red); color: #000; border-color: var(--neon-red); font-weight: 800; }
-        #admin-panel .admin-btn-outline-green { border-color: var(--neon-green); color: var(--neon-green); background: transparent; font-weight: 700; }
-        #admin-panel .admin-btn-outline-red { border-color: var(--neon-red); color: var(--neon-red); background: transparent; font-weight: 700; }
-        #admin-panel .admin-btn-outline-gold { border-color: var(--neon-gold); color: var(--neon-gold); background: transparent; font-weight: 700; }
-        #admin-panel .admin-btn-muted { border-color: #555; color: #888; background: transparent; font-weight: 600; }
-        #admin-panel .admin-btn-gold:hover,
-        #admin-panel .admin-btn-green:hover,
-        #admin-panel .admin-btn-red:hover { filter: brightness(1.12); }
-
-        #auth-screen { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-deep);
-            z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column;
-            background-image: 
-                radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 70% 70%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
-        }
-        .auth-box { 
-            background: rgba(10, 10, 15, 0.95); border: 2px solid var(--neon-gold); padding: 40px; 
-            width: 90%; max-width: 420px; text-align: center; border-radius: 16px;
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3), inset 0 0 30px rgba(255, 215, 0, 0.05);
-        }
-
-        .news-ticker { 
-            background: rgba(255, 215, 0, 0.1); color: var(--neon-gold); padding: 12px 0; 
-            border-bottom: 2px solid var(--neon-gold); white-space: nowrap; overflow: hidden; 
-            font-size: 13px; position: relative; letter-spacing: 2px; font-weight: 600;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); box-shadow: 0 5px 20px rgba(255, 215, 0, 0.1);
-        }
-        .ticker-text { display: inline-block; padding-left: 100%; animation: ticker 40s linear infinite; opacity: 0.9; }
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-
-        .dashboard { 
-            display: none; flex-direction: column; gap: 25px; padding: 25px; flex: 1; 
-            padding-bottom: 50px; max-width: 1600px; margin: 0 auto; width: 100%;
-        }
-        @media (min-width: 992px) {
-            .dashboard { flex-direction: row; gap: 30px; align-items: flex-start; }
-            .side-panel { flex: 1; min-width: 0; }
-            .main-panel { flex: 0 0 auto; width: 100%; max-width: 460px; }
-        }
-
-        .main-panel, .side-panel { 
-            background: var(--bg-card); border: 2px solid var(--border-subtle); padding: 30px; 
-            border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5), var(--shadow-glow); transition: var(--transition-smooth);
-        }
-        .main-panel:hover, .side-panel:hover { border-color: rgba(255, 215, 0, 0.6); box-shadow: 0 15px 50px rgba(0,0,0,0.6), 0 0 40px rgba(255, 215, 0, 0.2); }
-
-        .chat-container { 
-            margin-top: 25px; border: 2px solid var(--border-subtle); 
-            height: calc(100vh - 380px); min-height: 550px; max-height: 750px;
-            display: flex; flex-direction: column; border-radius: 12px; overflow: hidden;
-            background: rgba(0,0,0,0.4); box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
-        }
-        .chat-header-tabs { display: flex; background: rgba(0,0,0,0.6); border-bottom: 2px solid var(--border-subtle); }
-        .chat-tab { 
-            flex: 1; padding: 15px; text-align: center; color: #666; cursor: pointer; 
-            font-weight: 700; font-size: 12px; transition: var(--transition-smooth); letter-spacing: 2px; text-transform: uppercase;
-        }
-        .chat-tab:hover { background: rgba(255,215,0,0.1); color: #999; }
-        .chat-tab.active { 
-            background: rgba(255, 215, 0, 0.2); color: var(--neon-gold); border-bottom: 3px solid var(--neon-gold);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-        .online-status-box { 
-            padding: 15px 18px; display: flex; align-items: center; cursor: pointer; 
-            transition: var(--transition-smooth); border-left: 2px solid var(--border-subtle); gap: 8px;
-        }
-        .online-status-box:hover { background: rgba(255, 215, 0, 0.1); }
-
-        #chat-content-area { flex: 1; overflow-y: auto; background: rgba(0,0,0,0.3); position: relative; padding: 20px; }
-        #global-view { display: block; height: auto; min-height: 100%; }
-        #dm-view { display: none; height: 100%; flex-direction: column; }
-
-        .chat-msg { 
-            margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; 
-            word-wrap: break-word; position: relative; cursor: pointer; transition: var(--transition-smooth); padding: 12px; border-radius: 8px;
-        }
-        .chat-msg:hover { background: rgba(255,255,255,0.05); transform: translateX(5px); }
-        .chat-img { 
-            max-width: 100%; max-height: 200px; border: 2px solid var(--neon-gold); margin-top: 10px; 
-            display: block; border-radius: 8px; cursor: pointer; transition: var(--transition-smooth); box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-        }
-        .chat-img:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(255, 215, 0, 0.4); }
-        .msg-admin { color: var(--neon-red); font-weight: 600; text-shadow: 0 0 10px rgba(255, 51, 102, 0.3); }
-        .msg-user { color: var(--text-primary); }
-        .msg-dm-self { 
-            text-align: right; color: var(--neon-green); border-bottom: 1px solid rgba(255,255,255,0.1); 
-            margin-bottom: 12px; padding: 12px; border-radius: 8px; background: rgba(0, 255, 136, 0.1);
-            border-right: 4px solid var(--neon-green); box-shadow: -5px 0 20px rgba(0, 255, 136, 0.1);
-        }
-        .msg-dm-other { 
-            text-align: left; color: var(--neon-gold); border-bottom: 1px solid rgba(255,255,255,0.1); 
-            margin-bottom: 12px; padding: 12px; border-radius: 8px; background: rgba(255, 215, 0, 0.1);
-            border-left: 4px solid var(--neon-gold); box-shadow: 5px 0 20px rgba(255, 215, 0, 0.1);
-        }
-        .user-label { font-weight: 800; font-size: 13px; }
-        .del-msg { 
-            color: #666; cursor: pointer; font-size: 11px; margin-left: 12px; vertical-align: middle;
-            opacity: 0; transition: var(--transition-smooth); font-weight: bold;
-        }
-        .chat-msg:hover .del-msg { opacity: 1; }
-        .del-msg:hover { color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
-
-        .chat-input-area { 
-            display: flex; border-top: 2px solid var(--border-subtle); flex-wrap: wrap; flex-direction: column; background: rgba(0,0,0,0.5);
-        }
-        .input-row { display: flex; width: 100%; padding: 8px; }
-        #chat-input { 
-            background: transparent; border: none; color: #fff; padding: 15px; flex: 1; min-width: 120px;
-            font-size: 14px; font-weight: 500;
-        }
-        #chat-input:focus { outline: none; }
-        #chat-input::placeholder { color: #555; }
-        .chat-tool-btn { 
-            width: 45px; border: none; background: transparent; color: var(--neon-gold); cursor: pointer; 
-            border-left: 1px solid rgba(255,255,255,0.1); font-size: 18px; display: flex; align-items: center; justify-content: center;
-            transition: var(--transition-smooth);
-        }
-        .chat-tool-btn:hover { background: rgba(255,215,0,0.2); text-shadow: 0 0 10px var(--neon-gold); }
-        #chat-send { 
-            width: 55px; border: none; background: var(--neon-gold); color: #000; font-weight: 800;
-            cursor: pointer; font-size: 16px; transition: var(--transition-smooth);
-        }
-        #chat-send:hover { filter: brightness(1.3); box-shadow: 0 0 20px var(--neon-gold); }
-
-        #emoji-picker { 
-            display: none; background: rgba(10,10,15,0.98); border-top: 2px solid var(--neon-gold);
-            padding: 15px; justify-content: center; gap: 15px; width: 100%;
-        }
-        .emoji-btn { 
-            background: none; border: none; cursor: pointer; font-size: 24px; padding: 10px; 
-            width: auto; margin: 0; transition: all 0.2s; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
-        }
-        .emoji-btn:hover { transform: scale(1.3); filter: drop-shadow(0 0 10px rgba(255,215,0,0.8)); }
-
-        #dm-list-container { padding: 20px; }
-        .dm-item { 
-            padding: 15px; border: 2px solid rgba(255,255,255,0.15); margin-bottom: 10px; cursor: pointer; 
-            display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05);
-            border-radius: 10px; transition: var(--transition-smooth);
-        }
-        .dm-item:hover { 
-            border-color: var(--neon-gold); background: rgba(255,215,0,0.15); transform: translateX(8px);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-        }
-        #dm-conversation-container { display: none; flex: 1; overflow-y: auto; padding: 20px; }
-        .dm-header-bar { 
-            padding: 15px 20px; background: rgba(0,0,0,0.6); border-bottom: 2px solid var(--neon-gold);
-            display: flex; align-items: center; justify-content: space-between; font-size: 13px; display:none;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-
-        #confirm-modal { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.9); z-index: 30000; align-items: center; justify-content: center; backdrop-filter: blur(10px);
-        }
-        .confirm-box { 
-            background: rgba(10, 10, 15, 0.98); border: 3px solid var(--neon-red); padding: 35px; 
-            text-align: center; width: 340px; box-shadow: 0 0 50px rgba(255, 51, 102, 0.4); border-radius: 16px;
-        }
-        .price-up { color: var(--neon-green) !important; font-weight: 700; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
-        .price-down { color: var(--neon-red) !important; font-weight: 700; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); }
-
-        input, select, button { 
-            background: rgba(0,0,0,0.6); border: 2px solid var(--border-subtle); color: var(--neon-gold); 
-            padding: 14px; width: 100%; margin-bottom: 15px; font-family: inherit;
-            border-radius: 8px; transition: var(--transition-smooth); font-size: 14px; font-weight: 600;
-        }
-        input:focus, select:focus { outline: none; border-color: var(--neon-gold); box-shadow: 0 0 0 4px rgba(255,215,0,0.2), 0 0 20px rgba(255,215,0,0.3); }
-        button { cursor: pointer; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; font-size: 12px; }
-        button:hover { background: rgba(255,215,0,0.2); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 20px rgba(255,215,0,0.2); border-color: var(--neon-gold); }
-        button:active { transform: translateY(0); }
-
-        .error-msg { 
-            color: var(--neon-red); font-size: 13px; margin-bottom: 20px; display: none;
-            padding: 12px; background: rgba(255, 51, 102, 0.15); border-radius: 6px; border-left: 4px solid var(--neon-red); font-weight: 600;
-        }
-        .logout-btn { 
-            background: transparent; border: 2px solid var(--neon-red); color: var(--neon-red); 
-            padding: 8px 15px; font-size: 11px; cursor: pointer; width: auto; margin-left: 10px;
-            border-radius: 6px; font-weight: 700; transition: var(--transition-smooth);
-        }
-        .logout-btn:hover { background: var(--neon-red); color: #000; box-shadow: 0 0 20px var(--neon-red); }
-
-        .footer-legal { 
-            padding: 40px; text-align: center; font-size: 12px; color: #666; 
-            border-top: 2px solid rgba(255,255,255,0.05); line-height: 1.8; margin-top: auto; letter-spacing: 1px;
-        }
-
-        .online-dot { 
-            height: 10px; width: 10px; background-color: var(--neon-green); border-radius: 50%; 
-            display: inline-block; margin-right: 8px; box-shadow: 0 0 15px var(--neon-green), 0 0 30px var(--neon-green);
-            animation: blink 1.5s infinite;
-        }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        #online-modal, #img-viewer, #new-dm-modal { 
-            display: none; position: fixed; z-index: 20000; left: 0; top: 0; 
-            width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
-        }
-        .modal-content { 
-            background: rgba(10, 10, 15, 0.98); border: 2px solid var(--neon-gold); margin: 10% auto; 
-            padding: 30px; width: 90%; max-width: 380px; text-align: center; 
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3); display: flex; flex-direction: column; max-height: 80vh; border-radius: 16px;
-        }
-        .viewer-box { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 30px; }
-        #viewer-img { max-width: 95%; max-height: 75%; border: 3px solid var(--neon-gold); border-radius: 12px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); }
-        #marketSearch { 
-            margin-bottom: 25px; background: rgba(255, 215, 0, 0.1); border: 2px solid var(--border-subtle); font-size: 14px; font-weight: 600;
-        }
-        .market-table { width: 100%; border-collapse: collapse; }
-        .market-table td { 
-            padding: 16px 10px; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-            transition: var(--transition-smooth);
-            word-break: break-word;
-            white-space: normal;
-            vertical-align: middle;
-        }
-        .market-table th { 
-            padding: 15px 10px; 
-            text-align: left;
-            white-space: nowrap;
-        }
-        .market-table tr:hover td { background: rgba(255,255,255,0.05); }
-        .market-table td:first-child { min-width: 140px; }
-        .market-shell { margin-top: 15px; width: 100%; }
-        .market-closed-banner {
-            text-align: center;
-            padding: 12px 10px;
-            margin-bottom: 10px;
-            color: var(--neon-red);
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: rgba(255, 51, 102, 0.08);
-            border: 1px solid rgba(255, 51, 102, 0.35);
-            border-radius: 8px;
-        }
-        .market-category-nav {
-            width: 100%;
-            min-width: 0;
-            max-width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 8px;
-            padding: 4px 2px 12px;
-            margin-bottom: 4px;
+        * {
             box-sizing: border-box;
-        }
-        .market-category-primary {
-            display: flex;
-            width: 100%;
-            min-width: 0;
-        }
-        .market-cat-more-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
-            border: 2px solid rgba(255, 215, 0, 0.28);
-            background: rgba(0, 0, 0, 0.35);
-            color: #aaa;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            transition: var(--transition-smooth);
             margin: 0;
+            padding: 0;
+            user-select: none;
         }
-        .market-cat-more-btn:hover {
-            color: var(--neon-gold);
-            border-color: rgba(255, 215, 0, 0.5);
-            background: rgba(255, 215, 0, 0.08);
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
         }
-        .market-cat-more-btn.active {
-            color: var(--neon-gold);
-            border-color: var(--neon-gold);
-            background: rgba(255, 215, 0, 0.1);
+
+        /* --- Arka Plan Dinamik Efektleri --- */
+        .bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: radial-gradient(circle at 50% 50%, #1a1c24 0%, #0b0c10 100%);
+            overflow: hidden;
         }
-        .market-cat-more-icon {
-            font-size: 10px;
+
+        /* Yavaşça hareket eden ambient gradyan küreleri */
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: floatGlow 25s infinite alternate ease-in-out;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .glow-1 { top: -10%; left: -10%; animation-delay: 0s; }
+        .glow-2 { bottom: -10%; right: -10%; animation-delay: -5s; --accent-glow: rgba(139, 92, 246, 0.2); }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(80px, 50px) scale(1.1); }
+            100% { transform: translate(-40px, 90px) scale(0.9); }
+        }
+
+        /* Tuval üzerindeki partiküller için container */
+        #particles-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        /* --- Ana Wrapper (Parallax ve Fade-in için) --- */
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 720px;
+            padding: 24px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInPage 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: transform 0.1s ease-out; /* Parallax için akıcılık */
+        }
+
+        @keyframes fadeInPage {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Premium Cam Efektli Kart (Apple & Discord esintili) --- */
+        .announcement-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 48px 40px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4),
+                        inset 0 1px 0 var(--glass-shine);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Kart üstü parıltı çizgisi */
+        .announcement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.03),
+                transparent
+            );
+            transform: rotate(-45deg);
+            pointer-events: none;
+        }
+
+        /* --- Tipografi & İçerik --- */
+        .badge {
+            display: inline-block;
+            background: rgba(114, 137, 218, 0.15);
+            border: 1px solid rgba(114, 137, 218, 0.3);
+            color: #a3b8cc;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 30%, #a3b8cc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 28px;
+        }
+
+        .description {
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .description p {
+            margin-bottom: 16px;
+        }
+        .description p:last-child {
+            margin-bottom: 0;
+            font-weight: 500;
+            color: rgba(245, 246, 252, 0.9);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+            margin: 32px 0;
+        }
+
+        .countdown-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: var(--text-main);
+            text-transform: uppercase;
+            margin-bottom: 24px;
             opacity: 0.9;
         }
-        .market-category-extra {
+
+        /* --- Geri Sayım Kutuları (Grid Sistemi) --- */
+        .countdown-container {
             display: grid;
-            grid-template-rows: 0fr;
-            opacity: 0;
-            overflow: hidden;
-            width: 100%;
-            min-width: 0;
-            transition: grid-template-rows 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.28s ease;
-        }
-        .market-category-extra.open {
-            grid-template-rows: 1fr;
-            opacity: 1;
-        }
-        .market-category-extra-inner {
-            min-height: 0;
-            overflow: hidden;
-            width: 100%;
-        }
-        .market-category-bar {
-            display: flex;
-            flex-wrap: wrap;
-            align-content: flex-start;
-            gap: 8px;
-            width: 100%;
-            min-width: 0;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-        .market-cat-tab {
-            flex: 0 1 auto;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 14px;
-            border: 2px solid rgba(255, 215, 0, 0.35);
-            background: rgba(0, 0, 0, 0.45);
-            color: var(--neon-gold);
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            transition: var(--transition-smooth);
-            margin: 0;
-            max-width: 100%;
-            min-height: auto;
-        }
-        .market-cat-tab:hover {
-            background: rgba(255, 215, 0, 0.12);
-            border-color: var(--neon-gold);
-            transform: none;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-        }
-        .market-cat-tab.active {
-            background: rgba(255, 215, 0, 0.22);
-            border-color: var(--neon-gold);
-            color: #fff;
-            box-shadow: 0 0 22px rgba(255, 215, 0, 0.35), inset 0 0 16px rgba(255, 215, 0, 0.08);
-        }
-        .market-cat-tab.active::after {
-            content: ' ▾';
-            font-size: 10px;
-            opacity: 0.85;
-        }
-        .market-cat-tab--genel {
-            border-color: rgba(255, 215, 0, 0.55);
-            flex-shrink: 0;
-        }
-        .market-cat-count {
-            font-size: 10px;
-            opacity: 0.75;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: rgba(0, 0, 0, 0.35);
-            letter-spacing: 0;
-        }
-        .market-category-content {
-            display: grid;
-            grid-template-rows: 0fr;
-            opacity: 0;
-            transform: translateY(-8px);
-            overflow: hidden;
-            transition: grid-template-rows 0.42s cubic-bezier(0.4, 0, 0.2, 1),
-                        opacity 0.32s ease,
-                        transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .market-category-content.open {
-            grid-template-rows: 1fr;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .market-category-inner {
-            min-height: 0;
-            overflow: hidden;
-        }
-        .market-table-scroll {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        .market-empty-hint {
-            text-align: center;
-            padding: 28px 16px;
-            color: #666;
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
-        .admin-category-hint {
-            font-size: 10px;
-            color: #888;
-            letter-spacing: 1px;
-            line-height: 1.4;
-            margin: 0;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 10px;
         }
 
-        .suggested-user { 
-            padding: 12px; border: 2px solid rgba(255,255,255,0.15); margin-bottom: 8px; text-align: left; 
-            cursor: pointer; color: #aaa; transition: var(--transition-smooth); font-size: 14px; 
-            display: flex; justify-content: space-between; border-radius: 8px; font-weight: 500;
-        }
-        .suggested-user:hover { 
-            border-color: var(--neon-green); color: var(--neon-green); background: rgba(0,255,136,0.1);
-            transform: translateX(8px); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-        }
-
-        .theme-selector { display: flex; gap: 10px; margin-top: 5px; justify-content: flex-end; }
-        .theme-btn { 
-            width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 3px solid transparent;
-            transition: var(--transition-smooth); box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        .theme-btn:hover { transform: scale(1.3); border-color: #fff; }
-        .theme-btn.active { border-color: #fff; box-shadow: 0 0 20px currentColor; transform: scale(1.2); }
-        .t-default { background: #ffd700; }
-        .t-pistachio { background: #ccff00; }
-        .t-ocean { background: #00e5ff; }
-
-        body.system-breach { animation: glitchBody 0.2s infinite; }
-        body.system-breach * { color: var(--neon-red) !important; border-color: var(--neon-red) !important; text-shadow: 2px 0 #fff, -2px 0 #000; }
-        @keyframes glitchBody {
-            0% { transform: translate(0) } 20% { transform: translate(-2px, 2px) } 40% { transform: translate(-2px, -2px) }
-            60% { transform: translate(2px, 2px) } 80% { transform: translate(2px, -2px) } 100% { transform: translate(0) }
-        }
-        #breach-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 0, 0, 0.2); z-index: 99999; pointer-events: none;
-            align-items: center; justify-content: center; font-size: 50px; font-weight: 800;
-            color: var(--neon-red); text-shadow: 0 0 40px var(--neon-red), 0 0 80px var(--neon-red); 
-            letter-spacing: 10px; backdrop-filter: blur(3px); animation: breachPulse 0.5s infinite;
-        }
-        @keyframes breachPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
-
-        .rank-badge { 
-            font-size: 10px; padding: 3px 8px; margin-right: 8px; border-radius: 4px; 
-            border: 2px solid; vertical-align: middle; font-weight: 800; letter-spacing: 1px;
-            text-transform: uppercase; box-shadow: 0 0 10px currentColor;
-        }
-        .rank-caylak { color: #888; border-color: #666; background: rgba(136,136,136,0.2); }
-        .rank-analist { color: var(--neon-green); border-color: var(--neon-green); background: rgba(0,255,136,0.2); box-shadow: 0 0 15px rgba(0,255,136,0.4); }
-        .rank-lord { color: var(--neon-gold); border-color: var(--neon-gold); background: rgba(255,215,0,0.2); box-shadow: 0 0 20px rgba(255,215,0,0.5); animation: lordPulse 2s infinite; }
-        @keyframes lordPulse { 0%, 100% { box-shadow: 0 0 15px rgba(255,215,0,0.4); } 50% { box-shadow: 0 0 25px rgba(255,215,0,0.8); } }
-
-        .spotlight-box {
-            margin-bottom: 25px; border: 2px solid var(--neon-gold);
-            background: 
-                radial-gradient(circle at center, rgba(255,215,0,0.2) 0%, transparent 60%),
-                linear-gradient(135deg, rgba(255,215,0,0.1) 0%, transparent 50%);
-            padding: 25px; text-align: center; position: relative;
-            border-radius: 16px; overflow: hidden;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2), inset 0 0 40px rgba(255, 215, 0, 0.05);
-            animation: spotlightPulse 3s infinite;
-        }
-        .spotlight-box::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,215,0,0.1), transparent);
-            animation: rotate 8s linear infinite;
-        }
-        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes spotlightPulse { 0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.2); } 50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.4); } }
-        .spotlight-title { color: var(--neon-gold); font-size: 16px; font-weight: 800; letter-spacing: 4px; position: relative; z-index: 1; text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
-        .spotlight-tip { color: #888; font-size: 12px; margin-top: 10px; font-style: italic; position: relative; z-index: 1; font-weight: 500; }
-
-        .movers-box { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 20px; }
-        .mover-item { flex: 1; border: 2px solid rgba(255,255,255,0.15); padding: 15px; text-align: center; background: rgba(255,255,255,0.05); border-radius: 12px; transition: var(--transition-smooth); }
-        .mover-item:hover { transform: translateY(-5px); background: rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .mover-label { font-size: 10px; display: block; margin-bottom: 6px; color: #777; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
-        .mover-val { font-size: 14px; font-weight: 800; }
-
-        .ping-display {
-            position: fixed; top: 20px; right: 20px; z-index: 2000;
-            font-size: 12px; color: #666; font-family: monospace;
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(0,0,0,0.8); padding: 10px 18px;
-            border-radius: 25px; border: 2px solid rgba(255,255,255,0.1);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5); font-weight: 700;
-        }
-        .ping-val { font-weight: 800; text-shadow: 0 0 10px currentColor; }
-
-        .sys-log-stream {
-            height: 28px; overflow: hidden; font-size: 11px; color: #666;
-            border-bottom: 2px solid rgba(255,255,255,0.08); margin-bottom: 10px; padding: 0 15px;
-            display: flex; align-items: center; white-space: nowrap;
-            background: rgba(0,0,0,0.4); font-weight: 600;
-        }
-        .log-line { animation: fadeLog 1s forwards; margin-right: 25px; color: var(--neon-green); text-shadow: 0 0 10px rgba(0, 255, 136, 0.3); }
-        @keyframes fadeLog { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
-        ::-webkit-scrollbar-thumb { background: var(--neon-gold); border-radius: 5px; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-        ::-webkit-scrollbar-thumb:hover { background: #ffea00; box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
-
-        .bordo-exp-mini-btn {
-            background: transparent; border: 2px solid var(--neon-gold); color: var(--neon-gold);
-            padding: 8px 12px; font-size: 16px; cursor: pointer; border-radius: 6px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;
-            width: auto; margin: 0; margin-right: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700;
-        }
-        .bordo-exp-mini-btn:hover { background: var(--neon-gold); color: #000; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); transform: translateY(-2px); }
-        .bordo-exp-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            z-index: 50000; align-items: center; justify-content: center; padding: 20px; animation: bordoExpFadeIn 0.3s ease;
-        }
-        @keyframes bordoExpFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .bordo-exp-modal {
-            background: rgba(10, 10, 15, 0.97); border: 2px solid var(--neon-gold); border-radius: 20px;
-            width: 100%; max-width: 800px; max-height: 90vh; display: flex; flex-direction: column;
-            box-shadow: 0 0 60px rgba(255, 215, 0, 0.25), 0 20px 60px rgba(0,0,0,0.8);
-            animation: bordoExpSlideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden;
-        }
-        @keyframes bordoExpSlideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .bordo-exp-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; border-bottom: 2px solid rgba(255, 215, 0, 0.3); background: rgba(255, 215, 0, 0.05); flex-shrink: 0; }
-        .bordo-exp-modal-title { color: var(--neon-gold); font-size: 20px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 0 20px rgba(255, 215, 0, 0.4); margin: 0; }
-        .bordo-exp-modal-close { background: transparent; border: 2px solid var(--neon-red); color: var(--neon-red); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; font-weight: 800; transition: all 0.3s; padding: 0; margin: 0; flex-shrink: 0; }
-        .bordo-exp-modal-close:hover { background: var(--neon-red); color: #000; box-shadow: 0 0 20px var(--neon-red); transform: rotate(90deg); }
-        .bordo-exp-modal-body { padding: 25px 28px; overflow-y: auto; flex: 1; }
-        .bordo-exp-table-wrapper { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 215, 0, 0.2); }
-        .bordo-exp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        .bordo-exp-table thead tr { background: rgba(255, 215, 0, 0.15); border-bottom: 2px solid var(--neon-gold); }
-        .bordo-exp-table th { color: var(--neon-gold); padding: 14px 10px; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-align: center; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
-        .bordo-exp-table tbody tr { border-bottom: 1px solid rgba(255, 255, 255, 0.06); transition: background 0.2s; }
-        .bordo-exp-table tbody tr:hover { background: rgba(255, 215, 0, 0.08); }
-        .bordo-exp-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
-        .bordo-exp-table tbody tr:nth-child(even):hover { background: rgba(255, 215, 0, 0.1); }
-        .bordo-exp-table td { padding: 11px 10px; text-align: center; color: #ddd; font-weight: 600; letter-spacing: 0.5px; }
-        .bordo-exp-table td:nth-child(1) { color: var(--neon-green); }
-        .bordo-exp-table td:nth-child(2) { color: var(--neon-gold); }
-        .bordo-exp-table td:nth-child(3) { color: var(--neon-red); }
-        .bordo-exp-modal-footer { padding: 18px 28px; border-top: 1px solid rgba(255, 215, 0, 0.15); text-align: center; color: #666; font-size: 11px; letter-spacing: 2px; font-weight: 600; flex-shrink: 0; }
-
-        #maintenance-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-deep);
-            z-index: 99999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            font-family: 'Share Tech Mono', monospace;
-        }
-        #maintenance-overlay::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%);
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .maintenance-scanline {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: rgba(255, 51, 102, 0.6);
-            box-shadow: 0 0 20px var(--neon-red);
-            animation: maintScan 2.5s linear infinite;
-            z-index: 2;
-        }
-        @keyframes maintScan {
-            0% { top: -5%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 105%; opacity: 0; }
-        }
-        .maintenance-content {
+        .countdown-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 18px 10px;
             position: relative;
-            z-index: 3;
-            text-align: center;
-            padding: 50px 40px;
-            border: 3px solid var(--neon-red);
-            background: rgba(10, 10, 15, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 0 60px rgba(255, 51, 102, 0.4), inset 0 0 60px rgba(255, 51, 102, 0.1);
-            max-width: 550px;
-            width: 90%;
-            animation: maintPulse 2s ease-in-out infinite;
-        }
-        @keyframes maintPulse {
-            0%, 100% { box-shadow: 0 0 40px rgba(255, 51, 102, 0.3), inset 0 0 40px rgba(255, 51, 102, 0.05); }
-            50% { box-shadow: 0 0 80px rgba(255, 51, 102, 0.6), inset 0 0 60px rgba(255, 51, 102, 0.15); }
-        }
-        .maintenance-icon {
-            font-size: 72px;
-            margin-bottom: 25px;
-            animation: maintSpin 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px var(--neon-red));
-        }
-        @keyframes maintSpin {
-            0% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(15deg) scale(1.1); }
-            50% { transform: rotate(0deg) scale(1); }
-            75% { transform: rotate(-15deg) scale(1.1); }
-            100% { transform: rotate(0deg) scale(1); }
-        }
-        .maintenance-title {
-            font-size: 38px;
-            font-weight: 800;
-            color: var(--neon-red);
-            text-shadow: 0 0 30px var(--neon-red), 0 0 60px rgba(255, 51, 102, 0.5);
-            letter-spacing: 8px;
-            margin-bottom: 20px;
-            animation: maintGlitch 2.5s infinite;
-        }
-        @keyframes maintGlitch {
-            0%, 88%, 100% { transform: translate(0); }
-            89% { transform: translate(-4px, 2px); }
-            90% { transform: translate(4px, -2px); }
-            91% { transform: translate(-2px, -1px); }
-            92% { transform: translate(0); }
-        }
-        .maintenance-subtitle {
-            font-size: 15px;
-            color: #aaa;
-            margin-bottom: 35px;
-            letter-spacing: 2px;
-            min-height: 24px;
-            font-weight: 600;
-        }
-        .maintenance-dots {
-            font-size: 36px;
-            color: var(--neon-red);
-            margin-bottom: 30px;
-            font-weight: 800;
-            letter-spacing: 4px;
-        }
-        .maintenance-dots span {
-            animation: maintDot 1.4s infinite both;
-            display: inline-block;
-        }
-        .maintenance-dots span:nth-child(1) { animation-delay: 0s; }
-        .maintenance-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .maintenance-dots span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes maintDot {
-            0%, 80%, 100% { opacity: 0; transform: scale(0.5); }
-            40% { opacity: 1; transform: scale(1.2); }
-        }
-        .maintenance-progress {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             overflow: hidden;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255, 51, 102, 0.3);
-        }
-        .maintenance-progress-bar {
-            height: 100%;
-            width: 0%;
-            background: var(--neon-red);
-            box-shadow: 0 0 20px var(--neon-red);
-            animation: maintProgress 3s ease-in-out infinite;
-        }
-        @keyframes maintProgress {
-            0% { width: 0%; opacity: 0.5; }
-            50% { width: 70%; opacity: 1; }
-            100% { width: 100%; opacity: 0.5; }
-        }
-        .maintenance-code {
-            font-size: 11px;
-            color: #555;
-            letter-spacing: 4px;
-            font-weight: 600;
-        }
-        .maintenance-grid {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 51, 102, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 51, 102, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 0;
-            animation: maintGridMove 20s linear infinite;
-        }
-        @keyframes maintGridMove {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
-        /* ========== MOBİL BOTTOM NAV ========== */
-        .mobile-bottom-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 9998;
-            background: rgba(10, 10, 15, 0.98);
-            border-top: 2px solid var(--neon-gold);
-            padding: 0;
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.8), 0 0 20px rgba(255, 215, 0, 0.2);
+        /* Premium hover etkileri */
+        .countdown-box:hover {
+            transform: translateY(-5px);
+            background: rgba(114, 137, 218, 0.06);
+            border-color: rgba(114, 137, 218, 0.3);
+            box-shadow: 0 12px 24px rgba(114, 137, 218, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
-        .mobile-nav-row {
-            display: flex;
-            width: 100%;
+
+        .countdown-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            color: #ffffff;
+            display: block;
+            margin-bottom: 4px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
         }
-        .mobile-nav-btn {
-            flex: 1;
-            padding: 14px 8px;
-            text-align: center;
-            background: transparent;
-            border: none;
-            border-right: 1px solid rgba(255,255,255,0.08);
-            color: #888;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
+
+        /* Sayı değişirken kullanılacak animasyon sınıfı */
+        .pop-animation {
+            animation: numPop 0.3s ease-out;
+        }
+
+        @keyframes numPop {
+            0% { transform: scale(0.92); opacity: 0.6; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .countdown-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
             text-transform: uppercase;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            margin: 0;
-            border-radius: 0;
-        }
-        .mobile-nav-btn:last-child { border-right: none; }
-        .mobile-nav-btn:hover { background: rgba(255,215,0,0.1); color: var(--neon-gold); }
-        .mobile-nav-btn.active {
-            background: rgba(255, 215, 0, 0.15);
-            color: var(--neon-gold);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.1);
-        }
-        .mobile-nav-icon { font-size: 18px; display: block; margin-bottom: 4px; }
-
-        .user-toolbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .user-display-name {
-            color: var(--neon-gold);
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-            flex: 1 1 auto;
-            min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .user-toolbar-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
+            letter-spacing: 0.05em;
+            display: block;
         }
 
-        /* ========== RESPONSIVE DÜZENLEMELER ========== */
-        @media (max-width: 992px) {
-            .dashboard { flex-direction: column !important; }
-            .main-panel, .side-panel { width: 100%; }
+        /* --- Zaman Dolduğunda Gelecek Ekran --- */
+        .completion-message {
+            display: none;
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulseGlow 2s infinite alternate ease-in-out;
+            padding: 40px 0;
         }
 
-        @media (max-width: 768px) {
-            body {
-                padding-left: env(safe-area-inset-left);
-                padding-right: env(safe-area-inset-right);
-            }
-
-            .news-ticker { font-size: 11px; padding: 10px 0; letter-spacing: 1px; }
-
-            .dashboard {
-                padding: 12px 10px;
-                gap: 14px;
-                padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
-            }
-            .main-panel, .side-panel {
-                padding: 16px 14px;
-                border-radius: 12px;
-            }
-            .main-panel:hover, .side-panel:hover {
-                transform: none;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.5), var(--shadow-glow);
-            }
-
-            .user-toolbar { margin-bottom: 14px; gap: 10px; }
-            .user-display-name { font-size: 18px; letter-spacing: 1px; max-width: 55vw; }
-            .user-toolbar-actions { gap: 8px; }
-            .logout-btn { padding: 8px 10px; font-size: 10px; margin-left: 0; }
-            .theme-selector { gap: 6px; }
-            .theme-btn { width: 20px; height: 20px; }
-            .bordo-exp-mini-btn { padding: 8px 10px; font-size: 15px; min-width: 40px; }
-
-            .auth-box { padding: 28px 18px; width: 94%; max-width: 400px; }
-            .auth-box input, .auth-box button { margin-bottom: 14px; min-height: 46px; }
-
-            .chat-container {
-                min-height: 420px;
-                height: min(68vh, 560px);
-                margin-top: 12px;
-            }
-            .chat-header-tabs { flex-wrap: nowrap; }
-            .chat-tab { padding: 12px 6px; font-size: 10px; letter-spacing: 1px; flex: 1 1 0; min-width: 0; }
-            .online-status-box { padding: 10px 8px; flex-shrink: 0; border-left-width: 1px; }
-            .online-status-box span:last-child { font-size: 11px !important; }
-
-            .spotlight-box { padding: 16px; }
-            .spotlight-title { font-size: 13px; letter-spacing: 2px; }
-            .movers-box { flex-direction: row; gap: 10px; }
-            .mover-item { padding: 12px 10px; flex: 1; min-width: 0; }
-
-            #market-status-indicator {
-                bottom: calc(68px + env(safe-area-inset-bottom, 0px));
-                left: max(10px, env(safe-area-inset-left));
-                padding: 8px 12px;
-                font-size: 10px;
-                letter-spacing: 1px;
-                max-width: calc(100vw - 120px);
-            }
-            .ping-display {
-                top: max(8px, env(safe-area-inset-top));
-                right: max(8px, env(safe-area-inset-right));
-                padding: 6px 10px;
-                font-size: 10px;
-                opacity: 0.85;
-            }
-
-            .footer-legal { padding: 22px 14px; font-size: 11px; margin-bottom: 20px; line-height: 1.7; }
-
-            /* Admin panel — mobil */
-            #admin-panel {
-                margin: 8px 6px 12px;
-                padding: 14px 12px 16px;
-                border-radius: 10px;
-            }
-            .admin-panel-header {
-                margin-bottom: 14px;
-                padding-bottom: 12px;
-            }
-            .admin-panel-header h3 { font-size: 17px; letter-spacing: 2px; }
-            .admin-panel-sub { width: 100%; text-align: right; font-size: 9px; }
-            .admin-grid { grid-template-columns: 1fr; gap: 10px; }
-            .admin-section { padding: 12px 13px; gap: 9px; border-radius: 8px; }
-            .admin-section-title { font-size: 10px; letter-spacing: 1.5px; margin-bottom: 0; }
-            .admin-field-row { grid-template-columns: 1fr; gap: 8px; }
-            .admin-btn-row { grid-template-columns: 1fr 1fr; gap: 8px; }
-            .admin-btn-row-3 {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-            .admin-btn-row-3 button:last-child { grid-column: 1 / -1; }
-            #admin-panel input,
-            #admin-panel select,
-            #admin-panel button {
-                font-size: 12px;
-                padding: 12px 10px;
-                min-height: 44px;
-                border-radius: 8px;
-            }
-            #admin-panel button { letter-spacing: 0.8px; }
-
-            .market-cat-tab { padding: 9px 12px; font-size: 10px; letter-spacing: 1px; }
-            .market-category-nav { gap: 6px; padding-bottom: 10px; }
-            .market-category-bar { gap: 6px; }
-
-            .market-table td { padding: 11px 8px; font-size: 13px; }
-            .market-table th { padding: 11px 8px; font-size: 11px; }
-            .market-table td:first-child { min-width: 90px; }
-            .trend-label { font-size: 8px; padding: 1px 4px; margin-left: 4px; letter-spacing: 0; }
-            .sys-log-stream { font-size: 10px; padding: 0 10px; }
-            #chat-content-area { padding: 12px; }
-            .chat-msg { padding: 10px; margin-bottom: 10px; }
-            .chat-msg:hover { transform: none; }
-            .msg-dm-self, .msg-dm-other { padding: 10px; margin-bottom: 8px; }
-            .input-row { padding: 6px; gap: 4px; }
-            #chat-input { padding: 12px 10px; font-size: 16px; }
-            .chat-tool-btn { width: 42px; font-size: 17px; min-height: 44px; }
-            #chat-send { width: 52px; font-size: 14px; min-height: 44px; }
-
-            .modal-content { width: 94%; padding: 22px 18px; margin: 12vh auto 0; max-height: 85vh; }
-            .confirm-box { width: 92%; padding: 24px 18px; }
-            .viewer-box { padding: 18px; }
-            #viewer-img { max-height: 55vh; }
-            .rank-badge { font-size: 9px; padding: 2px 6px; margin-right: 4px; }
-
-            .mobile-bottom-nav {
-                display: block;
-                padding-bottom: env(safe-area-inset-bottom, 0px);
-            }
-            .mobile-nav-btn {
-                padding: 10px 6px 12px;
-                font-size: 10px;
-                min-height: 52px;
-            }
-            .mobile-nav-icon { font-size: 17px; margin-bottom: 3px; }
+        @keyframes pulseGlow {
+            0% { transform: scale(0.98); filter: drop-shadow(0 0 10px rgba(114, 137, 218, 0)); }
+            100% { transform: scale(1.02); filter: drop-shadow(0 0 25px rgba(114, 137, 218, 0.6)); }
         }
 
-        @media (max-width: 480px) {
-            .dashboard { padding: 8px 6px; padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); gap: 12px; }
-            .main-panel, .side-panel { padding: 14px 12px; border-radius: 10px; }
-
-            .user-display-name { font-size: 16px; max-width: 48vw; }
-            .logout-btn { padding: 7px 8px; font-size: 9px; }
-
-            .auth-box { padding: 24px 14px; }
-            .auth-box h2 { font-size: 24px !important; letter-spacing: 3px !important; }
-
-            .chat-container { min-height: 380px; height: min(62vh, 480px); }
-            .chat-tab { font-size: 9px; padding: 10px 4px; letter-spacing: 0.5px; }
-            .online-status-box { padding: 8px 6px; }
-
-            .spotlight-title { font-size: 12px; }
-            .spotlight-tip { font-size: 11px; }
-            .movers-box { flex-direction: column; }
-            #portfolioVal { font-size: 26px !important; }
-
-            #admin-panel { margin: 6px 4px 10px; padding: 12px 10px 14px; }
-            .admin-panel-header h3 { font-size: 15px; }
-            .admin-section { padding: 11px 11px; gap: 8px; }
-            .admin-btn-row { gap: 6px; }
-            .admin-btn-row-3 { grid-template-columns: 1fr; }
-            .admin-btn-row-3 button:last-child { grid-column: auto; }
-            #admin-panel input,
-            #admin-panel select,
-            #admin-panel button { font-size: 11px; padding: 11px 9px; min-height: 46px; }
-
-            .market-table td { padding: 10px 6px; font-size: 12px; }
-            .market-table th { padding: 10px 6px; font-size: 10px; }
-            .market-table td:first-child { min-width: 90px; }
-            .trend-label { font-size: 7px; padding: 1px 3px; }
-
-            .bordo-exp-modal { border-radius: 0; max-height: 100vh; border-left: none; border-right: none; }
-            .bordo-exp-modal-header { padding: 16px 14px; }
-            .bordo-exp-modal-title { font-size: 15px; letter-spacing: 2px; }
-            .bordo-exp-modal-body { padding: 14px 10px; }
-            .bordo-exp-table { font-size: 11px; }
-            .bordo-exp-table th { padding: 9px 5px; font-size: 9px; letter-spacing: 0.5px; }
-            .bordo-exp-table td { padding: 8px 5px; }
-
-            .maintenance-content { padding: 30px 20px; }
-            .maintenance-title { font-size: 24px; letter-spacing: 3px; }
-            .maintenance-icon { font-size: 48px; }
-            .maintenance-subtitle { font-size: 12px; }
-
-            #marketSearch { font-size: 16px; padding: 12px; min-height: 46px; }
-            #market-status-indicator { font-size: 9px; padding: 7px 10px; }
-            .mobile-nav-btn { font-size: 9px; padding: 9px 3px 11px; letter-spacing: 1px; }
-            .mobile-nav-icon { font-size: 15px; }
+        /* --- Footer Detayı --- */
+        .card-footer {
+            margin-top: 32px;
+            font-size: 0.75rem;
+            color: rgba(148, 163, 184, 0.4);
+            letter-spacing: 0.05em;
         }
 
-        ::selection { background: rgba(255, 215, 0, 0.4); color: #000; text-shadow: none; }
+        /* --- Responsive Tasarım Optimizasyonları --- */
+        @media (max-width: 640px) {
+            body, html {
+                overflow-y: auto; /* Mobilde dikey sığmama durumuna karşı koruma */
+                align-items: flex-start;
+                padding: 40px 0;
+            }
+            .main-wrapper {
+                padding: 16px;
+            }
+            .announcement-card {
+                padding: 36px 20px;
+                border-radius: 20px;
+            }
+            .main-title {
+                font-size: 1.9rem;
+            }
+            .description {
+                font-size: 0.95rem;
+            }
+            .countdown-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .countdown-box {
+                padding: 14px 8px;
+            }
+            .countdown-number {
+                font-size: 1.8rem;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="ping-display">PING: <span id="ping-val" class="ping-val">24ms</span></div>
-<div id="breach-overlay">⚠ SYSTEM BREACH ⚠</div>
-
-<div id="maintenance-overlay">
-    <div class="maintenance-grid"></div>
-    <div class="maintenance-scanline"></div>
-    <div class="maintenance-content">
-        <div class="maintenance-icon">🔧</div>
-        <div class="maintenance-title">SİSTEM BAKIMDA</div>
-        <div class="maintenance-subtitle" id="maintenance-display-msg">Planlı bakım çalışması devam ediyor...</div>
-        <div class="maintenance-dots"><span>.</span><span>.</span><span>.</span></div>
-        <div class="maintenance-progress">
-            <div class="maintenance-progress-bar"></div>
-        </div>
-        <div class="maintenance-code">ERR_MAINTENANCE_MODE_ACTIVE // 503 SERVICE UNAVAILABLE</div>
-    </div>
-</div>
-
-<div id="market-status-indicator">
-    <div id="status-dot" class="status-dot status-open"></div>
-    <span id="status-text">BORSA AÇIK</span>
-</div>
-
-<div id="confirm-modal">
-    <div class="confirm-box">
-        <p style="color:var(--neon-red); margin-top:0; font-size: 16px; margin-bottom: 25px; font-weight: 800; text-shadow: 0 0 20px var(--neon-red);">VERI SILINSIN MI?</p>
-        <div style="display:flex; gap:15px;">
-            <button id="confirm-yes" style="background:var(--neon-red); color:#000; font-weight:800; border:none; flex:1; font-size: 14px;">EVET</button>
-            <button id="confirm-no" style="border-color:#555; flex:1; color: #aaa;">HAYIR</button>
-        </div>
-    </div>
-</div>
-
-<div id="announcement-bar"></div>
-
-<div id="img-viewer" onclick="this.style.display='none'">
-    <div class="viewer-box">
-        <img id="viewer-img" src="">
-        <div style="margin-top:30px; display:flex; gap:20px;">
-            <a id="viewer-dl" href="" download="bordo_img.jpg" style="text-decoration:none; background:var(--neon-green); color:#000; padding:15px 30px; font-weight:800; border-radius: 10px; font-size: 14px; box-shadow: 0 0 20px rgba(0,255,136,0.4);">İNDİR</a>
-            <button onclick="document.getElementById('img-viewer').style.display='none'" style="width:auto; border-color:var(--neon-red); color:var(--neon-red); border-radius: 10px; padding: 15px 30px; font-weight: 700;">KAPAT</button>
-        </div>
-    </div>
-</div>
-
-<div id="online-modal" onclick="this.style.display='none'">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <h3 style="color:var(--neon-gold); border-bottom:2px solid rgba(255,255,255,0.1); padding-bottom:15px; margin-top:0; font-size: 18px; letter-spacing: 3px; text-shadow: 0 0 20px rgba(255,215,0,0.3);">AKTİF TERMİNALLER</h3>
-        <div id="online-list" style="color:var(--neon-green); font-size:14px; text-align:left; overflow-y:auto; flex:1; padding: 15px 0; font-weight: 600;"></div>
-        <button onclick="document.getElementById('online-modal').style.display='none'" style="margin-top:20px; font-size:12px; border-radius: 8px; font-weight: 700;">KAPAT</button>
-    </div>
-</div>
-
-<div id="new-dm-modal" onclick="this.style.display='none'">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <h3 style="color:var(--neon-gold); border-bottom:2px solid rgba(255,255,255,0.1); padding-bottom:15px; margin-top:0; font-size: 18px; letter-spacing: 3px; text-shadow: 0 0 20px rgba(255,215,0,0.3);">YENİ MESAJ BAŞLAT</h3>
-        <input type="text" id="dm-target-manual" placeholder="Kullanıcı Adı Giriniz..." style="margin-bottom: 20px; font-size: 14px;">
-        <button onclick="startDmFromInput()" style="background:var(--neon-gold); color:#000; font-weight:800; border-radius: 8px; margin-bottom: 25px; font-size: 13px;">SOHBETİ BAŞLAT</button>
-        <div style="border-top:2px dashed rgba(255,255,255,0.1); margin-top:20px; padding-top:20px;">
-            <small style="color:#666; display:block; margin-bottom:15px; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">TANIYOR OLABİLECEĞİN KİŞİLER</small>
-            <div id="registered-users-list" style="max-height: 200px; overflow-y: auto;"></div>
-        </div>
-        <button onclick="document.getElementById('new-dm-modal').style.display='none'" style="margin-top:25px; font-size:12px; border-color:var(--neon-red); color:var(--neon-red); border-radius: 8px; font-weight: 700;">İPTAL</button>
-    </div>
-</div>
-
-<div id="admin-panel">
-    <div class="admin-panel-header">
-        <h3>BORDO ADMIN</h3>
-        <span class="admin-panel-sub">Kontrol merkezi</span>
+    <!-- Arka plan görsel katmanları -->
+    <div class="bg-canvas">
+        <div class="ambient-glow glow-1"></div>
+        <div class="ambient-glow glow-2"></div>
+        <canvas id="particles-container"></canvas>
     </div>
 
-    <div class="admin-grid">
-        <section class="admin-section admin-section-gold">
-            <div class="admin-section-title">Haber botu</div>
-            <input type="text" id="botNewsInput" placeholder="Haber botu mesajı...">
-            <div class="admin-btn-row">
-                <button type="button" class="admin-btn-gold" onclick="pushBotNews()">Gönder</button>
-                <button type="button" class="admin-btn-outline-red" onclick="deleteBotNews()">Sil</button>
-            </div>
-        </section>
-
-        <section class="admin-section admin-section-green">
-            <div class="admin-section-title">VIP yetkisi</div>
-            <input type="text" id="vipTargetInput" placeholder="VIP yapılacak isim...">
-            <button type="button" class="admin-btn-outline-green" onclick="giveVip()">VIP ver</button>
-        </section>
-
-        <section class="admin-section admin-section-green">
-            <div class="admin-section-title">Borsa durumu</div>
-            <div class="admin-btn-row">
-                <button type="button" class="admin-btn-green" onclick="setMarketStatus(true)">Borsa aç</button>
-                <button type="button" class="admin-btn-red" onclick="setMarketStatus(false)">Durdur</button>
-            </div>
-        </section>
-
-        <section class="admin-section admin-section-red">
-            <div class="admin-section-title">Bakım modu</div>
-            <input type="text" id="maintenanceInput" placeholder="Bakım mesajı...">
-            <div class="admin-btn-row">
-                <button type="button" class="admin-btn-red" onclick="setMaintenance(true)">Bakımı aç</button>
-                <button type="button" class="admin-btn-outline-green" onclick="setMaintenance(false)">Kapat</button>
-            </div>
-        </section>
-
-        <section class="admin-section admin-section-wide admin-section-red">
-            <div class="admin-section-title">Efektler</div>
-            <button type="button" class="admin-btn-outline-red" onclick="toggleBreachEffect()">Siber saldırı efekti (aç/kapa)</button>
-        </section>
-
-        <section class="admin-section admin-section-green">
-            <div class="admin-section-title">Yeni ürün</div>
-            <div class="admin-field-row">
-                <input type="text" id="newItemName" placeholder="Ürün ismi">
-                <input type="number" id="newItemPrice" placeholder="Başlangıç G">
-            </div>
-            <input type="text" id="newItemCategory" list="categoryNamesList" placeholder="Kategori (örn: Silahlar, VIP...)">
-            <button type="button" class="admin-btn-outline-green" onclick="addItem()">Ürünü ekle</button>
-        </section>
-
-        <section class="admin-section admin-section-gold">
-            <div class="admin-section-title">Kategori yönetimi</div>
-            <select id="admSelectCategory"></select>
-            <input type="text" id="categoryNameInput" list="categoryNamesList" placeholder="Kategori adı yaz veya seç">
-            <datalist id="categoryNamesList"></datalist>
-            <p class="admin-category-hint" id="category-current-hint">Ürün seçince mevcut kategori burada görünür.</p>
-            <div class="admin-btn-row">
-                <button type="button" class="admin-btn-gold" onclick="assignItemCategory()">Kategoriye ata</button>
-                <button type="button" class="admin-btn-muted" onclick="clearItemCategory()">Genel yap</button>
-            </div>
-            <button type="button" class="admin-btn-outline-gold" onclick="registerCategoryOnly()">Yeni kategori oluştur</button>
-        </section>
-
-        <section class="admin-section admin-section-gold">
-            <div class="admin-section-title">Fiyat &amp; stabil</div>
-            <div class="admin-field-row">
-                <select id="admSelect"></select>
-                <input type="number" id="admPrice" placeholder="Yeni fiyat (G)">
-            </div>
-            <button type="button" class="admin-btn-red" onclick="pushPrice()">Fiyatı sabitle</button>
-            <div class="admin-btn-row">
-                <button type="button" class="admin-btn-gold" onclick="setStable(true)">Stabil kalsın</button>
-                <button type="button" class="admin-btn-outline-red" onclick="setStable(false)">Stabili kaldır</button>
-            </div>
-        </section>
-
-        <section class="admin-section admin-section-gold">
-            <div class="admin-section-title">Trend efektleri</div>
-            <div class="admin-btn-row">
-                <button type="button" class="admin-btn-outline-gold" onclick="setTrend('pump')">Pump</button>
-                <button type="button" class="admin-btn-outline-red" onclick="setTrend('dump')">Dump</button>
-            </div>
-            <div class="admin-btn-row admin-btn-row-3">
-                <button type="button" class="admin-btn-muted" onclick="setTrend('normal')">Temizle</button>
-                <button type="button" class="admin-btn-muted" onclick="deleteItem()">Ürün sil</button>
-                <button type="button" class="admin-btn-outline-red" onclick="banUser()">Banla</button>
-            </div>
-        </section>
-
-        <section class="admin-section admin-section-wide admin-section-red">
-            <div class="admin-section-title">Sistem duyurusu</div>
-            <input type="text" id="announcementInput" placeholder="Duyuru metni...">
-            <div class="admin-btn-row">
-                <button type="button" class="admin-btn-red" onclick="pushAnnouncement()">Yayınla</button>
-                <button type="button" class="admin-btn-muted" onclick="clearAnnouncement()">Kaldır</button>
-            </div>
-        </section>
-    </div>
-</div>
-
-<div id="auth-screen">
-    <div class="auth-box" id="login-form">
-        <h2 style="color: var(--neon-gold); margin-bottom: 30px; font-size: 32px; letter-spacing: 5px; text-shadow: 0 0 30px rgba(255,215,0,0.5);">BORDO TERMINAL</h2>
-        <div id="auth-error" class="error-msg">HATALI ŞİFRE VEYA KULLANICI!</div>
-        <input type="text" id="auth-user" placeholder="Kullanıcı Adı" style="margin-bottom: 20px; font-size: 15px;">
-        <input type="password" id="auth-pass" placeholder="Şifre" style="margin-bottom: 25px; font-size: 15px;">
-        <button onclick="login()" style="margin-bottom: 20px; border-radius: 10px; font-size: 14px; font-weight: 800;">GİRİŞ YAP</button>
-        <p style="font-size: 13px; cursor: pointer; color: #666; transition: color 0.3s; font-weight: 600;" onmouseover="this.style.color='var(--neon-gold)'" onmouseout="this.style.color='#666'" onclick="toggleAuth(true)">Hesabın yok mu? Kayıt Ol</p>
-    </div>
-    <div class="auth-box" id="register-form" style="display:none">
-        <h2 style="color: var(--neon-gold); margin-bottom: 30px; font-size: 28px; letter-spacing: 4px; text-shadow: 0 0 30px rgba(255,215,0,0.5);">YENİ KAYIT</h2>
-        <input type="text" id="reg-user" placeholder="Kullanıcı Adı" style="margin-bottom: 15px; font-size: 15px;">
-        <input type="password" id="reg-pass" placeholder="Şifre" style="margin-bottom: 15px; font-size: 15px;">
-        <input type="text" id="reg-img" placeholder="Avatar URL (Opsiyonel)" style="margin-bottom: 25px; font-size: 15px;">
-        <button onclick="register()" style="margin-bottom: 20px; border-radius: 10px; font-size: 14px; font-weight: 800;">KAYIT OL</button>
-        <p style="font-size: 13px; cursor: pointer; color: #666; transition: color 0.3s; font-weight: 600;" onmouseover="this.style.color='var(--neon-gold)'" onmouseout="this.style.color='#666'" onclick="toggleAuth(false)">Zaten hesabın var mı? Giriş Yap</p>
-    </div>
-</div>
-
-<div class="news-ticker"><div class="ticker-text" id="newsText">PIYASA ANALIZ EDILIYOR...</div></div>
-
-<div class="dashboard" id="main-dashboard">
-    <div class="side-panel" id="side-panel">
-        <div class="user-toolbar">
-            <div id="display-name" class="user-display-name"></div>
-            <div class="user-toolbar-actions">
-                <button class="bordo-exp-mini-btn" onclick="openExpModal()" title="EXP Tablosu">📊</button>
-                <button class="logout-btn" onclick="logout()">[ÇIKIŞ]</button>
-                <div class="theme-selector">
-                    <div class="theme-btn t-default active" onclick="changeTheme('default')" title="Varsayılan (Gold)"></div>
-                    <div class="theme-btn t-pistachio" onclick="changeTheme('pistachio')" title="Fıstık Yeşili"></div>
-                    <div class="theme-btn t-ocean" onclick="changeTheme('ocean')" title="Okyanus Mavisi"></div>
-                </div>
-            </div>
-        </div>
-        <div style="border: 2px solid rgba(0,255,136,0.4); padding:20px; text-align:center; margin-bottom:25px; border-radius: 12px; background: rgba(0,255,136,0.05); box-shadow: 0 0 30px rgba(0,255,136,0.1), inset 0 0 30px rgba(0,255,136,0.05);">
-            <div style="font-size: 11px; color: #888; margin-bottom: 12px; line-height: 1.5; border-bottom: 1px solid rgba(0, 255, 136, 0.2); padding-bottom: 10px; letter-spacing: 2px; font-weight: 700;">PORTFÖY DEĞERİ</div>
-            <small style="color: #666; letter-spacing: 3px; font-size: 11px; font-weight: 700;">TOPLAM VARLIK</small>
-            <div id="portfolioVal" style="color:var(--neon-green); font-size:32px; font-weight: 800; margin-top: 8px; text-shadow: 0 0 30px rgba(0,255,136,0.4);">0.00 G</div>
-        </div>
-        <select id="tradeSelect" style="background: rgba(0,0,0,0.5); font-size: 14px;"></select>
-        <input type="number" id="tradeAmount" placeholder="Miktar" style="background: rgba(0,0,0,0.5); font-size: 14px;">
-        <button onclick="buyItem()" style="border-radius: 8px; margin-bottom: 20px; font-size: 13px; font-weight: 800;">SATIN AL</button>
-        <div id="invList" style="max-height: 120px; overflow-y:auto; margin-bottom: 15px; padding-right: 5px;"></div>
+    <!-- Parallax etkileşimli ana sarıcı -->
+    <div class="main-wrapper" id="scene">
         
-        <div class="movers-box">
-            <div class="mover-item">
-                <span class="mover-label">HAFTANIN YILDIZI</span>
-                <div id="top-gainer" class="mover-val" style="color: var(--neon-green);">---</div>
-            </div>
-            <div class="mover-item">
-                <span class="mover-label">HAFTANIN KAYBI</span>
-                <div id="top-loser" class="mover-val" style="color: var(--neon-red);">---</div>
-            </div>
-        </div>
-
-        <div class="chat-container">
-            <div class="chat-header-tabs">
-                <div id="tab-global" class="chat-tab active" onclick="switchChatTab('global')">GLOBAL</div>
-                <div id="tab-dm" class="chat-tab" onclick="switchChatTab('dm')">ÖZEL (DM)</div>
-                <div class="online-status-box" onclick="showOnlineUsers()">
-                    <span class="online-dot"></span>
-                    <span id="online-count" style="font-size:12px; font-weight: 800;">1</span>
-                </div>
+        <!-- Merkez Kart -->
+        <div class="announcement-card">
+            
+            <div class="badge">Sistem Durumu</div>
+            
+            <h1 class="main-title">Zombix Trade Sitesi Duyurusu</h1>
+            
+            <div class="description">
+                <p>Zombix Trade sitesi ve buna bağlı diğer tüm projelerimiz geçici olarak dondurulmuştur.</p>
+                <p>Bu süreç boyunca kanalın ve projelerin sahibi Bordo, akademik kariyerine ve eğitim hayatına odaklanacaktır.</p>
+                <p>Anlayışınız ve desteğiniz için teşekkür ederiz.</p>
             </div>
             
-            <div class="sys-log-stream" id="sys-logs">
-                <span class="log-line">Sistem başlatıldı...</span>
-            </div>
-
-            <div id="news-bot-sticky">Borsa Botu: <span></span></div>
+            <div class="divider"></div>
             
-            <div id="chat-content-area">
-                <div id="global-view">
-                    <div id="chat-messages"></div>
-                </div>
-
-                <div id="dm-view">
-                    <div id="dm-list-container">
-                        <div onclick="startNewDm()" style="padding:15px; border:2px dashed var(--neon-gold); text-align:center; cursor:pointer; color:var(--neon-gold); margin-bottom:15px; font-size:13px; border-radius: 10px; transition: all 0.3s; font-weight: 700; letter-spacing: 1px;" onmouseover="this.style.background='rgba(255,215,0,0.1)'; this.style.boxShadow='0 0 20px rgba(255,215,0,0.2)'" onmouseout="this.style.background='transparent'; this.style.boxShadow='none'">+ YENİ MESAJ BAŞLAT</div>
-                        <div id="dm-inbox-list"></div>
-                    </div>
-                    <div id="dm-header-bar" class="dm-header-bar">
-                        <span id="dm-partner-name" style="font-weight:800; color:var(--neon-gold); letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,215,0,0.3);"></span>
-                        <span onclick="closeDmChat()" style="cursor:pointer; color:var(--neon-red); font-weight: 800; transition: all 0.3s; font-size: 12px;" onmouseover="this.style.transform='scale(1.1)'; this.style.textShadow='0 0 10px var(--neon-red)'" onmouseout="this.style.transform='scale(1)'; this.style.textShadow='none'">[ GERİ DÖN ]</span>
-                    </div>
-                    <div id="dm-conversation-container"></div>
-                </div>
-            </div>
-
-            <div class="chat-input-area">
-                <div id="reply-preview" class="reply-container">
-                    <span class="cancel-reply" onclick="cancelReply()">✕</span>
-                    <div id="reply-to-user" style="font-weight:800; color:var(--neon-gold); font-size: 11px; margin-bottom: 6px; text-shadow: 0 0 10px rgba(255,215,0,0.3);"></div>
-                    <div id="reply-to-text" class="reply-content"></div>
-                </div>
-                <div id="emoji-picker">
-                    <button class="emoji-btn" onclick="addEmoji('🔥')">🔥</button>
-                    <button class="emoji-btn" onclick="addEmoji('💎')">💎</button>
-                    <button class="emoji-btn" onclick="addEmoji('📈')">📈</button>
-                    <button class="emoji-btn" onclick="addEmoji('🚀')">🚀</button>
-                    <button class="emoji-btn" onclick="addEmoji('💰')">💰</button>
-                </div>
-                <div class="input-row">
-                    <input type="text" id="chat-input" placeholder="Mesajınızı yazın..." onkeypress="if(event.key==='Enter') sendChat()">
-                    <button class="chat-tool-btn" onclick="toggleEmoji()">☺</button>
-                    <button class="chat-tool-btn" onclick="document.getElementById('chat-file-input').click()">📷</button>
-                    <input type="file" id="chat-file-input" style="display:none" accept="image/*" onchange="uploadImage(this)">
-                    <button id="chat-send" onclick="sendChat()">➤</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="main-panel" id="main-panel">
-        
-        <div class="spotlight-box" id="daily-spotlight">
-            <div class="spotlight-title">★ GÜNÜN FIRSATI: <span id="spotlight-name">YÜKLENİYOR...</span> ★</div>
-            <div class="spotlight-tip" id="spotlight-tip">İpucu: Analizler yapılıyor...</div>
-        </div>
-
-        <input type="text" id="marketSearch" placeholder="[ VARLIK ARA... ]" oninput="updateUI()">
-        <div class="market-shell">
-            <div id="marketClosedBanner" class="market-closed-banner" style="display:none;"></div>
-            <div class="market-category-nav" id="marketCategoryNav">
-                <div class="market-category-primary" id="marketPrimaryCategory"></div>
-                <button type="button" class="market-cat-more-btn" id="marketCategoryToggle" style="display:none;">KATEGORİLER <span class="market-cat-more-icon">▾</span></button>
-                <div class="market-category-extra" id="marketCategoryExtra">
-                    <div class="market-category-extra-inner">
-                        <div class="market-category-bar" id="marketCategoryBar"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="market-category-content" id="marketCategoryContent">
-                <div class="market-category-inner">
-                    <div class="market-table-scroll">
-                        <table class="market-table">
-                        <thead><tr style="color:var(--neon-gold); font-size:12px; border-bottom:3px solid rgba(255,215,0,0.4); text-transform: uppercase; letter-spacing: 2px;">
-                            <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 140px;">VARLIK</th>
-                            <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 100px;">FİYAT</th>
-                            <th style="padding:15px 10px; font-weight: 800; text-shadow: 0 0 10px rgba(255,215,0,0.3); min-width: 100px;">TREND</th>
-                        </tr></thead>
-                        <tbody id="marketBody"></tbody>
-                    </table>
-                    </div>
-                </div>
-            </div>
-            <div id="marketPickHint" class="market-empty-hint">Kategori seç — ürünler burada açılır</div>
-        </div>
-    </div>
-</div>
-
-<div class="footer-legal">
-    &copy; 2024-2026 ZOMBIX BORSA | Tüm kodların lisansı ve fikri mülkiyet hakları <strong style="color: var(--neon-gold); text-shadow: 0 0 10px rgba(255,215,0,0.3);">TheBordoTurke</strong> aittir.
-</div>
-
-<!-- MOBİL BOTTOM NAV -->
-<div class="mobile-bottom-nav" id="mobile-bottom-nav">
-    <div class="mobile-nav-row">
-        <button class="mobile-nav-btn active" id="nav-chat" onclick="mobileSwitchView('chat')">
-            <span class="mobile-nav-icon">💬</span>
-            <span>SOHBET</span>
-        </button>
-        <button class="mobile-nav-btn" id="nav-market" onclick="mobileSwitchView('market')">
-            <span class="mobile-nav-icon">📈</span>
-            <span>PİYASA</span>
-        </button>
-    </div>
-</div>
-
-<script>
-    const FB = "https://bordotrader-e0b9e-default-rtdb.europe-west1.firebasedatabase.app";
-    const MARKET_CACHE_KEY = 'bordo_market_cache';
-    let syncBusy = false;
-    let syncTimer = null;
-    let chatSyncBusy = false;
-    let chatSyncTimer = null;
-    let dashboardBooted = false;
-    let localItems = [];
-    let marketCategories = [];
-    const DEFAULT_CATEGORY = 'Genel';
-    let activeMarketCategory = DEFAULT_CATEGORY;
-    let marketCategoriesExpanded = false;
-    let marketItemsByCategory = {};
-    let inventory = JSON.parse(localStorage.getItem('bordo_inv')) || [];
-    let activeSession = JSON.parse(localStorage.getItem('bordo_session'));
-    let activeUsersList = [];
-    let lastChatCount = 0;
-    let isMarketOpen = true;
-    let replyData = null;
-    
-    let chatMode = 'global'; 
-    let activeDmTarget = null;
-    let dmCache = {};
-
-    function loadSavedTheme() {
-        const t = localStorage.getItem('bordo_theme') || 'default';
-        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-        if(t === 'pistachio') {
-            document.documentElement.setAttribute('data-theme', 'pistachio');
-            document.querySelector('.t-pistachio').classList.add('active');
-        } else if(t === 'ocean') {
-            document.documentElement.setAttribute('data-theme', 'ocean');
-            document.querySelector('.t-ocean').classList.add('active');
-        } else {
-            document.documentElement.removeAttribute('data-theme');
-            document.querySelector('.t-default').classList.add('active');
-        }
-    }
-    
-    function changeTheme(themeName) {
-        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-        if(themeName === 'pistachio') {
-            document.querySelector('.t-pistachio').classList.add('active');
-        } else if(themeName === 'ocean') {
-            document.querySelector('.t-ocean').classList.add('active');
-        } else {
-            document.querySelector('.t-default').classList.add('active');
-        }
-        
-        if(themeName === 'default') {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.removeItem('bordo_theme');
-        } else {
-            document.documentElement.setAttribute('data-theme', themeName);
-            localStorage.setItem('bordo_theme', themeName);
-        }
-    }
-    
-    loadSavedTheme();
-
-    // MOBİL VİEW SWITCH
-    function mobileSwitchView(view) {
-        const sidePanel = document.getElementById('side-panel');
-        const mainPanel = document.getElementById('main-panel');
-        const navChat = document.getElementById('nav-chat');
-        const navMarket = document.getElementById('nav-market');
-        
-        if(view === 'chat') {
-            sidePanel.style.display = 'block';
-            mainPanel.style.display = 'none';
-            navChat.classList.add('active');
-            navMarket.classList.remove('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-            sidePanel.style.display = 'none';
-            mainPanel.style.display = 'block';
-            navMarket.classList.add('active');
-            navChat.classList.remove('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-
-    function playNotification() { new Audio('https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3').play().catch(e => {}); }
-    function setReply(userName, text) { 
-        if(chatMode === 'dm') return; 
-        replyData = { user: userName, text: text }; 
-        document.getElementById('reply-preview').style.display = 'block'; 
-        document.getElementById('reply-to-user').innerText = "@" + userName; 
-        document.getElementById('reply-to-text').innerText = text.substring(0, 50) + (text.length > 50 ? "..." : ""); 
-        document.getElementById('chat-input').focus(); 
-    }
-    function cancelReply() { replyData = null; document.getElementById('reply-preview').style.display = 'none'; }
-    function toggleAuth(isReg) { document.getElementById('login-form').style.display = isReg ? 'none' : 'block'; document.getElementById('register-form').style.display = isReg ? 'block' : 'none'; document.getElementById('auth-error').style.display = 'none'; }
-    function register() { const u = document.getElementById('reg-user').value.trim(); const p = document.getElementById('reg-pass').value.trim(); if(!u || !p) return; let users = JSON.parse(localStorage.getItem('bordo_accounts')) || {}; if(users[u]) { alert("Bu kullanıcı adı alınmış!"); return; } users[u] = { pass: p }; localStorage.setItem('bordo_accounts', JSON.stringify(users)); alert("Kayıt Başarılı!"); toggleAuth(false); }
-    function login() { const u = document.getElementById('auth-user').value.trim(); const p = document.getElementById('auth-pass').value.trim(); let users = JSON.parse(localStorage.getItem('bordo_accounts')) || {}; if(u === "Bordo" && p === "1991bordo") { startSession(u); return; } if(users[u] && users[u].pass === p) { startSession(u); } else { document.getElementById('auth-error').style.display = 'block'; } }
-    function startSession(name) {
-        localStorage.setItem('bordo_session', JSON.stringify({ name: name }));
-        activeSession = { name: name };
-        bootDashboard();
-    }
-    function logout() { localStorage.removeItem('bordo_session'); location.reload(); }
-
-    function switchChatTab(mode) {
-        chatMode = mode;
-        document.getElementById('tab-global').className = mode === 'global' ? 'chat-tab active' : 'chat-tab';
-        document.getElementById('tab-dm').className = mode === 'dm' ? 'chat-tab active' : 'chat-tab';
-        
-        document.getElementById('global-view').style.display = mode === 'global' ? 'block' : 'none';
-        document.getElementById('dm-view').style.display = mode === 'dm' ? 'flex' : 'none';
-        
-        if(mode === 'dm') {
-            cancelReply();
-            renderDmList();
-        }
-        const chatArea = document.getElementById('chat-content-area');
-        chatArea.scrollTop = chatArea.scrollHeight;
-    }
-
-    function startNewDm() {
-        document.getElementById('new-dm-modal').style.display = 'flex';
-        document.getElementById('dm-target-manual').value = "";
-        
-        const accounts = JSON.parse(localStorage.getItem('bordo_accounts')) || {};
-        const listDiv = document.getElementById('registered-users-list');
-        let html = "";
-        const myName = activeSession.name;
-        
-        Object.keys(accounts).forEach(user => {
-            if(user !== myName) {
-                html += `<div class="suggested-user" onclick="startDmFromList('${user}')">
-                    <span style="font-weight: 700;">${user}</span>
-                    <span style="font-size:11px; opacity: 0.8; font-weight: 600;">MESAJ AT ></span>
-                </div>`;
-            }
-        });
-
-        if(html === "") html = "<div style='color:#555; font-size:12px; padding:15px; text-align: center; font-weight: 600;'>Kayıtlı başka kullanıcı bulunamadı.</div>";
-        listDiv.innerHTML = html;
-    }
-
-    function startDmFromInput() {
-        const target = document.getElementById('dm-target-manual').value.trim();
-        if(target && target !== activeSession.name) {
-            document.getElementById('new-dm-modal').style.display = 'none';
-            openDmChat(target);
-        }
-    }
-
-    function startDmFromList(target) {
-        document.getElementById('new-dm-modal').style.display = 'none';
-        openDmChat(target);
-    }
-    
-    function openDmChat(targetUser) {
-        activeDmTarget = targetUser;
-        document.getElementById('dm-list-container').style.display = 'none';
-        document.getElementById('dm-header-bar').style.display = 'flex';
-        document.getElementById('dm-conversation-container').style.display = 'block';
-        document.getElementById('dm-partner-name').innerText = targetUser;
-        renderActiveDm();
-        setTimeout(() => {
-             const container = document.getElementById('dm-conversation-container');
-             container.scrollTop = container.scrollHeight;
-        }, 100);
-    }
-
-    function closeDmChat() {
-        activeDmTarget = null;
-        document.getElementById('dm-list-container').style.display = 'block';
-        document.getElementById('dm-header-bar').style.display = 'none';
-        document.getElementById('dm-conversation-container').style.display = 'none';
-        renderDmList();
-    }
-
-    function getDmKey(user1, user2) {
-        return [user1, user2].sort().join('_');
-    }
-
-    function renderDmList() {
-        if(!dmCache) return;
-        const myName = activeSession.name;
-        const listDiv = document.getElementById('dm-inbox-list');
-        let html = "";
-        
-        const keys = Object.keys(dmCache).filter(k => k.includes(myName));
-        
-        if(keys.length === 0) {
-            listDiv.innerHTML = "<div style='color:#555; text-align:center; margin-top:40px; font-size: 13px; font-weight: 600;'>Henüz mesaj yok.</div>";
-            return;
-        }
-
-        keys.forEach(key => {
-            const parts = key.split('_');
-            const otherUser = parts[0] === myName ? parts[1] : parts[0];
-            html += `<div class="dm-item" onclick="openDmChat('${otherUser}')">
-                <span style="font-weight:800; color:var(--neon-gold); font-size: 14px; text-shadow: 0 0 10px rgba(255,215,0,0.2);">${otherUser}</span>
-                <span style="font-size:11px; color:#777; font-weight: 700;">SOHBET AÇ ></span>
-            </div>`;
-        });
-        listDiv.innerHTML = html;
-    }
-
-    function renderActiveDm() {
-        if(!activeDmTarget || !dmCache) return;
-        const key = getDmKey(activeSession.name, activeDmTarget);
-        const msgsObj = dmCache[key] || {};
-        const container = document.getElementById('dm-conversation-container');
-        
-        let html = "";
-        const sortedIds = Object.keys(msgsObj).sort();
-        
-        sortedIds.forEach(id => {
-            const m = msgsObj[id];
-            const isMe = m.u === activeSession.name;
-            const cssClass = isMe ? "msg-dm-self" : "msg-dm-other";
-            const content = m.type === "img" ? `<img src="${m.t}" class="chat-img" onclick="openImageViewer('${m.t}')">` : m.t;
-            html += `<div class="${cssClass}">
-                <div style="font-size:10px; opacity:0.7; margin-bottom: 5px; font-weight: 700; letter-spacing: 1px;">${m.u}</div>
-                <div style="font-size: 14px; font-weight: 500;">${content}</div>
-            </div>`;
-        });
-        
-        container.innerHTML = html;
-    }
-
-    function updatePingDisplay(ms) {
-        const el = document.getElementById('ping-val');
-        if (!el) return;
-        el.innerText = ms + "ms";
-        el.style.color = ms < 120 ? "var(--neon-green)" : (ms < 300 ? "var(--neon-gold)" : "var(--neon-red)");
-    }
-
-    function saveMarketCache() {
-        try {
-            localStorage.setItem(MARKET_CACHE_KEY, JSON.stringify({
-                ts: Date.now(),
-                localItems,
-                marketCategories,
-                isMarketOpen
-            }));
-        } catch (e) {}
-    }
-
-    function hydrateMarketCache() {
-        try {
-            const raw = localStorage.getItem(MARKET_CACHE_KEY);
-            if (!raw) return;
-            const cached = JSON.parse(raw);
-            if (!cached.localItems || !cached.localItems.length) return;
-            localItems = cached.localItems;
-            marketCategories = cached.marketCategories || [];
-            isMarketOpen = cached.isMarketOpen !== false;
-            mergeCategoriesFromItems();
-            const dot = document.getElementById('status-dot');
-            const txt = document.getElementById('status-text');
-            if (dot && txt) {
-                if (isMarketOpen) {
-                    dot.className = "status-dot status-open";
-                    txt.innerText = "BORSA AÇIK";
-                } else {
-                    dot.className = "status-dot status-closed";
-                    txt.innerText = "BORSA KAPALI";
-                }
-            }
-            updateUI();
-            if (isMarketOpen) updateLiveTicker();
-        } catch (e) {}
-    }
-
-    function initDashboardEvents() {
-        if (dashboardBooted) return;
-        dashboardBooted = true;
-        const admCatSel = document.getElementById('admSelectCategory');
-        if (admCatSel) admCatSel.addEventListener('change', updateCategoryControls);
-        const marketCatNav = document.getElementById('marketCategoryNav');
-        if (marketCatNav) {
-            marketCatNav.addEventListener('click', (e) => {
-                if (e.target.closest('#marketCategoryToggle')) {
-                    toggleMarketCategoriesList();
-                    return;
-                }
-                const btn = e.target.closest('.market-cat-tab');
-                if (!btn || !btn.dataset.cat) return;
-                toggleMarketCategory(btn.dataset.cat);
-            });
-        }
-    }
-
-    function bootDashboard() {
-        if (!activeSession) return;
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('main-dashboard').style.display = 'flex';
-        document.getElementById('display-name').innerText = activeSession.name;
-        if (activeSession.name === "Bordo") document.getElementById('admin-panel').style.display = 'block';
-        initDashboardEvents();
-        hydrateMarketCache();
-        sync();
-        syncChat();
-        if (!syncTimer) syncTimer = setInterval(sync, 5000);
-        if (!chatSyncTimer) chatSyncTimer = setInterval(syncChat, 1000);
-    }
-
-    async function sync() {
-        if (syncBusy) return;
-        syncBusy = true;
-        const statusText = document.getElementById('status-text');
-        const hadMarketData = localItems.length > 0;
-        if (statusText && !hadMarketData) statusText.innerText = "BAĞLANIYOR...";
-        try {
-            const res = await fetch(`${FB}/.json`, { cache: 'no-store' });
-            const data = await res.json();
-            if(!data) return;
-
-            const maintOverlay = document.getElementById('maintenance-overlay');
-            const isAdmin = activeSession && activeSession.name === "Bordo";
-            
-            if(data.maintenance && data.maintenance.active === true) {
-                const dispMsg = document.getElementById('maintenance-display-msg');
-                if(dispMsg) dispMsg.innerText = data.maintenance.msg || "Planlı bakım çalışması devam ediyor...";
+            <!-- Geri Sayım Arayüz Grubu -->
+            <div id="countdown-group">
+                <h2 class="countdown-title">Bordonun Dönmesine Kalan</h2>
                 
-                if(!isAdmin) {
-                    maintOverlay.style.display = 'flex';
-                } else {
-                    maintOverlay.style.display = 'none';
-                    addSystemLog("🔧 BAKIM MODU AKTİF — Kullanıcılar engelleniyor");
-                }
-            } else {
-                maintOverlay.style.display = 'none';
-            }
+                <div class="countdown-container">
+                    <!-- Gün Kutusu -->
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="days">00</span>
+                        <span class="countdown-label">Gün</span>
+                    </div>
+                    <!-- Saat Kutusu -->
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="hours">00</span>
+                        <span class="countdown-label">Saat</span>
+                    </div>
+                    <!-- Dakika Kutusu -->
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="minutes">00</span>
+                        <span class="countdown-label">Dakika</span>
+                    </div>
+                    <!-- Saniye Kutusu -->
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="seconds">00</span>
+                        <span class="countdown-label">Saniye</span>
+                    </div>
+                </div>
+            </div>
 
-            if(data.system_breach !== undefined) {
-                applyBreach(data.system_breach);
-            }
+            <!-- Süre Bittiğinde Tetiklenecek Mesaj -->
+            <div class="completion-message" id="complete-msg">
+                Bordo Geri Döndü!
+            </div>
+            
+            <div class="card-footer">
+                &copy; 2026 BordoDev. Tüm Hakları Saklıdır.
+            </div>
 
-            isMarketOpen = data.market_status !== false;
-            const dot = document.getElementById('status-dot');
-            const txt = document.getElementById('status-text');
-            if(isMarketOpen) { dot.className = "status-dot status-open"; txt.innerText = "BORSA AÇIK"; } else { dot.className = "status-dot status-closed"; txt.innerText = "BORSA KAPALI"; }
+        </div>
+    </div>
 
-            const systemKeys = ['ann','chat','system_announcement','bans','presence', 'market_status', 'bot_news', 'vips', 'dms', 'system_breach', 'maintenance', 'categories'];
-            marketCategories = [];
-            if (data.categories && typeof data.categories === 'object' && !Array.isArray(data.categories)) {
-                marketCategories = Object.entries(data.categories)
-                    .map(([key, val]) => ({
-                        name: (val && val.name) ? String(val.name) : key,
-                        order: (val && typeof val.order === 'number') ? val.order : 999
-                    }))
-                    .sort((a, b) => a.order - b.order)
-                    .map(c => c.name)
-                    .filter(c => c !== DEFAULT_CATEGORY);
-            }
+    <script>
+        // --- 1. HAFİF VE FPS DOSTU PARTİKÜL SİSTEMİ ---
+        const canvas = document.getElementById('particles-container');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
 
-            const names = Object.keys(data).filter(k => !systemKeys.includes(k) && data[k] && typeof data[k] === 'object' && data[k].price !== undefined);
-
-            localItems = names.map(n => {
-                const item = data[n];
-                let currentPrice = parseFloat(item.price);
-                const basePrice = parseFloat(item.base || item.price);
-
-                if (isMarketOpen && !item.stable && !item.locked) {
-                    const change = (Math.random() * 6) - 2;
-                    let newPrice = currentPrice + change;
-                    const minPrice = basePrice - 2;
-                    const maxPrice = basePrice + 4;
-                    newPrice = Math.max(minPrice, Math.min(maxPrice, newPrice));
-                    currentPrice = newPrice;
-                }
-
-                const category = normalizeCategoryName(item.category) || DEFAULT_CATEGORY;
-
-                return { 
-                    name: n, 
-                    price: currentPrice, 
-                    last: parseFloat(item.last || item.price), 
-                    base: basePrice, 
-                    trend: item.trend || 'normal',
-                    stable: item.stable || false,
-                    category: category
-                };
-            }).sort((a, b) => b.price - a.price);
-
-            mergeCategoriesFromItems();
-            updateUI();
-            saveMarketCache();
-            if (isMarketOpen) {
-                updateLiveTicker();
-            } else {
-                document.getElementById('newsText').innerText = isBordoAdmin()
-                    ? "BORSA KAPALI — Admin fiyat güncelleyebilir"
-                    : "BORSA KAPALI — İŞLEMLER DURDURULDU";
-            }
-
-            if(activeSession) {
-                fetch(`${FB}/presence/${activeSession.name}.json`, {
-                    method: 'PUT',
-                    body: JSON.stringify(Date.now())
-                }).catch(() => {});
-            }
-            if(data.presence) { const now = Date.now(); activeUsersList = Object.keys(data.presence).filter(user => (now - data.presence[user]) < 120000); document.getElementById('online-count').innerText = activeUsersList.length; }
-
-            if(data.bot_news) { document.getElementById('news-bot-sticky').style.display = 'block'; document.getElementById('news-bot-sticky').querySelector('span').innerText = data.bot_news; } else { document.getElementById('news-bot-sticky').style.display = 'none'; }
-
-            const bar = document.getElementById('announcement-bar');
-            if(data.ann && data.ann !== "") { bar.innerText = "[ SİSTEM DUYURUSU: " + data.ann + " ]"; bar.style.display = 'block'; } else { bar.style.display = 'none'; }
-
-        } catch(e){ console.error("Sync Error:", e); }
-        finally { syncBusy = false; }
-    }
-
-    function renderGlobalChat(chatData, vipsData) {
-        if (!chatData) return;
-        const chatBox = document.getElementById('chat-messages');
-        const chatArea = document.getElementById('chat-content-area');
-        if (!chatBox || !chatArea) return;
-
-        let chatHtml = "";
-        const chatKeys = Object.keys(chatData).sort();
-        let shouldScroll = false;
-        if (chatKeys.length > lastChatCount) {
-            if (lastChatCount !== 0) playNotification();
-            shouldScroll = true;
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
-        lastChatCount = chatKeys.length;
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        chatKeys.forEach(key => {
-            const m = chatData[key];
-            if (!m) return;
-            const isAdm = m.u === "Bordo";
-            const isVip = vipsData && vipsData[m.u];
-            const isMine = activeSession && m.u === activeSession.name;
-            const delBtn = isMine ? `<span class="del-msg" onclick="event.stopPropagation(); proConfirm('${key}')">[SİL]</span>` : "";
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 0.2 - 0.1;
+                this.speedY = Math.random() * -0.3 - 0.1; // Yukarı doğru yavaş akış
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
+                }
+                if (this.x < 0 || this.x > canvas.width) {
+                    this.speedX = -this.speedX;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(245, 246, 252, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
 
-            if (m.type === "trade") {
+        function initParticles() {
+            const particleCount = Math.min(60, Math.floor(window.innerWidth / 20)); // Cihaza göre optimize sayı
+            for (let i = 0; i < particleCount; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        initParticles();
+        animateParticles();
+
+
+        // --- 2. SMOOTH PARALLAX EFEKTİ ---
+        const scene = document.getElementById('scene');
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+
+        // Sadece masaüstü cihazlarda parallax etkinleştirerek performans korunur
+        if (window.innerWidth > 1024) {
+            window.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX - window.innerWidth / 2;
+                const mouseY = e.clientY - window.innerHeight / 2;
+                // Etki katsayısı (Düşük tutularak premium/premium ağırlık hissi verilir)
+                targetX = (mouseX / window.innerWidth) * 20; 
+                targetY = (mouseY / window.innerHeight) * 20;
+            });
+
+            function lerpParallax() {
+                // Yumuşak geçiş (Linear Interpolation)
+                currentX += (targetX - currentX) * 0.08;
+                currentY += (targetY - currentY) * 0.08;
+                scene.style.transform = `rotateY(${currentX}deg) rotateX(${-currentY}deg) translateY(0px)`;
+                requestAnimationFrame(lerpParallax);
+            }
+            lerpParallax();
+        }
+
+
+        // --- 3. GERÇEK ZAMANLI GERİ SAYIM MOTORU ---
+        // Hedef Zaman Ayarı: 1 Ağustos 2027 00:00:00 (Europe/Istanbul)
+        const targetDateStr = "2027-08-01T00:00:00";
+        
+        // Tarayıcı bağımsız tam uyumluluk için Turkey Saati (UTC+3) milisaniye farkını hesaplama veya doğrudan hedef zamanı oluşturma
+        const targetDate = new Date(new Date(targetDateStr).toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+
+        // DOM Elementleri
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const countdownGroup = document.getElementById('countdown-group');
+        const completeMsg = document.getElementById('complete-msg');
+
+        // Önceki değerleri saklamak ve sadece değiştiğinde animasyon tetiklemek için hafıza objesi
+        let lastValues = { days: "", hours: "", minutes: "", seconds: "" };
+
+        function updateCountdown() {
+            const now = new Date();
+            const difference = targetDate - now;
+
+            if (difference <= 0) {
+                // Zaman dolduğunda sayacı kaldır, başarı mesajını getir
+                countdownGroup.style.display = 'none';
+                completeMsg.style.display = 'block';
+                clearInterval(countdownInterval);
                 return;
             }
-            const colorClass = isAdm ? "msg-admin" : "msg-user";
-            const vipClass = isVip ? "vip-name" : "";
-            const vipIcon = isVip ? "💎 " : "";
-            const content = m.type === "img" ? `<img src="${m.t}" class="chat-img" onclick="openImageViewer('${m.t}')">` : m.t;
-            const replyHtml = m.reply ? `<div class="msg-reply-box">↳ @${m.reply.u}: ${m.reply.t}</div>` : "";
-            const rankBadge = m.r ? `<span class="rank-badge ${m.r === 'SİBER LORD' ? 'rank-lord' : (m.r === 'VERİ MADENCİSİ' ? 'rank-analist' : 'rank-caylak')}">${m.r}</span>` : "";
-            chatHtml += `<div class="chat-msg ${colorClass}" onclick="setReply('${m.u}', '${m.type === "img" ? "Görsel gönderdi" : m.t}')">${replyHtml}${rankBadge}<span class="user-label ${vipClass}">${vipIcon}${m.u}:</span> <span style="font-size: 14px; font-weight: 500;">${content}</span> ${delBtn}</div>`;
-        });
 
-        chatBox.innerHTML = chatHtml;
-        if (shouldScroll && chatMode === 'global') {
-            chatArea.scrollTop = chatArea.scrollHeight;
-        }
-    }
+            // Zaman matematiksel dönüşümleri
+            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((difference % (1000 * 60)) / 1000);
 
-    async function syncChat() {
-        if (chatSyncBusy || !activeSession) return;
-        chatSyncBusy = true;
-        const syncStart = performance.now();
-        try {
-            const [chatRes, vipsRes, dmsRes] = await Promise.all([
-                fetch(`${FB}/chat.json`, { cache: 'no-store' }),
-                fetch(`${FB}/vips.json`, { cache: 'no-store' }),
-                fetch(`${FB}/dms.json`, { cache: 'no-store' })
-            ]);
-            const chatData = await chatRes.json();
-            const vipsData = await vipsRes.json();
-            const dmsData = await dmsRes.json();
-
-            renderGlobalChat(chatData, vipsData);
-
-            if (dmsData) {
-                dmCache = dmsData;
-                if (chatMode === 'dm' && activeDmTarget) {
-                    renderActiveDm();
-                    const dmContainer = document.getElementById('dm-conversation-container');
-                    if (dmContainer) dmContainer.scrollTop = dmContainer.scrollHeight;
-                } else if (chatMode === 'dm' && !activeDmTarget) {
-                    renderDmList();
-                }
-            }
-
-            updatePingDisplay(Math.round(performance.now() - syncStart));
-        } catch (e) {
-            console.error("Chat Sync Error:", e);
-        } finally {
-            chatSyncBusy = false;
-        }
-    }
-
-    function isBordoAdmin() {
-        return activeSession && activeSession.name === "Bordo";
-    }
-
-    function refillSelect(selectEl, optionsHtml, previousValue) {
-        if (!selectEl) return;
-        selectEl.innerHTML = optionsHtml;
-        if (previousValue && [...selectEl.options].some(o => o.value === previousValue)) {
-            selectEl.value = previousValue;
-        }
-    }
-
-    function escapeHtml(text) {
-        return String(text)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
-    }
-
-    function normalizeCategoryName(name) {
-        if (name === undefined || name === null) return '';
-        return String(name).trim().replace(/\s+/g, ' ').slice(0, 40);
-    }
-
-    function categoryFirebaseKey(name) {
-        return encodeURIComponent(normalizeCategoryName(name));
-    }
-
-    function mergeCategoriesFromItems() {
-        localItems.forEach(item => {
-            const cat = item.category || DEFAULT_CATEGORY;
-            if (cat !== DEFAULT_CATEGORY && !marketCategories.includes(cat)) marketCategories.push(cat);
-        });
-        marketCategories = marketCategories.filter(c => c !== DEFAULT_CATEGORY);
-    }
-
-    function getCategoryDisplayOrder() {
-        const order = marketCategories.filter(c => c !== DEFAULT_CATEGORY);
-        const seen = new Set(order);
-        localItems.forEach(item => {
-            const cat = item.category || DEFAULT_CATEGORY;
-            if (cat !== DEFAULT_CATEGORY && !seen.has(cat)) {
-                order.push(cat);
-                seen.add(cat);
-            }
-        });
-        order.sort((a, b) => {
-            const countA = (marketItemsByCategory[a] || []).length;
-            const countB = (marketItemsByCategory[b] || []).length;
-            if (countB !== countA) return countB - countA;
-            return a.localeCompare(b, 'tr');
-        });
-        return [DEFAULT_CATEGORY, ...order];
-    }
-
-    function getCategoryTabLabel(cat) {
-        return cat === DEFAULT_CATEGORY ? 'TÜM ÜRÜNLER' : cat;
-    }
-
-    function updateCategoryControls() {
-        const datalist = document.getElementById('categoryNamesList');
-        const hint = document.getElementById('category-current-hint');
-        const nameInput = document.getElementById('categoryNameInput');
-        const catSel = document.getElementById('admSelectCategory');
-        const productName = catSel ? catSel.value : '';
-
-        if (datalist) {
-            datalist.innerHTML = marketCategories
-                .filter(c => c !== DEFAULT_CATEGORY)
-                .map(c => `<option value="${escapeHtml(c)}"></option>`)
-                .join('');
+            // Değerleri DOM'a basma ve yumuşak değişim animasyonu kontrolü
+            updateBox(daysEl, d, 'days');
+            updateBox(hoursEl, h, 'hours');
+            updateBox(minutesEl, m, 'minutes');
+            updateBox(secondsEl, s, 'seconds');
         }
 
-        if (hint) {
-            const item = localItems.find(i => i.name === productName);
-            if (!productName) {
-                hint.textContent = 'Ürün seçince mevcut kategori burada görünür.';
-            } else if (item) {
-                hint.textContent = `Seçili: ${productName} → kategori: ${item.category || DEFAULT_CATEGORY}`;
-                if (nameInput && document.activeElement !== nameInput) {
-                    nameInput.value = item.category === DEFAULT_CATEGORY ? '' : item.category;
-                }
-            } else {
-                hint.textContent = 'Ürün bulunamadı.';
-            }
-        }
-    }
-
-    function toggleMarketCategory(encodedCat) {
-        const cat = decodeURIComponent(encodedCat);
-        activeMarketCategory = activeMarketCategory === cat ? null : cat;
-        document.querySelectorAll('.market-cat-tab').forEach(btn => {
-            btn.classList.toggle('active', decodeURIComponent(btn.dataset.cat) === activeMarketCategory);
-        });
-        renderMarketCategoryPanel();
-    }
-
-    function toggleMarketCategoriesList() {
-        marketCategoriesExpanded = !marketCategoriesExpanded;
-        const extra = document.getElementById('marketCategoryExtra');
-        const toggle = document.getElementById('marketCategoryToggle');
-        if (extra) {
-            if (marketCategoriesExpanded) {
-                requestAnimationFrame(() => extra.classList.add('open'));
-            } else {
-                extra.classList.remove('open');
-            }
-        }
-        if (toggle) {
-            toggle.classList.toggle('active', marketCategoriesExpanded);
-            toggle.innerHTML = marketCategoriesExpanded
-                ? 'KATEGORİLER <span class="market-cat-more-icon">▴</span>'
-                : 'KATEGORİLER <span class="market-cat-more-icon">▾</span>';
-        }
-    }
-
-    function buildCategoryTab(cat) {
-        const count = (marketItemsByCategory[cat] || []).length;
-        const enc = encodeURIComponent(cat);
-        const active = activeMarketCategory === cat ? ' active' : '';
-        const genelClass = cat === DEFAULT_CATEGORY ? ' market-cat-tab--genel' : '';
-        const label = getCategoryTabLabel(cat);
-        return `<button type="button" class="market-cat-tab${genelClass}${active}" data-cat="${enc}">${escapeHtml(label)}<span class="market-cat-count">${count}</span></button>`;
-    }
-
-    function renderMarketCategoryBar(categories) {
-        const primary = document.getElementById('marketPrimaryCategory');
-        const bar = document.getElementById('marketCategoryBar');
-        const toggle = document.getElementById('marketCategoryToggle');
-        const extra = document.getElementById('marketCategoryExtra');
-        const hint = document.getElementById('marketPickHint');
-        if (!primary || !bar) return;
-
-        if (!categories.length) {
-            primary.innerHTML = '';
-            bar.innerHTML = '';
-            if (toggle) toggle.style.display = 'none';
-            if (extra) extra.classList.remove('open');
-            if (hint) hint.style.display = 'none';
-            return;
-        }
-
-        const genelCats = categories.filter(c => c === DEFAULT_CATEGORY);
-        const otherCats = categories.filter(c => c !== DEFAULT_CATEGORY);
-
-        primary.innerHTML = genelCats.map(buildCategoryTab).join('');
-        bar.innerHTML = otherCats.map(buildCategoryTab).join('');
-
-        if (toggle) {
-            toggle.style.display = otherCats.length ? 'inline-flex' : 'none';
-            toggle.classList.toggle('active', marketCategoriesExpanded);
-            toggle.innerHTML = marketCategoriesExpanded
-                ? 'KATEGORİLER <span class="market-cat-more-icon">▴</span>'
-                : 'KATEGORİLER <span class="market-cat-more-icon">▾</span>';
-        }
-
-        if (extra) {
-            if (marketCategoriesExpanded && otherCats.length) {
-                extra.classList.add('open');
-            } else {
-                extra.classList.remove('open');
-            }
-        }
-
-        if (hint) hint.style.display = activeMarketCategory ? 'none' : 'block';
-    }
-
-    function renderMarketCategoryPanel() {
-        const content = document.getElementById('marketCategoryContent');
-        const body = document.getElementById('marketBody');
-        const hint = document.getElementById('marketPickHint');
-        if (!content || !body) return;
-
-        if (!activeMarketCategory || !marketItemsByCategory[activeMarketCategory]) {
-            if (content.classList.contains('open')) {
-                content.classList.remove('open');
-                setTimeout(() => {
-                    if (!activeMarketCategory) body.innerHTML = '';
-                }, 430);
-            } else {
-                body.innerHTML = '';
-            }
-            if (hint) hint.style.display = Object.keys(marketItemsByCategory).length ? 'block' : 'none';
-            return;
-        }
-
-        const items = [...marketItemsByCategory[activeMarketCategory]].sort((a, b) => b.price - a.price);
-        body.innerHTML = items.map(item => buildMarketItemRow(item)).join('');
-        if (hint) hint.style.display = 'none';
-
-        if (!content.classList.contains('open')) {
-            requestAnimationFrame(() => content.classList.add('open'));
-        }
-    }
-
-    function buildMarketItemRow(item) {
-        const diff = item.price - item.last;
-        const priceColor = diff > 0 ? "var(--neon-green)" : (diff < 0 ? "var(--neon-red)" : "var(--neon-gold)");
-        const trendIcon = diff > 0 ? "▲" : (diff < 0 ? "▼" : "•");
-        let rowClass = item.trend === 'pump' ? "pump-effect" : (item.trend === 'dump' ? "dump-effect" : "");
-        let extraTag = "";
-
-        if (item.trend === 'pump') {
-            extraTag = "<span class='trend-label' style='color:var(--neon-gold); background: rgba(255,215,0,0.2); box-shadow: 0 0 15px rgba(255,215,0,0.3);'>YÜKSELİŞ</span>";
-        } else if (item.trend === 'dump') {
-            extraTag = "<span class='trend-label' style='color:var(--neon-red); background: rgba(255,51,102,0.2); box-shadow: 0 0 15px rgba(255,51,102,0.3);'>DÜŞÜŞ</span>";
-        }
-
-        return `<tr><td class="${rowClass}" style="color:#fff; font-weight: 700; font-size: 14px;">${escapeHtml(item.name)} ${extraTag}</td><td class="${rowClass}" style="color:${priceColor}; font-weight:800; font-size: 15px; text-shadow: 0 0 10px ${priceColor}; white-space: nowrap;">${item.price.toFixed(2)} G</td><td class="${rowClass}" style="color:${priceColor}; font-size: 13px; font-weight: 700; white-space: nowrap;">${trendIcon} ${Math.abs(diff).toFixed(2)}</td></tr>`;
-    }
-
-    async function ensureCategoryExists(categoryName) {
-        const cat = normalizeCategoryName(categoryName);
-        if (!cat) return '';
-        const key = categoryFirebaseKey(cat);
-        const order = marketCategories.filter(c => c !== DEFAULT_CATEGORY).length;
-        await fetch(`${FB}/categories/${key}.json`, {
-            method: 'PUT',
-            body: JSON.stringify({ name: cat, order: order })
-        });
-        if (!marketCategories.includes(cat)) marketCategories.push(cat);
-        return cat;
-    }
-
-    async function assignItemCategory() {
-        const product = document.getElementById('admSelectCategory').value;
-        const cat = normalizeCategoryName(document.getElementById('categoryNameInput').value);
-        if (!product) return alert('Önce ürün seç!');
-        if (!cat) return alert('Kategori adı yaz!');
-        await ensureCategoryExists(cat);
-        await fetch(`${FB}/${product}.json`, { method: 'PATCH', body: JSON.stringify({ category: cat }) });
-        alert(product + ' → "' + cat + '" kategorisine eklendi.');
-        sync();
-    }
-
-    async function clearItemCategory() {
-        const product = document.getElementById('admSelectCategory').value;
-        if (!product) return alert('Önce ürün seç!');
-        await fetch(`${FB}/${product}.json`, { method: 'PATCH', body: JSON.stringify({ category: DEFAULT_CATEGORY }) });
-        document.getElementById('categoryNameInput').value = '';
-        alert(product + ' artık "' + DEFAULT_CATEGORY + '" kategorisinde.');
-        sync();
-    }
-
-    async function registerCategoryOnly() {
-        const cat = normalizeCategoryName(document.getElementById('categoryNameInput').value);
-        if (!cat) return alert('Kategori adı yaz!');
-        if (cat === DEFAULT_CATEGORY) return alert('Bu isim sistem kategorisi. Başka bir isim seç.');
-        await ensureCategoryExists(cat);
-        alert('"' + cat + '" kategorisi oluşturuldu. Ürün atamak için ürün seçip "Kategoriye ata"ya bas.');
-        sync();
-    }
-
-    function updateUI() {
-        const search = document.getElementById('marketSearch').value.toLowerCase();
-        const body = document.getElementById('marketBody');
-        const sel = document.getElementById('tradeSelect');
-        const admSel = document.getElementById('admSelect');
-        const admCatSel = document.getElementById('admSelectCategory');
-        const adminUser = isBordoAdmin();
-        const prevAdm = admSel ? admSel.value : '';
-        const prevAdmCat = admCatSel ? admCatSel.value : '';
-        const prevTrade = sel.value;
-        let options = "";
-
-        const closedBanner = document.getElementById('marketClosedBanner');
-        const categoryBar = document.getElementById('marketCategoryBar');
-        const categoryContent = document.getElementById('marketCategoryContent');
-        const pickHint = document.getElementById('marketPickHint');
-
-        if (!isMarketOpen && !adminUser) {
-            if (closedBanner) {
-                closedBanner.style.display = 'block';
-                closedBanner.innerHTML = '◼ BORSA KAPALI ◼<br><span style="font-size:11px; color:#888; font-weight:600;">İşlemler durduruldu.</span>';
-            }
-            const primaryCat = document.getElementById('marketPrimaryCategory');
-            if (primaryCat) primaryCat.innerHTML = '';
-            if (categoryBar) categoryBar.innerHTML = '';
-            const catToggle = document.getElementById('marketCategoryToggle');
-            if (catToggle) catToggle.style.display = 'none';
-            const catExtra = document.getElementById('marketCategoryExtra');
-            if (catExtra) catExtra.classList.remove('open');
-            if (categoryContent) categoryContent.classList.remove('open');
-            body.innerHTML = '';
-            if (pickHint) pickHint.style.display = 'none';
-            sel.innerHTML = "";
-            if (admSel) admSel.innerHTML = "";
-            if (admCatSel) admCatSel.innerHTML = "";
-            renderInventory();
-            return;
-        }
-
-        if (closedBanner) {
-            if (!isMarketOpen && adminUser) {
-                closedBanner.style.display = 'block';
-                closedBanner.textContent = '◼ BORSA KAPALI — Admin: fiyat / kategori yönetimi aktif';
-            } else {
-                closedBanner.style.display = 'none';
-            }
-        }
-
-        const filteredItems = localItems.filter(item => item.name.toLowerCase().includes(search));
-        marketItemsByCategory = {};
-        filteredItems.forEach(item => {
-            if (!marketItemsByCategory[DEFAULT_CATEGORY]) marketItemsByCategory[DEFAULT_CATEGORY] = [];
-            marketItemsByCategory[DEFAULT_CATEGORY].push(item);
-            const cat = item.category || DEFAULT_CATEGORY;
-            if (cat !== DEFAULT_CATEGORY) {
-                if (!marketItemsByCategory[cat]) marketItemsByCategory[cat] = [];
-                marketItemsByCategory[cat].push(item);
-            }
-        });
-
-        let categoriesWithItems = getCategoryDisplayOrder().filter(cat => marketItemsByCategory[cat] && marketItemsByCategory[cat].length);
-        if (filteredItems.length) {
-            if (!marketItemsByCategory[DEFAULT_CATEGORY]) marketItemsByCategory[DEFAULT_CATEGORY] = [];
-            if (!categoriesWithItems.includes(DEFAULT_CATEGORY)) {
-                categoriesWithItems = [DEFAULT_CATEGORY, ...categoriesWithItems];
-            }
-        }
-        if (activeMarketCategory && !marketItemsByCategory[activeMarketCategory]) {
-            activeMarketCategory = marketItemsByCategory[DEFAULT_CATEGORY] ? DEFAULT_CATEGORY : null;
-        }
-        if (!activeMarketCategory && filteredItems.length) {
-            activeMarketCategory = DEFAULT_CATEGORY;
-        }
-
-        localItems.forEach(item => {
-            const catLabel = item.category && item.category !== DEFAULT_CATEGORY ? ` [${item.category}]` : '';
-            const safeVal = item.name.replace(/"/g, '&quot;');
-            options += `<option value="${safeVal}">${escapeHtml(item.name)}${escapeHtml(catLabel)}</option>`;
-        });
-
-        renderMarketCategoryBar(categoriesWithItems);
-        renderMarketCategoryPanel();
-
-        if (!categoriesWithItems.length) {
-            const primaryCat = document.getElementById('marketPrimaryCategory');
-            if (primaryCat) primaryCat.innerHTML = '';
-            if (categoryBar) categoryBar.innerHTML = '';
-            const catToggle = document.getElementById('marketCategoryToggle');
-            if (catToggle) catToggle.style.display = 'none';
-            const catExtra = document.getElementById('marketCategoryExtra');
-            if (catExtra) catExtra.classList.remove('open');
-            if (categoryContent) categoryContent.classList.remove('open');
-            body.innerHTML = '<tr><td colspan="3" class="market-empty-hint" style="padding:30px;">Ürün bulunamadı</td></tr>';
-            if (pickHint) pickHint.style.display = 'none';
-        }
-        if (isMarketOpen) refillSelect(sel, options, prevTrade);
-        else sel.innerHTML = "";
-        refillSelect(admSel, options, prevAdm);
-        refillSelect(admCatSel, options, prevAdmCat);
-        updateCategoryControls();
-        
-        renderInventory();
-        if (isMarketOpen) {
-            updateExtras();
-        }
-    }
-
-    function renderInventory() {
-        const list = document.getElementById('invList'); let total = 0; let html = "";
-        inventory.forEach((item, idx) => {
-            const m = localItems.find(i => i.name === item.name);
-            if(m) { const val = m.price * item.amount; total += val; html += `<div style="font-size:12px; color:#bbb; margin-bottom:6px; display:flex; justify-content:space-between; align-items: center; background:rgba(255,255,255,0.05); padding:10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);"><span style="font-weight: 600;">${item.name} <span style="opacity: 0.7; font-size: 11px; font-weight: 700;">x${item.amount}</span></span><span style="font-weight: 800; color: var(--neon-gold); text-shadow: 0 0 10px rgba(255,215,0,0.2);">${val.toFixed(2)}G <span style="color:var(--neon-red); cursor:pointer; margin-left: 10px; font-size: 11px; opacity: 0.8; font-weight: 700;" onclick="removeItem(${idx})">[X]</span></span></div>`; }
-        });
-        list.innerHTML = html;
-        let lastTotal = parseFloat(localStorage.getItem('bordo_last_val')) || total;
-        const diffTotal = total - lastTotal;
-        const trendColor = diffTotal >= 0 ? "var(--neon-green)" : "var(--neon-red)";
-        document.getElementById('portfolioVal').innerHTML = `${total.toFixed(2)} G <div style="font-size:13px; color:${trendColor}; margin-top:8px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 0 10px ${trendColor};">${diffTotal >= 0 ? '▲' : '▼'} ${Math.abs(diffTotal).toFixed(2)}</div>`;
-        localStorage.setItem('bordo_last_val', total);
-    }
-
-    async function addItem() {
-        const name = document.getElementById('newItemName').value.trim();
-        const price = parseFloat(document.getElementById('newItemPrice').value);
-        const categoryRaw = document.getElementById('newItemCategory').value;
-        const category = normalizeCategoryName(categoryRaw) || DEFAULT_CATEGORY;
-        if(!name || isNaN(price)) return alert("İsim ve fiyat gir!");
-        if (category !== DEFAULT_CATEGORY) await ensureCategoryExists(category);
-        await fetch(`${FB}/${name}.json`, { method: 'PUT', body: JSON.stringify({ price: price, last: price, base: price, trend: 'normal', category: category }) });
-        document.getElementById('newItemName').value = '';
-        document.getElementById('newItemPrice').value = '';
-        document.getElementById('newItemCategory').value = '';
-        alert("Ürün eklendi! Kategori: " + category);
-        sync();
-    }
-    async function deleteItem() {
-        const name = document.getElementById('admSelect').value;
-        if(!name) return;
-        if(confirm(name + " SİLİNECEK EMİN MİSİN?")) { await fetch(`${FB}/${name}.json`, { method: 'DELETE' }); sync(); }
-    }
-    async function pushAnnouncement() { const t = document.getElementById('announcementInput').value.trim(); if(!t) return; await fetch(`${FB}/ann.json`, { method: 'PUT', body: JSON.stringify(t) }); sync(); }
-    async function clearAnnouncement() { await fetch(`${FB}/ann.json`, { method: 'DELETE' }); sync(); }
-    async function banUser() { const u = prompt("BANLANACAK KULLANICI ADI:"); if(!u) return; await fetch(`${FB}/bans/${u}.json`, { method: 'PUT', body: JSON.stringify(true) }); alert(u + " SİSTEMDEN YASAKLANDI."); }
-    
-    function uploadImage(input) {
-        const file = input.files[0]; if(!file) return;
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            const b64 = e.target.result; if(b64.length > 500000) return alert("Resim çok büyük!");
-            const u = activeSession.name;
-            const time = Date.now();
+        function updateBox(element, newValue, key) {
+            // Çift haneli görünüm formatı
+            const formattedValue = String(newValue).padStart(2, '0');
             
-            if(chatMode === 'global') {
-                const msg = { u: u, t: b64, type: "img", time: time };
-                await fetch(`${FB}/chat.json`, { method: 'POST', body: JSON.stringify(msg) });
-            } else if(chatMode === 'dm' && activeDmTarget) {
-                const key = getDmKey(u, activeDmTarget);
-                const msg = { u: u, t: b64, type: "img", time: time };
-                await fetch(`${FB}/dms/${key}.json`, { method: 'POST', body: JSON.stringify(msg) });
+            if (lastValues[key] !== formattedValue) {
+                element.textContent = formattedValue;
+                
+                // Animasyon sınıfını ekle-çıkart yaparak sayfa akıcılığını artırma
+                element.classList.remove('pop-animation');
+                void element.offsetWidth; // DOM reflow tetikleme
+                element.classList.add('pop-animation');
+                
+                lastValues[key] = formattedValue;
             }
-            syncChat();
-        };
-        reader.readAsDataURL(file);
-    }
-    async function pushBotNews() { const t = document.getElementById('botNewsInput').value.trim(); if(!t) return; await fetch(`${FB}/bot_news.json`, { method: 'PUT', body: JSON.stringify(t) }); document.getElementById('botNewsInput').value = ''; sync(); }
-    async function deleteBotNews() { await fetch(`${FB}/bot_news.json`, { method: 'DELETE' }); sync(); }
-    async function giveVip() { const u = document.getElementById('vipTargetInput').value.trim(); if(!u) return; await fetch(`${FB}/vips/${u}.json`, { method: 'PUT', body: JSON.stringify(true) }); alert(u + " ARTIK VIP!"); sync(); }
-    async function setMarketStatus(s) { await fetch(`${FB}/market_status.json`, { method: 'PUT', body: JSON.stringify(s) }); sync(); }
-    
-    async function setMaintenance(status) {
-        const msg = document.getElementById('maintenanceInput').value.trim();
-        await fetch(`${FB}/maintenance.json`, { 
-            method: 'PUT', 
-            body: JSON.stringify({ 
-                active: status, 
-                msg: msg || "Planlı bakım çalışması devam ediyor...",
-                since: Date.now() 
-            }) 
-        });
-        sync();
-    }
-    
-    function proConfirm(key) { const modal = document.getElementById('confirm-modal'); modal.style.display = 'flex'; document.getElementById('confirm-yes').onclick = () => { deleteMessage(key); modal.style.display = 'none'; }; document.getElementById('confirm-no').onclick = () => { modal.style.display = 'none'; }; }
-    
-    async function sendChat() {
-        const inp = document.getElementById('chat-input');
-        const t = inp.value.trim();
-        if(!t || !activeSession) return;
-        
-        const myRankData = getRankTitle(myPlayTime);
-
-        if(chatMode === 'global') {
-            const msg = { 
-                u: activeSession.name, 
-                t: t, 
-                time: Date.now(), 
-                type: "text", 
-                r: myRankData.title,
-                reply: replyData ? { u: replyData.user, t: replyData.text } : null 
-            };
-            await fetch(`${FB}/chat.json`, { method: 'POST', body: JSON.stringify(msg) });
-            inp.value = ''; cancelReply(); 
-        } else if(chatMode === 'dm' && activeDmTarget) {
-            const key = getDmKey(activeSession.name, activeDmTarget);
-            const msg = { u: activeSession.name, t: t, time: Date.now(), type: "text", r: myRankData.title };
-            await fetch(`${FB}/dms/${key}.json`, { method: 'POST', body: JSON.stringify(msg) });
-            inp.value = '';
-        }
-        syncChat();
-    }
-
-    function buyItem() { if (!isMarketOpen) { alert("⚠ BORSA KAPALI! İşlem yapılamaz."); return; } const n = document.getElementById('tradeSelect').value; const a = parseFloat(document.getElementById('tradeAmount').value); if(!n || isNaN(a) || a <= 0) return; const ex = inventory.find(i => i.name === n); if(ex) ex.amount += a; else inventory.push({ name: n, amount: a }); localStorage.setItem('bordo_inv', JSON.stringify(inventory)); renderInventory(); }
-    function removeItem(idx) { inventory.splice(idx, 1); localStorage.setItem('bordo_inv', JSON.stringify(inventory)); renderInventory(); }
-    function updateLiveTicker() { document.getElementById('newsText').innerText = localItems.map(i => `${i.name}: ${i.price.toFixed(2)}G`).join("  ⚡  "); }
-    
-    async function pushPrice() { 
-        const n = document.getElementById('admSelect').value; 
-        const p = parseFloat(document.getElementById('admPrice').value); 
-        if(!n || isNaN(p)) {
-            alert("Lütfen ürün seçin ve geçerli fiyat girin!");
-            return;
-        } 
-        
-        const item = localItems.find(i => i.name === n);
-        const newBase = p;
-        const currentPrice = item ? item.price : p;
-        
-        await fetch(`${FB}/${n}.json`, { 
-            method: 'PATCH', 
-            body: JSON.stringify({ 
-                price: newBase, 
-                last: currentPrice, 
-                base: newBase,
-                locked: false 
-            }) 
-        }); 
-        document.getElementById('admPrice').value = '';
-        alert(n + " fiyatı " + newBase.toFixed(2) + " G olarak güncellendi! Bundan sonra " + (newBase - 2).toFixed(2) + " - " + (newBase + 4).toFixed(2) + " arası dalgalanacak.");
-        sync(); 
-    }
-    
-    async function setStable(status) {
-        const n = document.getElementById('admSelect').value;
-        if(!n) {
-            alert("Lütfen ürün seçin!");
-            return;
-        }
-        
-        await fetch(`${FB}/${n}.json`, { 
-            method: 'PATCH', 
-            body: JSON.stringify({ stable: status }) 
-        });
-        
-        if(status) {
-            alert(n + " artık STABİL modda! Fiyat değişmeyecek.");
-        } else {
-            alert(n + " stabıl moddan çıkarıldı! Dalgalanma başlayacak.");
-        }
-        sync();
-    }
-    
-    async function deleteMessage(key) { await fetch(`${FB}/chat/${key}.json`, { method: 'DELETE' }); syncChat(); }
-    async function setTrend(t) { const n = document.getElementById('admSelect').value; if(!n) return; await fetch(`${FB}/${n}/trend.json`, { method: 'PUT', body: JSON.stringify(t) }); sync(); }
-    function openImageViewer(src) { document.getElementById('viewer-img').src = src; document.getElementById('viewer-dl').href = src; document.getElementById('img-viewer').style.display = 'block'; }
-    function showOnlineUsers() { document.getElementById('online-list').innerHTML = activeUsersList.map(u => `<div style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 700; letter-spacing: 1px;">> ${u}</div>`).join(''); document.getElementById('online-modal').style.display = 'block'; }
-    function toggleEmoji() { const p = document.getElementById('emoji-picker'); p.style.display = p.style.display === 'flex' ? 'none' : 'flex'; }
-    function addEmoji(e) { document.getElementById('chat-input').value += e; }
-
-    let myPlayTime = parseInt(localStorage.getItem('bordo_playtime')) || 0;
-    setInterval(() => {
-        myPlayTime++;
-        localStorage.setItem('bordo_playtime', myPlayTime);
-    }, 60000);
-
-    function getRankTitle(minutes) {
-        if (minutes > 3000) return { title: "SİBER LORD", class: "rank-lord" };
-        if (minutes > 600) return { title: "VERİ MADENCİSİ", class: "rank-analist" };
-        return { title: "ÇAYLAK", class: "rank-caylak" };
-    }
-
-    async function toggleBreachEffect() {
-        let currentStatus = document.body.classList.contains('system-breach');
-        await fetch(`${FB}/system_breach.json`, { method: 'PUT', body: JSON.stringify(!currentStatus) });
-    }
-
-    function applyBreach(isBreached) {
-        const overlay = document.getElementById('breach-overlay');
-        if(isBreached) {
-            document.body.classList.add('system-breach');
-            overlay.style.display = 'flex';
-            addSystemLog("⚠ GÜVENLİK DUVARI AŞILDI");
-            addSystemLog("⚠ VERİ SIZINTISI TESPİT EDİLDİ");
-        } else {
-            document.body.classList.remove('system-breach');
-            overlay.style.display = 'none';
-        }
-    }
-
-    setInterval(() => {
-        if(Math.random() > 0.85) {
-            const logs = ["Fiyatlar senkronize edildi", "Blok zinciri güncellendi", "Piyasa verisi alındı", "Şifreleme protokolü aktif", "Hacim analizi tamamlandı"];
-            addSystemLog(logs[Math.floor(Math.random() * logs.length)]);
-        }
-    }, 2500);
-
-    function addSystemLog(text) {
-        const box = document.getElementById('sys-logs');
-        const time = new Date().toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit', second:'2-digit'});
-        box.innerHTML = `<span class="log-line">[${time}] ${text}</span>`;
-    }
-
-    let spotlightSet = false;
-    function updateExtras() {
-        if(localItems.length === 0) return;
-
-        if(!spotlightSet) {
-            const randomItem = localItems[Math.floor(Math.random() * localItems.length)];
-            document.getElementById('spotlight-name').innerText = randomItem.name;
-            const tips = ["Gece saatlerinde artış potansiyeli yüksek", "Büyük yatırımcılar tarafından takip ediliyor", "Düşük hacim - yüksek volatilite", "Güvenli liman olarak değerlendiriliyor", "Teknik analizde kırılım noktasında"];
-            document.getElementById('spotlight-tip').innerText = "ANALİZ: " + tips[Math.floor(Math.random() * tips.length)];
-            spotlightSet = true;
         }
 
-        const sorted = [...localItems].sort((a,b) => (b.price - b.base) - (a.price - a.base));
-        const top = sorted[0];
-        const bot = sorted[sorted.length - 1];
-
-        if(top) {
-            const diff = top.price - top.base;
-            document.getElementById('top-gainer').innerHTML = `${top.name}<div style="font-size:12px; margin-top:6px; font-weight: 800; text-shadow: 0 0 10px var(--neon-green);">+${diff.toFixed(2)}</div>`;
-        }
-        if(bot) {
-            const diff = bot.price - bot.base;
-            document.getElementById('top-loser').innerHTML = `${bot.name}<div style="font-size:12px; margin-top:6px; font-weight: 800; text-shadow: 0 0 10px var(--neon-red);">${diff.toFixed(2)}</div>`;
-        }
-    }
-
-    if(activeSession) {
-        bootDashboard();
-    }
-
-    function openExpModal() {
-        document.getElementById('bordo-exp-overlay').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeExpModal(e) {
-        if (e && e.target !== document.getElementById('bordo-exp-overlay')) return;
-        document.getElementById('bordo-exp-overlay').style.display = 'none';
-        document.body.style.overflow = '';
-    }
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeExpModal();
-    });
-</script>
-
-<div class="bordo-exp-overlay" id="bordo-exp-overlay" onclick="closeExpModal(event)">
-    <div class="bordo-exp-modal" onclick="event.stopPropagation()">
-        <div class="bordo-exp-modal-header">
-            <h2 class="bordo-exp-modal-title">📊 EXP TABLOSU</h2>
-            <button class="bordo-exp-modal-close" onclick="closeExpModal()" title="Kapat">✕</button>
-        </div>
-        <div class="bordo-exp-modal-body">
-            <div class="bordo-exp-table-wrapper">
-                <table class="bordo-exp-table">
-                    <thead>
-                        <tr>
-                            <th>1 - 20 Arası</th>
-                            <th>21 - 40 Arası</th>
-                            <th>41 - 60 Arası</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>1: 122 EXP</td><td>21: 42.014 EXP</td><td>41: 232.697 EXP</td></tr>
-                        <tr><td>2: 374 EXP</td><td>22: 46.935 EXP</td><td>42: 248.929 EXP</td></tr>
-                        <tr><td>3: 764 EXP</td><td>23: 52.226 EXP</td><td>43: 265.998 EXP</td></tr>
-                        <tr><td>4: 1.298 EXP</td><td>24: 57.903 EXP</td><td>44: 283.938 EXP</td></tr>
-                        <tr><td>5: 1.987 EXP</td><td>25: 63.983 EXP</td><td>45: 302.781 EXP</td></tr>
-                        <tr><td>6: 2.837 EXP</td><td>26: 70.484 EXP</td><td>46: 322.563 EXP</td></tr>
-                        <tr><td>7: 3.859 EXP</td><td>27: 77.424 EXP</td><td>47: 343.319 EXP</td></tr>
-                        <tr><td>8: 5.061 EXP</td><td>28: 84.822 EXP</td><td>48: 365.087 EXP</td></tr>
-                        <tr><td>9: 6.453 EXP</td><td>29: 92.699 EXP</td><td>49: 387.905 EXP</td></tr>
-                        <tr><td>10: 8.045 EXP</td><td>30: 101.073 EXP</td><td>50: 411.812 EXP</td></tr>
-                        <tr><td>11: 9.847 EXP</td><td>31: 109.968 EXP</td><td>51: 436.851 EXP</td></tr>
-                        <tr><td>12: 11.870 EXP</td><td>32: 119.404 EXP</td><td>52: 463.062 EXP</td></tr>
-                        <tr><td>13: 14.126 EXP</td><td>33: 129.404 EXP</td><td>53: 490.489 EXP</td></tr>
-                        <tr><td>14: 16.625 EXP</td><td>34: 139.992 EXP</td><td>54: 519.178 EXP</td></tr>
-                        <tr><td>15: 19.380 EXP</td><td>35: 151.191 EXP</td><td>55: 549.175 EXP</td></tr>
-                        <tr><td>16: 22.403 EXP</td><td>36: 163.027 EXP</td><td>56: 580.528 EXP</td></tr>
-                        <tr><td>17: 25.708 EXP</td><td>37: 175.526 EXP</td><td>57: 613.287 EXP</td></tr>
-                        <tr><td>18: 29.307 EXP</td><td>38: 188.714 EXP</td><td>58: 647.502 EXP</td></tr>
-                        <tr><td>19: 33.215 EXP</td><td>39: 202.620 EXP</td><td>59: 683.226 EXP</td></tr>
-                        <tr><td>20: 37.445 EXP</td><td>40: 217.271 EXP</td><td>60: 720.514 EXP</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="bordo-exp-modal-footer">
-            ZOMBIX BORSA | BORDO v9.7 — SEVİYE GELİŞİM VERİLERİ
-        </div>
-    </div>
-</div>
-
+        // İlk çalıştırma ve saniyelik döngü
+        updateCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
 </body>
 </html>
